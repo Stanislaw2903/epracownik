@@ -11,15 +11,9 @@
     }
 
     &:not(:first-child) {
-      width: 28px;
-      min-width: 28px;
-      padding: 0.25rem 0;
+      width: 44px;
+      min-width: 44px;
     }
-  }
-
-  .p-datatable-thead > tr.graphic-filter-row > th:first-child .form-control {
-    height: 32px;
-    font-size: 13px;
   }
 }
 
@@ -36,9 +30,8 @@
   }
 
   &:not(:first-child) {
-    width: 28px;
-    min-width: 28px;
-    padding: 0;
+    width: 44px;
+    min-width: 44px;
     text-align: center;
     font-size: 11px;
     font-weight: 600;

@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 public class UserCreator {
@@ -31,40 +29,22 @@ public class UserCreator {
         return result;
     }
 
-    List<IntegrationCandidateDTO> preview(List<UserDTO> users) {
-        return users.stream()
-            .map(u -> new IntegrationCandidateDTO(u.getId(), u.getFirstName(), u.getLastName(), u.getEmail(), u.getType(), problem(u)))
-            .collect(Collectors.toList());
-    }
-
     private void createUser(UserDTO userDTO, UserCreationResult result) {
-        String problem = problem(userDTO);
-        if (problem != null) {
-            result.getErrorOrCreate().add(new UserWithErrorDTO(userDTO, problem));
-        } else {
-            userService.createUser(userDTO);
-            result.getSuccess().add(userDTO);
-        }
-    }
 
-    private String problem(UserDTO userDTO) {
+        String login = normalize(userDTO.getFirstName()) + userDTO.getId();
         String email = StringUtils.trim(userDTO.getEmail());
         if (StringUtils.isBlank(email)) {
-            return "emailIsEmpty";
+            result.getErrorOrCreate().add(new UserWithErrorDTO(userDTO, "emailIsEmpty"));
+        } else if (!EMAIL.matcher(email).find()) {
+            result.getErrorOrCreate().add(new UserWithErrorDTO(userDTO, "emailWrongPattern"));
+        } else if (userService.userExists(login)) {
+            result.getErrorOrCreate().add(new UserWithErrorDTO(userDTO, "loginAlreadyUsed"));
+        } else if (userService.userExistsByEmail(email)) {
+            result.getErrorOrCreate().add(new UserWithErrorDTO(userDTO, "emailAlreadyUsed"));
+        } else {
+            User newUser = userService.createUser(userDTO);
+            send(userDTO, result, newUser);
         }
-        if (!EMAIL.matcher(email).find()) {
-            return "emailWrongPattern";
-        }
-        if (StringUtils.isBlank(userDTO.getFirstName())) {
-            return "wrongLogin";
-        }
-        if (userService.userExists(normalize(userDTO.getFirstName()) + userDTO.getId())) {
-            return "loginAlreadyUsed";
-        }
-        if (userService.userExistsByEmail(email)) {
-            return "emailAlreadyUsed";
-        }
-        return null;
     }
 
     private String normalize(String value) {
@@ -79,55 +59,13 @@ public class UserCreator {
         return value.toLowerCase();
     }
 
-    @Transactional
-    public UserCreationResult resendSelected(List<Long> ids) {
-        UserCreationResult result = new UserCreationResult();
-        if (ids == null || ids.isEmpty()) {
-            return result;
+    private void send(UserDTO userDTO, UserCreationResult result, User newUser) {
+        try {
+            mailService.sendCreationEmail(newUser);
+            result.getSuccess().add(userDTO);
+        } catch (Exception e) {
+            result.getErrorOrCreate().add(new UserWithErrorDTO(userDTO, "errorWhileSendingEmail"));
         }
-
-        List<Long> toSend = new ArrayList<>();
-        for (User user : userService.findAll(ids)) {
-            String problem = resendProblem(user);
-            if (problem != null) {
-                result.getErrorOrCreate().add(new UserWithErrorDTO(toDTO(user), problem));
-            } else {
-                userService.refreshActivationKey(user);
-                toSend.add(user.getId());
-            }
-        }
-
-        UserCreationResult sent = resend(toSend);
-        result.getSuccess().addAll(sent.getSuccess());
-        if (sent.getError() != null) {
-            result.getErrorOrCreate().addAll(sent.getError());
-        }
-        return result;
-    }
-
-    static String resendProblem(User user) {
-        if (Boolean.TRUE.equals(user.getActivated())) {
-            return "alreadyActivated";
-        }
-        if (StringUtils.isBlank(user.getEmail())) {
-            return "emailIsEmpty";
-        }
-        return null;
-    }
-
-    private static UserDTO toDTO(User user) {
-        return new UserDTO(user.getExternalId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getType());
-    }
-
-    @Transactional
-    public UserCreationResult resendOne(Long userId) {
-        User user = userService.findAll(Collections.singletonList(userId)).stream().findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
-        if (user.getActivated()) {
-            throw new IllegalStateException("User already activated: " + userId);
-        }
-        userService.refreshActivationKey(user);
-        return resend(Collections.singletonList(userId));
     }
 
     @Transactional

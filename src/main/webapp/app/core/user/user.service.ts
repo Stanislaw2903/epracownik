@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
-import { IIntegrationCandidate, IIntegrationStatus, IIsContractor } from 'app/shared/model/users-intergation-status.model';
+import { IIntegrationStatus, IIsContractor } from 'app/shared/model/users-intergation-status.model';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { SelectItem } from 'primeng/api';
 import { IUser, IUserGroup } from './user.model';
@@ -67,20 +67,6 @@ export class UserService {
     return this.http.get<any>(SERVER_API_URL + 'api/activation/resend');
   }
 
-  resendMailToUser(userId: number): Observable<IIntegrationStatus> {
-    return this.http.post<IIntegrationStatus>(`${SERVER_API_URL}api/activation/resend/${userId}`, {});
-  }
-
-  resendMailToUsers(userIds: number[]): Observable<IIntegrationStatus> {
-    return this.http.post<IIntegrationStatus>(`${SERVER_API_URL}api/activation/resend`, userIds);
-  }
-
-  getIntegrationCandidates(contractor: boolean): Observable<IIntegrationCandidate[]> {
-    return this.http.get<IIntegrationCandidate[]>(SERVER_API_URL + 'api/integration/candidates', {
-      params: { contractor: String(contractor) },
-    });
-  }
-
   permissionVacation(): Observable<SelectItem[]> {
     return of([
       {
@@ -130,5 +116,13 @@ export class UserService {
 
   getRelatedUser(actualEditedUserId: number): Observable<any> {
     return this.http.get<any>(SERVER_API_URL + 'api/users/relatedUsers/' + actualEditedUserId);
+  }
+
+  getUserActivityUrl(): Observable<any> {
+    return this.http.get<any>(SERVER_API_URL + 'api/users/activity-url');
+  }
+
+  isUserActivityUrlActive(): Observable<boolean> {
+    return this.http.get<boolean>(SERVER_API_URL + 'api/users/activity-url/active');
   }
 }

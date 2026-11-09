@@ -2,7 +2,6 @@ package com.eurosoftit.ebok.web.rest.graphic;
 
 import com.eurosoftit.ebok.domain.User;
 import com.eurosoftit.ebok.repository.UserRepository;
-import com.eurosoftit.ebok.security.AuthoritiesConstants;
 import com.eurosoftit.ebok.web.rest.UserUtils;
 import com.eurosoftit.ebok.web.rest.dashboard.RangesEntity;
 import com.eurosoftit.ebok.web.rest.vacation.*;
@@ -11,18 +10,15 @@ import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import liquibase.util.BooleanUtils;
 import org.apache.commons.compress.utils.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
@@ -30,7 +26,6 @@ import javax.persistence.PersistenceContext;
 import javax.validation.constraints.NotNull;
 import javax.websocket.server.PathParam;
 import java.math.BigInteger;
-import java.text.Collator;
 import java.text.DecimalFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -55,46 +50,33 @@ public class GraphicResource {
     @Autowired
     private VacationRepository vacationRepository;
 
-    @GetMapping(params = {"!all", "!groups"})
-    public Page<GraphicDTO> check(@PathParam("month") @NotNull Integer month, @PathParam("year") @NotNull Integer year,
-                                  @RequestParam(value = "lastName", required = false) String lastName,
-                                  Pageable pageable) {
-        final List<Long> users = userUtils.getLoggedUserAndRelatedUserIds();
+    @GetMapping
+    public Page<GraphicDTO> check(@PathParam("month") @NotNull Integer month, @PathParam("year") @NotNull Integer year, Pageable pageable) {
+        final List<Long> loggedUserRelatedUserPage = userUtils.getLoggedNativeUserRelatedUserIds();
+
+        List<Long> users = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(loggedUserRelatedUserPage)) {
+            users.addAll(loggedUserRelatedUserPage);
+        }
+
+        users.add(userUtils.getLoggedUserId());
 
         log.debug("users {}", users);
 
-        return getGraphicDTOS(month, year, pageable, users, null, lastName);
+        return getGraphicDTOS(month, year, pageable, users);
     }
 
-    @GetMapping(params = {"all", "!groups"})
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.HR + "\")")
-    public Page<GraphicDTO> getAll(@PathParam("month") @NotNull Integer month, @PathParam("year") @NotNull Integer year,
-                                   @RequestParam(value = "lastName", required = false) String lastName,
-                                   Pageable pageable) {
-        return getGraphicDTOS(month, year, pageable, allUserIds(), null, lastName);
-    }
-
-    @GetMapping(params = {"groups", "!all"})
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.HR + "\")")
-    public Page<GraphicDTO> getByGroups(@PathParam("month") @NotNull Integer month, @PathParam("year") @NotNull Integer year,
-                                        @RequestParam("groups") List<Long> groups,
-                                        @RequestParam(value = "lastName", required = false) String lastName,
-                                        Pageable pageable) {
-        if (CollectionUtils.isEmpty(groups)) {
-            return Page.empty();
-        }
-        return getGraphicDTOS(month, year, pageable, allUserIds(), groups, lastName);
-    }
-
-    private List<Long> allUserIds() {
-        return userRepository.findNativeAllIds().stream()
+    @GetMapping(params = "all")
+    public Page<GraphicDTO> getAll(@PathParam("month") @NotNull Integer month, @PathParam("year") @NotNull Integer year, Pageable pageable) {
+        final List<Long> users = userRepository.findNativeAllIds().stream()
             .map(BigInteger::longValue)
             .collect(Collectors.toList());
+
+        return getGraphicDTOS(month, year, pageable, users);
     }
 
-    private Page<GraphicDTO> getGraphicDTOS(@NotNull Integer month, @NotNull Integer year, Pageable pageable, List<Long> requestedUsers,
-                                            List<Long> groups, String lastName) {
-        if (CollectionUtils.isEmpty(requestedUsers)) {
+    private Page<GraphicDTO> getGraphicDTOS(@NotNull Integer month, @NotNull Integer year, Pageable pageable, List<Long> users) {
+        if (CollectionUtils.isEmpty(users)) {
             return Page.empty();
         }
 
@@ -105,15 +87,8 @@ public class GraphicResource {
 
         // batch fetch: users, absences (ERP), local accepted vacations — zamiast 3 zapytań na usera
         Map<Long, User> usersById = new HashMap<>();
-        for (User u : userRepository.findAllById(requestedUsers)) {
-            if (matchesFilters(u, groups, lastName)) {
-                usersById.put(u.getId(), u);
-            }
-        }
-
-        List<Long> users = requestedUsers.stream().distinct().filter(usersById::containsKey).collect(Collectors.toList());
-        if (users.isEmpty()) {
-            return Page.empty();
+        for (User u : userRepository.findAllById(users)) {
+            usersById.put(u.getId(), u);
         }
 
         List<Long> externalIds = usersById.values().stream()
@@ -164,25 +139,8 @@ public class GraphicResource {
             return Page.empty();
         }
 
-        Collator collator = Collator.getInstance(new Locale("pl", "PL"));
-        graphics.sort(Comparator
-            .comparing(GraphicDTO::getLastName, Comparator.nullsLast(collator::compare))
-            .thenComparing(GraphicDTO::getFirstName, Comparator.nullsLast(collator::compare)));
-
         final Iterable<List<GraphicDTO>> partition = Iterables.partition(graphics, pageable.getPageSize());
         return new PageImpl<>(Iterables.get(partition, pageable.getPageNumber(), new ArrayList<>()), pageable, graphics.size());
-    }
-
-    static boolean matchesFilters(User user, List<Long> groups, String lastName) {
-        if (!CollectionUtils.isEmpty(groups)
-            && (user.getGroup() == null || !groups.contains(user.getGroup().getId()))) {
-            return false;
-        }
-        if (StringUtils.isNotBlank(lastName)) {
-            return user.getLastName() != null
-                && user.getLastName().toLowerCase(Locale.ROOT).contains(lastName.trim().toLowerCase(Locale.ROOT));
-        }
-        return true;
     }
 
     private boolean isWeekday(ZonedDateTime date) {

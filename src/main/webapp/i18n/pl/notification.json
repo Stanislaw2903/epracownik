@@ -35,11 +35,7 @@
       "all": "Do wszystkich",
       "users": "Do wybranych użytkowników",
       "groups": "Do wybranych grup",
-      "selectNotificationCanal": "Wybierz odbiorców",
-      "filters": {
-        "dateRange": "Wybierz zakres dat",
-        "selectUsers": "Wybierz użytkowników"
-      }
+      "selectNotificationCanal": "Wybierz odbiorców"
     }
   }
 }

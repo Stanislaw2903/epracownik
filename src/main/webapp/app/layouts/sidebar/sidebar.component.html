@@ -5,7 +5,7 @@
 </div>
 <nav id="sidebar" [ngClass]="{ open: !isSidebarCollapsed }">
   <a class="sidebar-brand" routerLink="dashboard">
-    <img src="../../../content/images/singular-logo-white.png" alt="" class="img-fluid" />
+    <img src="../../../content/images/bemix-logo.png" alt="" class="img-fluid" />
   </a>
 
   <div class="sidebar-header">
@@ -195,6 +195,9 @@
             </a>
           </li>
         </ul>
+      </li>
+      <li *ngIf="isActivityActive">
+          <a href="#" (click)="openActivity($event)">Aktywność</a>
       </li>
     </ul>
   </div>

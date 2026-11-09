@@ -278,6 +278,12 @@
         </div>
       </div>
     </div>
+    <div class="row">
+        <div class="col-12" *ngIf="editApplication.comment?.trim()">
+            <label for="comment">Komentarz</label>
+            <p>{{ editApplication.comment }}</p>
+        </div>
+    </div>
     <div class="row" *ngIf="editApplication?.statusDescription">
       <div class="col-12" *ngIf="this.editApplication.status === 'REJECTED'">
         <label for="comment">Powód odrzucenia</label>

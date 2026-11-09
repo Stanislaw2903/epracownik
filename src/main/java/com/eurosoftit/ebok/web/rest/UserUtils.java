@@ -86,10 +86,6 @@ public class UserUtils {
         return Lists.newArrayList();
     }
 
-    public List<Long> getAllUsersAndExtract(Function<User, Long> extractor) {
-        return userRepository.findAllWithout(Constants.ANONYMOUS_USER).stream().map(extractor).filter(Objects::nonNull).collect(Collectors.toList());
-    }
-
     public List<Long> getLoggedUserRelatedUserAndExtract(Function<User, Long> extractor) {
         Long loggedUserId = getLoggedUserId();
 
@@ -140,16 +136,6 @@ public class UserUtils {
         }
 
         return new ArrayList<>();
-    }
-
-    public List<Long> getLoggedUserAndRelatedUserIds() {
-        List<Long> users = new ArrayList<>();
-        List<Long> related = getLoggedNativeUserRelatedUserIds();
-        if (!CollectionUtils.isEmpty(related)) {
-            users.addAll(related);
-        }
-        users.add(getLoggedUserId());
-        return users;
     }
 
     public boolean hasRole(String role) {

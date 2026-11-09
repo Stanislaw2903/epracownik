@@ -3,6 +3,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { LoginService } from 'app/core/login/login.service';
 import { filter } from 'rxjs/operators';
 import { ProfileService } from '../profiles/profile.service';
+import { UserService } from 'app/core/user/user.service';
 
 interface MenuOptions {
   invoices: boolean;
@@ -22,6 +23,7 @@ interface MenuOptions {
 export class SidebarComponent implements OnInit {
   inProduction?: boolean;
   isSidebarCollapsed = true;
+  isActivityActive = false;
   swaggerEnabled?: boolean;
   menuOptions: MenuOptions = {
     invoices: false,
@@ -32,9 +34,18 @@ export class SidebarComponent implements OnInit {
     system: false,
   };
 
-  constructor(private loginService: LoginService, private profileService: ProfileService, private router: Router) {}
+  constructor(
+    private loginService: LoginService,
+    private profileService: ProfileService,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.userService.isUserActivityUrlActive().subscribe(active => {
+      this.isActivityActive = active;
+      console.log(active);
+    });
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;
     });
@@ -48,6 +59,26 @@ export class SidebarComponent implements OnInit {
 
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
+
+  openActivity(event: MouseEvent): void {
+    event.preventDefault(); // Zapobiegamy domyślnemu zachowaniu linku
+
+    this.userService.getUserActivityUrl().subscribe(url => {
+      console.log(url);
+      const windowFeatures = `
+              width=400,
+              height=600,
+              resizable=yes,
+              scrollbars=yes,
+              status=no,
+              toolbar=no,
+              menubar=no,
+              location=no
+            `;
+
+      window.open(url.value, 'modalWindow', windowFeatures);
+    });
   }
 
   toggle(param: keyof MenuOptions): void {

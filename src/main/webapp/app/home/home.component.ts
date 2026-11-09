@@ -336,11 +336,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   changeCategory(event: any): void {
     this.vacationApplicationModel.fullDay = event.value;
-    this.vacationApplicationModel.vacationType = event.value === true ? 'ANNUAL_LEAVE' : 'CHILD_CARE';
-  }
-
-  get hourlyVacationTypesDict(): SelectItem[] {
-    return this.vacationTypesDict.filter(type => type.value === 'CHILD_CARE');
+    if (event.value === true) {
+      this.vacationApplicationModel.vacationType = 'ANNUAL_LEAVE';
+    }
   }
 
   setDateToAsSameLikeDateFrom(): void {
@@ -470,7 +468,6 @@ export class HomeComponent implements OnInit, OnDestroy {
               PAST_DATE: 'home.vacationApplication.pastDateError',
               NOT_ENOUGH_DAYS: 'home.vacationApplication.notEnoughDaysError',
               TOO_MANY_ON_REQUEST: 'home.vacationApplication.tooManyOnRequestError',
-              HOURLY_NOT_ALLOWED: 'home.vacationApplication.hourlyNotAllowedError',
             };
             this._toastService.sendMessage({
               type: 'error',

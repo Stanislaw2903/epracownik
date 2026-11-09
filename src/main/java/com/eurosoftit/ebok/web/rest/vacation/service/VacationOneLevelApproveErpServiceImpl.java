@@ -6,6 +6,7 @@ import com.eurosoftit.ebok.web.rest.vacation.Vacation;
 import com.eurosoftit.ebok.web.rest.vacation.VacationStatus;
 import com.eurosoftit.ebok.web.rest.vacation.VacationType;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,11 @@ public class VacationOneLevelApproveErpServiceImpl implements VacationErpService
             PersonPrz personPrz = new PersonPrz();
             personPrz.setDateFrom(vacation.getDateFrom().withZoneSameLocal(ZoneId.of("UTC")));
             personPrz.setDateTo(vacation.getDateTo().withZoneSameLocal(ZoneId.of("UTC")));
-            personPrz.setComments(vacation.getComment());
+
+            if (StringUtils.isNotBlank(vacation.getComment())) {
+                personPrz.setComments(vacation.getComment().substring(0, 64));
+            }
+
             personPrz.setType("A");
 
             if (VacationType.LEAVE_ON_REQUEST.equals(vacation.getVacationType())) {

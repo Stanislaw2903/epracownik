@@ -189,8 +189,7 @@ export class VacationsComponent implements OnInit, OnDestroy {
   }
 
   isNotEnoughDaysForApplicant(): boolean {
-    const limited =
-      this.editApplication.vacationType === 'ANNUAL_LEAVE' || this.editApplication.vacationType === 'LEAVE_ON_REQUEST';
+    const limited = this.editApplication.vacationType === 'ANNUAL_LEAVE' || this.editApplication.vacationType === 'LEAVE_ON_REQUEST';
     if (!limited || this.applicantBalance === undefined) {
       return false;
     }
@@ -216,9 +215,7 @@ export class VacationsComponent implements OnInit, OnDestroy {
   }
 
   changeApplicantHistoryYear(previousYear = false): void {
-    this.applicantHistoryYear = previousYear
-      ? moment(this.applicantHistoryYear).subtract(1, 'year').toDate()
-      : moment().toDate();
+    this.applicantHistoryYear = previousYear ? moment(this.applicantHistoryYear).subtract(1, 'year').toDate() : moment().toDate();
     this.loadApplicantHistory();
   }
 

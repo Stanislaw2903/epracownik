@@ -4,6 +4,7 @@ import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { Subscription, combineLatest } from 'rxjs';
+import { ResendActivationComponent } from './resend-activation/resend-activation.component';
 import { SessionStorageService } from 'ngx-webstorage';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
@@ -23,9 +24,6 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
-const TEXT_FILTERS = ['login', 'firstName', 'lastName', 'email', 'phoneNumber', 'type', 'groups'];
-const MAX_SELECT_ALL = 2000;
-
 @Component({
   selector: 'jhi-user-mgmt',
   templateUrl: './user-management.component.html',
@@ -41,10 +39,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   userDict: any;
   filters: any = {};
   dataFromStorage: any;
-  selectedIds = new Set<number>();
-  allInactiveSelected = false;
-  selectingAll = false;
-  private filterKey?: string;
 
   // Table configuration
   eventSubscriber?: Subscription;
@@ -54,6 +48,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   page!: number;
 
+  displayIntegrateUser = false;
 
   currentShowOnlyAssignedUser!: boolean;
 
@@ -163,124 +158,83 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
     const pageToLoad: number = paginaton && !isNil(paginaton?.page) ? paginaton.page : this.page || 0;
 
-    const params = this.filterParams();
     const payload: any = {
       page: pageToLoad,
       size: paginaton?.rows || this.itemsPerPage,
       sort: this.sort(),
-      ...params,
     };
 
-    const cleared = TEXT_FILTERS.filter(field => !this.filters[field]);
-    if (!this.hasActiveFilter()) {
-      cleared.push('active');
+    if (this.selectedUserRelatedUsers) {
+      payload.related = this.selectedUserRelatedUsers;
     }
-    cleared.forEach(field => delete this.dataFromStorage.filters?.[field]);
-    if (cleared.length) {
+
+    if (this.filters.login) {
+      payload.login = this.filters.login;
+    } else {
+      delete payload.login;
+      delete this.dataFromStorage.filters?.login;
       sessionStorage.setItem('userManagement', JSON.stringify(this.dataFromStorage));
     }
 
-    const filterKey = JSON.stringify(params);
-    if (filterKey !== this.filterKey) {
-      this.filterKey = filterKey;
-      this.clearSelection();
+    if (this.filters.firstName) {
+      payload.firstName = this.filters.firstName;
+    } else {
+      delete payload.firstName;
+      delete this.dataFromStorage.filters?.firstName;
+      sessionStorage.setItem('userManagement', JSON.stringify(this.dataFromStorage));
+    }
+
+    if (this.filters.lastName) {
+      payload.lastName = this.filters.lastName;
+    } else {
+      delete payload.lastName;
+      delete this.dataFromStorage.filters?.lastName;
+      sessionStorage.setItem('userManagement', JSON.stringify(this.dataFromStorage));
+    }
+
+    if (this.filters.email) {
+      payload.email = this.filters.email;
+    } else {
+      delete payload.email;
+      delete this.dataFromStorage.filters?.email;
+      sessionStorage.setItem('userManagement', JSON.stringify(this.dataFromStorage));
+    }
+
+    if (this.filters.phoneNumber) {
+      payload.phoneNumber = this.filters.phoneNumber;
+    } else {
+      delete payload.phoneNumber;
+      delete this.dataFromStorage.filters?.phoneNumber;
+      sessionStorage.setItem('userManagement', JSON.stringify(this.dataFromStorage));
+    }
+
+    if (this.filters.type) {
+      payload.type = this.filters.type;
+    } else {
+      delete payload.type;
+      delete this.dataFromStorage.filters?.type;
+      sessionStorage.setItem('userManagement', JSON.stringify(this.dataFromStorage));
+    }
+
+    if (this.filters.groups) {
+      payload.groups = this.filters.groups;
+    } else {
+      delete payload.groups;
+      delete this.dataFromStorage.filters?.groups;
+      sessionStorage.setItem('userManagement', JSON.stringify(this.dataFromStorage));
+    }
+
+    if (this.filters.active !== null && this.filters.active !== undefined && this.filters.active !== '') {
+      payload.activated = this.filters.active;
+    } else {
+      delete payload.activated;
+      delete this.dataFromStorage.filters?.active;
+      sessionStorage.setItem('userManagement', JSON.stringify(this.dataFromStorage));
     }
 
     this.userService.query(payload).subscribe((res: any) => {
       return this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
     });
-  }
-
-  filterParams(): any {
-    const params: any = {};
-    if (this.selectedUserRelatedUsers) {
-      params.related = this.selectedUserRelatedUsers;
-    }
-    TEXT_FILTERS.filter(field => this.filters[field]).forEach(field => (params[field] = this.filters[field]));
-    if (this.hasActiveFilter()) {
-      params.activated = this.filters.active;
-    }
-    return params;
-  }
-
-  isSelectable(user: User): boolean {
-    return !user.activated && !!user.email;
-  }
-
-  isSelected(user: User): boolean {
-    return !!user.id && this.selectedIds.has(user.id);
-  }
-
-  toggleUser(user: User, checked: boolean): void {
-    if (!user.id || !this.isSelectable(user)) {
-      return;
-    }
-    if (checked) {
-      this.selectedIds.add(user.id);
-    } else {
-      this.selectedIds.delete(user.id);
-      this.allInactiveSelected = false;
-    }
-  }
-
-  toggleAllInactive(checked: boolean): void {
-    if (!checked) {
-      this.clearSelection();
-      return;
-    }
-    if (this.filters.active === true) {
-      this.allInactiveSelected = true;
-      return;
-    }
-    this.selectingAll = true;
-    this.userService.query({ ...this.filterParams(), activated: false, page: 0, size: MAX_SELECT_ALL }).subscribe(
-      (res: any) => {
-        ((res.body as User[]) || []).filter(user => this.isSelectable(user)).forEach(user => this.selectedIds.add(user.id));
-        this.allInactiveSelected = true;
-        this.selectingAll = false;
-      },
-      () => (this.selectingAll = false)
-    );
-  }
-
-  clearSelection(): void {
-    this.selectedIds.clear();
-    this.allInactiveSelected = false;
-  }
-
-  sendActivationToSelected(): void {
-    const ids = Array.from(this.selectedIds);
-    if (!ids.length) {
-      return;
-    }
-    this.confirmationService.confirm({
-      message: this.translateService.instant('userManagement.activation.sendSelectedConfirm', { count: ids.length }),
-      accept: () => {
-        this.userService.resendMailToUsers(ids).subscribe(
-          resp => {
-            const sent = resp?.success?.length ?? 0;
-            const skipped = resp?.error?.length ?? 0;
-            this._toastService.sendMessage({
-              type: skipped ? 'warn' : 'success',
-              title: 'userManagement.home.emailActivation',
-              message: this.translateService.instant('userManagement.activation.sentSummary', { sent, skipped }),
-            });
-            this.clearSelection();
-            this.loadPage({ page: this.page, rows: this.itemsPerPage });
-          },
-          () =>
-            this._toastService.sendMessage({
-              type: 'error',
-              title: 'userManagement.home.emailActivation',
-              message: 'userManagement.integrationError.errorWhileSendingEmail',
-            })
-        );
-      },
-    });
-  }
-
-  private hasActiveFilter(): boolean {
-    return this.filters.active !== null && this.filters.active !== undefined && this.filters.active !== '';
   }
 
   sort(): string[] {
@@ -348,41 +302,22 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.user = user;
   }
 
-  resendActivationEmailToUser(user: User): void {
+  resendActivationEmail(): void {
     this.confirmationService.confirm({
-      message: `Czy wysłać ponownie e-mail z linkiem aktywacyjnym do ${user.firstName ?? ''} ${user.lastName ?? ''} (${user.email ?? ''})?`,
+      message: 'Czy jesteś pewien, że chcesz wysłać ponownie e-maile aktywacyjne?',
       accept: () => {
-        this.userService.resendMailToUser(user.id).subscribe(
-          resp => {
-            const sent = (resp?.success?.length ?? 0) > 0;
-            this._toastService.sendMessage({
-              type: sent ? 'success' : 'error',
-              title: 'userManagement.home.emailActivation',
-              message: sent ? 'userManagement.activation.resent' : 'userManagement.integrationError.errorWhileSendingEmail',
-            });
-          },
-          () =>
-            this._toastService.sendMessage({
-              type: 'error',
-              title: 'userManagement.home.emailActivation',
-              message: 'userManagement.activation.resendFailed',
-            })
-        );
+        this.modalService.open(ResendActivationComponent, { size: 'lg', backdrop: 'static' });
       },
     });
   }
 
   integrateUsers(): void {
-    this.modalService
-      .open(IntegrateUsersComponent, { size: 'xl', backdrop: 'static' })
-      .result.then(
-        imported => {
-          if (imported) {
-            this.loadPage();
-          }
-        },
-        () => {}
-      );
+    this.userService.integrateWithMandory = false;
+    this.displayIntegrateUser = true;
+  }
+
+  onConfirmIntegrate(): void {
+    this.modalService.open(IntegrateUsersComponent, { size: 'lg', backdrop: 'static' });
   }
 
   transition(): void {

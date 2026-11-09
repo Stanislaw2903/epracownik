@@ -6,16 +6,6 @@ export interface IIntegrationStatus {
 export interface IIsContractor {
   contractor?: boolean;
   integrateWithMandory?: boolean;
-  externalIds?: number[];
-}
-
-export interface IIntegrationCandidate {
-  externalId: number;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  type?: string;
-  problem?: string;
 }
 
 export class IsContractor implements IIsContractor {

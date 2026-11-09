@@ -174,11 +174,6 @@ app:
       enabled: true
       value: 0 0 9 * * *
       backup: 0 0 10-20/2 * * *
-    absence-mail:
-      enabled: false
-      cron: 0 30 8 * * MON-FRI
-      recipients: infopolmotor@polmotor.pl
-      admin-contact: ""
 
 ftp:
   dir: C:\Users\wojsam\Documents\GUZIK

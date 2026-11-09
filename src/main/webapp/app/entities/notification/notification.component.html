@@ -33,37 +33,6 @@
         </div>
     </div> -->
 
-  <div class="row" *ngIf="isHr">
-    <div class="col-md-9">
-      <div class="form-group">
-        <p-selectButton
-          [options]="scopeTypeDict"
-          [(ngModel)]="scopeType"
-          (onChange)="onScopeChange()"
-          optionLabel="label"
-          optionValue="value"
-        ></p-selectButton>
-      </div>
-    </div>
-  </div>
-  <div class="row" *ngIf="isGroupMode()">
-    <div class="col-md-4">
-      <div class="form-group">
-        <p-multiSelect
-          [options]="userGroups"
-          [(ngModel)]="selectedGroups"
-          (onChange)="onScopeChange()"
-          optionLabel="name"
-          optionValue="id"
-          [filter]="true"
-          appendTo="body"
-          styleClass="w-100"
-          defaultLabel="{{ 'ebokApp.graphic.filters.groups' | translate }}"
-        ></p-multiSelect>
-      </div>
-    </div>
-  </div>
-
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
@@ -82,54 +51,13 @@
     >
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="subject">
-            <span jhiTranslate="ebokApp.notification.subject">Subject</span>
-            <p-sortIcon field="subject"></p-sortIcon>
-            <p-columnFilter
-              type="text"
-              field="subject"
-              matchMode="contains"
-              display="menu"
-              [showMatchModes]="false"
-              [showOperator]="false"
-              [showAddButton]="false"
-            ></p-columnFilter>
-          </th>
+          <th><span jhiTranslate="ebokApp.notification.subject">Subject</span></th>
           <th pSortableColumn="createDate">
             <span jhiTranslate="ebokApp.notification.createDate">Create Date</span>
             <p-sortIcon field="createDate"></p-sortIcon>
-            <p-columnFilter
-              field="createDate"
-              matchMode="between"
-              display="menu"
-              [showMatchModes]="false"
-              [showOperator]="false"
-              [showAddButton]="false"
-            >
-              <ng-template pTemplate="header">
-                <div class="p-px-3 p-pt-3 p-pb-0">
-                  <span>{{ 'ebokApp.notification.filters.dateRange' | translate }}</span>
-                </div>
-              </ng-template>
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                <p-calendar
-                  [ngModel]="value"
-                  (onSelect)="filter(dateRange.value)"
-                  (onClearClick)="filter(null)"
-                  #dateRange
-                  selectionMode="range"
-                  [readonlyInput]="true"
-                  [showButtonBar]="true"
-                  [firstDayOfWeek]="1"
-                  dateFormat="dd-mm-yy"
-                  appendTo="body"
-                ></p-calendar>
-              </ng-template>
-            </p-columnFilter>
           </th>
-          <th pSortableColumn="status" style="width: 140px">
+          <th style="width: 140px">
             <span jhiTranslate="ebokApp.notification.status">Status</span>
-            <p-sortIcon field="status"></p-sortIcon>
             <p-columnFilter
               field="status"
               matchMode="in"
@@ -156,36 +84,7 @@
               </ng-template>
             </p-columnFilter>
           </th>
-          <th pSortableColumn="createdBy.lastName">
-            <span jhiTranslate="ebokApp.notification.createdBy">Created By</span>
-            <p-sortIcon field="createdBy.lastName"></p-sortIcon>
-            <p-columnFilter
-              field="createdBy"
-              matchMode="in"
-              display="menu"
-              [showMatchModes]="false"
-              [showOperator]="false"
-              [showAddButton]="false"
-            >
-              <ng-template pTemplate="header">
-                <div class="p-px-3 p-pt-3 p-pb-0">
-                  <span>{{ 'ebokApp.notification.filters.selectUsers' | translate }}</span>
-                </div>
-              </ng-template>
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                <p-multiSelect
-                  [options]="users"
-                  optionLabel="label"
-                  dataKey="id"
-                  [filter]="true"
-                  appendTo="body"
-                  (onChange)="filter($event.value)"
-                  class="p-control form-control"
-                  [(ngModel)]="selectedSenders"
-                ></p-multiSelect>
-              </ng-template>
-            </p-columnFilter>
-          </th>
+          <th><span jhiTranslate="ebokApp.notification.createdBy">Created By</span></th>
           <th>
             <span jhiTranslate="ebokApp.notification.recepient">Recepient</span>
             <p-columnFilter
@@ -198,20 +97,22 @@
             >
               <ng-template pTemplate="header">
                 <div class="p-px-3 p-pt-3 p-pb-0">
-                  <span>{{ 'ebokApp.notification.filters.selectUsers' | translate }}</span>
+                  <span>Wybierz użytkowników</span>
                 </div>
               </ng-template>
               <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                 <p-multiSelect
                   [options]="users"
-                  optionLabel="label"
-                  dataKey="id"
-                  [filter]="true"
-                  appendTo="body"
+                  optionLabel="login"
+                  dataKey="login"
                   (onChange)="filter($event.value)"
                   class="p-control form-control"
                   [(ngModel)]="selectedUsers"
-                ></p-multiSelect>
+                >
+                  <ng-template let-option pTemplate="item">
+                    <span class="p-ml-1">{{ option.login }}</span>
+                  </ng-template>
+                </p-multiSelect>
               </ng-template>
             </p-columnFilter>
           </th>
@@ -297,7 +198,7 @@
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6">{{ 'entity.table.noData' | translate }}</td>
+          <td colspan="4">{{ 'entity.table.noData' | translate }}</td>
         </tr>
       </ng-template>
     </p-table>

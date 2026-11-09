@@ -6,8 +6,6 @@ import com.eurosoftit.ebok.repository.UserRepository;
 import com.eurosoftit.ebok.security.AuthoritiesConstants;
 import com.eurosoftit.ebok.service.MailService;
 import com.eurosoftit.ebok.service.UserService;
-import com.eurosoftit.ebok.service.dto.ApprovalType;
-import com.eurosoftit.ebok.service.dto.ApprovalVerificationType;
 import com.eurosoftit.ebok.service.dto.UserDTO;
 import com.eurosoftit.ebok.web.rest.errors.BadRequestAlertException;
 import com.eurosoftit.ebok.web.rest.errors.EmailAlreadyUsedException;
@@ -21,6 +19,9 @@ import com.eurosoftit.ebok.web.rest.integration.UserNameDTO;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,9 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.net.URI;
@@ -82,6 +80,9 @@ public class UserResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    @Value("${activity.url}")
+    private String activityUrl;
+
     private final UserService userService;
 
     private final UserRepository userRepository;
@@ -92,12 +93,15 @@ public class UserResource {
 
     private final UserUtils userUtils;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserUtils userUtils, UserGroupRepository groupRepository) {
+    private final ActivityClient activityClient;
+
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserUtils userUtils, UserGroupRepository groupRepository, ActivityClient activityClient) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userUtils = userUtils;
         this.groupRepository = groupRepository;
+        this.activityClient = activityClient;
     }
 
     /**
@@ -142,6 +146,44 @@ public class UserResource {
         Page<UserGroupEntity> page = groupRepository.findAll(specification, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @Transactional
+    @GetMapping("/users/activity-url")
+    public FakeObject activity() {
+        final User loggerUserReference = userUtils.getLoggerUserReference();
+
+        final ActivityClient.IdVendo idVendo;
+
+        try {
+            idVendo = this.activityClient.getId(loggerUserReference.getExternalId(), loggerUserReference.getFirstName() + " " + loggerUserReference.getLastName());
+        } catch (Exception exception) {
+            throw new UnsupportedOperationException();
+        }
+
+        return new FakeObject(activityUrl + "/summary.php?id=" + idVendo.idvendo + "&userName=" + loggerUserReference.getFirstName() + " " + loggerUserReference.getLastName());
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    class FakeObject {
+        private String value;
+    }
+
+    @Transactional
+    @GetMapping("/users/activity-url/active")
+    public ResponseEntity<Boolean> activityActive() {
+        final User loggerUserReference = userUtils.getLoggerUserReference();
+        final ActivityClient.IdVendo idVendo;
+
+        try {
+            idVendo = this.activityClient.getId(loggerUserReference.getExternalId(), loggerUserReference.getFirstName() + " " + loggerUserReference.getLastName());
+        } catch (Exception exception) {
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(idVendo.status == 200, HttpStatus.OK);
     }
 
     private String normalize(String value) {

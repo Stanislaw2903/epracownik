@@ -49,31 +49,10 @@
     "O": "Zleceniobiorca",
     "integrationError": {
       "errorWhileSendingEmail": "Błąd podczas wysyłki email",
-      "loginAlreadyUsed": "Login istnieje już w bazie danych",
-      "emailAlreadyUsed": "Email istnieje już w bazie danych",
+      "loginAlreadyUsed": "Email istnieje już w bazie danych",
       "emailWrongPattern": "Błędny adres email",
       "emailIsEmpty": "Brak email",
-      "wrongLogin": "Brak imienia — nie można utworzyć loginu",
-      "alreadyActivated": "Użytkownik jest już aktywny"
-    },
-    "integration": {
-      "contractor": "Pobierz również zleceniobiorców",
-      "selectAll": "Zaznacz wszystkich",
-      "deselectAll": "Odznacz wszystkich",
-      "selectedCount": "Zaznaczono {{ selected }} z {{ total }} możliwych do importu",
-      "problem": "Uwagi",
-      "import": "Importuj zaznaczonych ({{ count }})",
-      "nothingToImport": "Brak nowych osób do zaimportowania"
-    },
-    "activation": {
-      "resendTooltip": "Wyślij ponownie link aktywacyjny",
-      "resent": "Wysłano ponownie e-mail z nowym linkiem aktywacyjnym",
-      "resendFailed": "Nie udało się wysłać e-maila (użytkownik jest już aktywny lub nie istnieje)",
-      "sendSelected": "Wyślij link aktywacyjny ({{ count }})",
-      "sendSelectedConfirm": "Wysłać link aktywacyjny do zaznaczonych użytkowników ({{ count }})? Każdy dostanie nowy link ważny 10 dni, poprzedni przestanie działać.",
-      "sentSummary": "Wysłano: {{ sent }}, pominięto: {{ skipped }}",
-      "selectAllInactive": "Zaznacz wszystkich nieaktywnych pasujących do filtrów (ze wszystkich stron)",
-      "selectRow": "Zaznacz do wysyłki linku aktywacyjnego"
+      "wrongLogin": "Błędny login"
     }
   }
 }

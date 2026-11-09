@@ -23,8 +23,7 @@
       "overlapError": "Terminy wniosku nakładają się na inny złożony wniosek",
       "pastDateError": "Nie można złożyć wniosku na datę z przeszłości",
       "notEnoughDaysError": "Niewystarczająca liczba dni urlopu do wykorzystania",
-      "tooManyOnRequestError": "Przekroczono limit urlopu na żądanie w roku",
-      "hourlyNotAllowedError": "Urlop wypoczynkowy można złożyć wyłącznie w pełnych dniach"
+      "tooManyOnRequestError": "Przekroczono limit urlopu na żądanie w roku"
     }
   }
 }

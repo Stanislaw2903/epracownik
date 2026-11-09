@@ -23,8 +23,7 @@
       "overlapError": "The request dates overlap an existing request",
       "pastDateError": "A request cannot be submitted for a past date",
       "notEnoughDaysError": "Not enough vacation days available",
-      "tooManyOnRequestError": "The annual on-request leave limit has been exceeded",
-      "hourlyNotAllowedError": "Annual leave can only be requested in full days"
+      "tooManyOnRequestError": "The annual on-request leave limit has been exceeded"
     }
   }
 }
