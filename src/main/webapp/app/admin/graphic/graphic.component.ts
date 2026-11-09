@@ -1,9 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AccountService } from 'app/core/auth/account.service';
-import { Authority } from 'app/shared/constants/authority.constants';
-import { UserGroupService } from 'app/admin/user-group/user-group.service';
 import { IGraphicDayCell, IGraphicDayColumn, IGraphicTableItem } from 'app/shared/model/graphic.model';
 import { IPagablePagination, IPagableResponse } from 'app/shared/model/pagable.model';
 import { isNil } from 'lodash';
@@ -11,8 +8,8 @@ import * as moment from 'moment';
 import { JhiEventManager } from 'ng-jhipster';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { combineLatest, Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { GraphicService } from './graphic.service';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -29,10 +26,6 @@ export class GraphicComponent implements OnInit, OnDestroy {
   dayColumns: IGraphicDayColumn[] = [];
   resultsLoaded = false;
   selectGraphicTypeDict: any;
-  isHr = false;
-  userGroups: any[] = [];
-  private lastNameChanges = new Subject<string>();
-  private lastNameSubscription?: Subscription;
 
   // Table config
   eventSubscriber?: Subscription;
@@ -45,8 +38,6 @@ export class GraphicComponent implements OnInit, OnDestroy {
     graphicType: 'ME',
     year: moment().year(),
     month: moment().month() + 1,
-    groups: [],
-    lastName: '',
   };
 
   configFiled: any = {
@@ -58,43 +49,18 @@ export class GraphicComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected eventManager: JhiEventManager,
-    private accountService: AccountService,
-    private userGroupService: UserGroupService
+    protected eventManager: JhiEventManager
   ) {
-    this.isHr = this.accountService.hasAnyAuthority(Authority.HR);
-    const showMe = { label: this.translateService.instant('ebokApp.graphic.filters.showMe'), value: 'ME' };
-    this.selectGraphicTypeDict = this.isHr
-      ? [
-          { label: this.translateService.instant('ebokApp.graphic.filters.showAll'), value: 'ALL' },
-          showMe,
-          { label: this.translateService.instant('ebokApp.graphic.filters.showGroup'), value: 'GROUP' },
-        ]
-      : [showMe];
-    this.filters.graphicType = showMe;
+    this.selectGraphicTypeDict = [
+      { label: this.translateService.instant('ebokApp.graphic.filters.showAll'), value: 'ALL' },
+      { label: this.translateService.instant('ebokApp.graphic.filters.showMe'), value: 'ME' },
+    ];
+    this.filters.graphicType = this.selectGraphicTypeDict[1];
     this.handleNavigation();
   }
 
   ngOnInit(): void {
     this.registerChanges();
-    this.lastNameSubscription = this.lastNameChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe(() => {
-      this.page = 0;
-      if (this.resultsLoaded) {
-        this.loadPage();
-      }
-    });
-    if (this.isHr) {
-      this.userGroupService.getUserGroups({ size: 5000 }).subscribe(result => (this.userGroups = result.content || []));
-    }
-  }
-
-  onFilterChange(): void {
-    this.resetResults();
-  }
-
-  onLastNameChange(value: string): void {
-    this.filters.lastName = value;
-    this.lastNameChanges.next(value);
   }
 
   changeFilterYear(): void {
@@ -114,14 +80,12 @@ export class GraphicComponent implements OnInit, OnDestroy {
     this.tableData = [];
     this.dayColumns = [];
     this.totalItems = 0;
-    this.page = 0;
   }
 
   ngOnDestroy(): void {
     if (this.eventSubscriber) {
       this.eventManager.destroy(this.eventSubscriber);
     }
-    this.lastNameSubscription?.unsubscribe();
   }
 
   protected handleNavigation(): void {
@@ -144,29 +108,21 @@ export class GraphicComponent implements OnInit, OnDestroy {
   }
 
   onGraphicTypeChange(): void {
-    if (!this.isGroupMode()) {
-      this.filters.groups = [];
-    }
     this.resetResults();
   }
 
-  isGroupMode(): boolean {
-    return this.isHr && this.filters.graphicType?.value === 'GROUP';
-  }
-
-  canLoad(): boolean {
-    return !this.isGroupMode() || this.filters.groups?.length > 0;
-  }
-
   loadPage(paginaton?: IPagablePagination, dontNavigate?: boolean): void {
-    if (!this.canLoad()) {
-      return;
-    }
     const pageToLoad: number = paginaton && !isNil(paginaton?.page) ? paginaton.page : this.page || 0;
-    if (paginaton?.rows) {
-      this.itemsPerPage = paginaton.rows;
+    const payload: any = {
+      page: pageToLoad,
+      size: paginaton?.rows || this.itemsPerPage,
+      sort: this.sort(),
+      month: this.filters.month,
+      year: this.filters.year,
+    };
+    if (this.filters.graphicType.value === 'ALL') {
+      payload.all = '';
     }
-    const payload = this.buildPayload(pageToLoad);
 
     this.dayColumns = this.getMonthWorkingDays();
     this.resultsLoaded = true;
@@ -174,31 +130,6 @@ export class GraphicComponent implements OnInit, OnDestroy {
     this.graphicService.getData(payload).subscribe((res: any) => {
       return this.onSuccess(res.body, pageToLoad, !dontNavigate);
     });
-  }
-
-  buildPayload(page: number): any {
-    const payload: any = {
-      page,
-      size: this.itemsPerPage,
-      sort: this.sort(),
-      month: this.filters.month,
-      year: this.filters.year,
-    };
-    if (this.filters.lastName?.trim()) {
-      payload.lastName = this.filters.lastName.trim();
-    }
-    if (!this.isHr) {
-      return payload;
-    }
-    switch (this.filters.graphicType?.value) {
-      case 'ALL':
-        payload.all = true;
-        break;
-      case 'GROUP':
-        payload.groups = this.filters.groups;
-        break;
-    }
-    return payload;
   }
 
   getMonthWorkingDays(): IGraphicDayColumn[] {
@@ -210,7 +141,7 @@ export class GraphicComponent implements OnInit, OnDestroy {
     const result: IGraphicDayColumn[] = [];
 
     while (date.isSameOrBefore(end, 'day')) {
-      result.push({ key: date.format('YYYY-MM-DD'), label: date.format('DD') });
+      result.push({ key: date.format('YYYY-MM-DD'), label: date.format('DD.MM') });
       date.add(1, 'day');
     }
 
@@ -233,7 +164,11 @@ export class GraphicComponent implements OnInit, OnDestroy {
 
   cellTooltip(item: IGraphicTableItem, key: string): string {
     const c = this.cell(item, key);
-    return c.type === 'ABSENCE' && c.code ? this.translateService.instant('ebokApp.graphic.absence.' + c.code) : '';
+    return c.type === 'ABSENCE' && c.code
+      ? this.translateService.instant('ebokApp.graphic.absence.' + c.code)
+      : c.type === 'WEEKEND' || c.type === 'HOLIDAY'
+      ? this.translateService.instant('ebokApp.graphic.type.' + c.type)
+      : '';
   }
 
   sort(): string[] {
@@ -276,7 +211,7 @@ export class GraphicComponent implements OnInit, OnDestroy {
       pageOrientation: 'landscape',
       pageMargins: [20, 60, 20, 60],
       header: [
-        { text: `Grafik absencji ${this.periodLabel()}`, alignment: 'center', margin: [0, 20, 0, 8] },
+        { text: `Grafik absencji`, alignment: 'center', margin: [0, 20, 0, 8] },
         { text: `Wygenerowano dnia ${moment().format('DD MMM YYYY HH:mm:ss')}`, alignment: 'center', fontSize: 7 },
       ],
       content: [
@@ -292,14 +227,7 @@ export class GraphicComponent implements OnInit, OnDestroy {
       ],
       footer: this.footerPdf,
     };
-    pdfMake.createPdf(documentDefinition as any).download(`grafik-absencji-${this.periodLabel()}.pdf`);
-  }
-
-  periodLabel(): string {
-    return moment()
-      .year(this.filters.year)
-      .month(this.filters.month - 1)
-      .format('MM.YYYY');
+    pdfMake.createPdf(documentDefinition as any).download('grafik-absencji.pdf');
   }
 
   prepareCellData(cell: IGraphicDayCell): any {
@@ -345,7 +273,7 @@ export class GraphicComponent implements OnInit, OnDestroy {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `grafik-absencji-${this.periodLabel()}.xls`;
+    link.download = 'grafik-absencji.xls';
     link.click();
     URL.revokeObjectURL(url);
   }

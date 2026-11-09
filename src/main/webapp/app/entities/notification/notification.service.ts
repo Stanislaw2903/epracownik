@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { SERVER_API_URL } from 'app/app.constants';
 import { INotification } from 'app/shared/model/notification.model';
-import { IUser } from 'app/core/user/user.model';
 import { convertDateToServer, createRequestOption } from 'app/shared/util/request-util';
 import { SelectItem } from 'primeng/api';
 
@@ -53,11 +52,6 @@ export class NotificationService {
       .get<INotification[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
-  scopeUsers(req?: any): Observable<HttpResponse<IUser[]>> {
-    const options = createRequestOption(req);
-    return this.http.get<IUser[]>(this.resourceUrl + '/users', { params: options, observe: 'response' });
-  }
-
   userNotifications(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http

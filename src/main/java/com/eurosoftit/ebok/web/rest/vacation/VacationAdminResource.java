@@ -196,8 +196,10 @@ class VacationAdminResource {
         }
         userRepository.findById(userUtils.getLoggedUserId()).ifPresent(u -> vacation.setProcessedBy(u));
         notificationValidator.validate(vacation);
+        vacationService.save(vacation);
 
-        if (!(VacationStatus.ACCEPTED_INITIALLY.equals(vacation.getStatus()))) {
+        if (!(VacationStatus.ACCEPTED.equals(vacation.getStatus())
+            && ApprovalType.INITIAL_VERIFICATION.equals(vacation.getProcessedBy().getApprovalType()))) {
 
             Notification notification = new Notification();
             notification.setCategory(VACATION);
@@ -243,8 +245,6 @@ class VacationAdminResource {
                 vacationErpService.writeToErp(vacation);
             }
         }
-
-        vacationService.save(vacation);
     }
 
     private List<String> getIdentifiers(User createdBy) {

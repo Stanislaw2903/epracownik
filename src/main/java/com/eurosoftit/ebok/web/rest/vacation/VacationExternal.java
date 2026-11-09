@@ -7,7 +7,6 @@ import org.hibernate.annotations.Subselect;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -23,9 +22,9 @@ public class VacationExternal {
     @Column(name = "osp_data_do")
     private ZonedDateTime dateTo;
     @Column(name = "osp_liczba")
-    private BigDecimal days;
+    private Long days;
     @Column(name = "osp_num_2")
-    private BigDecimal hours;
+    private Long hours;
     @Column(name = "osp_oso_serial")
     private Long externalId;
 }

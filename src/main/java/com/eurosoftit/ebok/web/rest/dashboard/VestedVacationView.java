@@ -8,7 +8,6 @@ import org.hibernate.annotations.Subselect;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -25,7 +24,7 @@ public class VestedVacationView {
     @Column(name = "_year")
     private Long year;
     @Column(name = "vested")
-    private BigDecimal vested;
+    private Long vested;
     @Column(name = "shift_vested")
-    private BigDecimal shiftVested;
+    private Long shiftVested;
 }

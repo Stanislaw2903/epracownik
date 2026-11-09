@@ -1,106 +1,34 @@
 <div class="modal-header">
     <h4 class="modal-title" jhiTranslate="userManagement.home.integrate">Integrate</h4>
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="close()">&times;</button>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
 </div>
 
 <div class="modal-body">
-  <ng-container *ngIf="!integrationStatus">
-    <div class="d-flex align-items-center flex-wrap mb-3">
-      <p-checkbox
-        name="contractor"
-        [binary]="true"
-        [(ngModel)]="contractor"
-        (onChange)="loadCandidates()"
-        inputId="contractor"
-      ></p-checkbox>
-      <label for="contractor" class="mb-0 ml-2 mr-4">{{ 'userManagement.integration.contractor' | translate }}</label>
-      <button type="button" class="btn btn-outline-secondary btn-sm mr-2" (click)="selectAll()" [disabled]="loading">
-        {{ 'userManagement.integration.selectAll' | translate }}
-      </button>
-      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="deselectAll()" [disabled]="loading">
-        {{ 'userManagement.integration.deselectAll' | translate }}
-      </button>
-      <span class="ml-auto">
-        {{ 'userManagement.integration.selectedCount' | translate: { selected: selected.length, total: importable().length } }}
-      </span>
-    </div>
-
-    <p-table
-      [value]="candidates"
-      [(selection)]="selected"
-      dataKey="externalId"
-      [loading]="loading"
-      [scrollable]="true"
-      scrollHeight="400px"
-      styleClass="p-datatable-sm"
-    >
-      <ng-template pTemplate="header">
+<div class="alert alert-success" role="alert" *ngIf="countOfIntegratedUsers !== null && countOfIntegratedUsers !== undefined">
+    Pomyślnie zintegrowano: {{ countOfIntegratedUsers }} użytkowników.
+</div>
+<p-table *ngIf="integrationStatus?.error" [value]="integrationStatus.error">
+    <ng-template pTemplate="header">
         <tr>
-          <th style="width: 3rem"></th>
-          <th pSortableColumn="lastName">{{ 'userManagement.lastName' | translate }} <p-sortIcon field="lastName"></p-sortIcon></th>
-          <th pSortableColumn="firstName">{{ 'userManagement.firstName' | translate }} <p-sortIcon field="firstName"></p-sortIcon></th>
-          <th pSortableColumn="email">{{ 'userManagement.email' | translate }} <p-sortIcon field="email"></p-sortIcon></th>
-          <th pSortableColumn="type">{{ 'userManagement.type' | translate }} <p-sortIcon field="type"></p-sortIcon></th>
-          <th pSortableColumn="problem">{{ 'userManagement.integration.problem' | translate }} <p-sortIcon field="problem"></p-sortIcon></th>
+            <th >Imię</th>
+            <th pSortableColumn="user.lastName">Nazwisko <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="user.email">Email <p-sortIcon field="category"></p-sortIcon></th>
+            <th pSortableColumn="error">Typ błędu <p-sortIcon field="quantity"></p-sortIcon></th>
         </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-candidate>
-        <tr [class.text-muted]="candidate.problem">
-          <td style="width: 3rem">
-            <p-tableCheckbox [value]="candidate" [disabled]="!!candidate.problem"></p-tableCheckbox>
-          </td>
-          <td>{{ candidate.lastName }}</td>
-          <td>{{ candidate.firstName }}</td>
-          <td>{{ candidate.email }}</td>
-          <td>{{ candidate.type ? ('userManagement.' + candidate.type | translate) : '' }}</td>
-          <td>{{ candidate.problem ? ('userManagement.integrationError.' + candidate.problem | translate) : '' }}</td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
+    </ng-template>
+    <ng-template pTemplate="body" let-status>
         <tr>
-          <td colspan="6">{{ 'userManagement.integration.nothingToImport' | translate }}</td>
+            <td>{{status.user.firstName}}</td>
+            <td>{{status.user.lastName}}</td>
+            <td>{{status.user.email}}</td>
+            <td>{{'userManagement.integrationError.'+status.error | translate}}</td>
         </tr>
-      </ng-template>
-    </p-table>
-  </ng-container>
-
-  <ng-container *ngIf="integrationStatus">
-    <div class="alert alert-success" role="alert">
-      Pomyślnie zintegrowano: {{ countOfIntegratedUsers }} użytkowników. Linki aktywacyjne nie zostały wysłane — zaznacz osoby na liście
-      Użytkownicy i użyj przycisku „Wyślij link aktywacyjny”.
-    </div>
-    <p-table *ngIf="integrationStatus?.error" [value]="integrationStatus.error">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Imię</th>
-          <th pSortableColumn="user.lastName">Nazwisko <p-sortIcon field="user.lastName"></p-sortIcon></th>
-          <th pSortableColumn="user.email">Email <p-sortIcon field="user.email"></p-sortIcon></th>
-          <th pSortableColumn="error">Typ błędu <p-sortIcon field="error"></p-sortIcon></th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-status>
-        <tr>
-          <td>{{ status.user.firstName }}</td>
-          <td>{{ status.user.lastName }}</td>
-          <td>{{ status.user.email }}</td>
-          <td>{{ 'userManagement.integrationError.' + status.error | translate }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </ng-container>
+    </ng-template>
+</p-table>
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">
-    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.close">Close</span>
-  </button>
-  <button
-    *ngIf="!integrationStatus"
-    type="button"
-    class="btn btn-success"
-    (click)="import()"
-    [disabled]="!selected.length || importing || loading"
-  >
-    <fa-icon icon="sync" [spin]="importing"></fa-icon>&nbsp;{{ 'userManagement.integration.import' | translate: { count: selected.length } }}
-  </button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.close">Close</span>
+    </button>
 </div>

@@ -40,31 +40,10 @@
     "operationSuccessful": "Operation successful",
     "integrationError": {
       "errorWhileSendingEmail": "Error while sending email",
-      "loginAlreadyUsed": "Login already exists in the database",
-      "emailAlreadyUsed": "Email already exists in the database",
+      "loginAlreadyUsed": "Email already exists in the database",
       "emailWrongPattern": "Invalid email address",
       "emailIsEmpty": "No email",
-      "wrongLogin": "No first name — cannot create login",
-      "alreadyActivated": "User is already active"
-    },
-    "integration": {
-      "contractor": "Include contractors",
-      "selectAll": "Select all",
-      "deselectAll": "Deselect all",
-      "selectedCount": "Selected {{ selected }} of {{ total }} importable",
-      "problem": "Remarks",
-      "import": "Import selected ({{ count }})",
-      "nothingToImport": "No new people to import"
-    },
-    "activation": {
-      "resendTooltip": "Resend activation link",
-      "resent": "Activation e-mail with a new link has been sent",
-      "resendFailed": "Could not send the e-mail (user already active or not found)",
-      "sendSelected": "Send activation link ({{ count }})",
-      "sendSelectedConfirm": "Send an activation link to the selected users ({{ count }})? Each gets a new link valid for 10 days; the previous one stops working.",
-      "sentSummary": "Sent: {{ sent }}, skipped: {{ skipped }}",
-      "selectAllInactive": "Select all inactive users matching the filters (all pages)",
-      "selectRow": "Select to send activation link"
+      "wrongLogin": "Wrong login"
     }
   }
 }

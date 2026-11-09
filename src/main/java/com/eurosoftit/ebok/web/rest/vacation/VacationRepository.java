@@ -28,10 +28,6 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSp
     @Query("select v from Vacation v where v.createdBy.id in :userIds and v.dateFrom <= :dateTo and v.dateTo >= :dateFrom and v.status = :status")
     List<Vacation> getHistoryForUsers(@Param("dateFrom") ZonedDateTime dateFrom, @Param("dateTo") ZonedDateTime dateTo, @Param("userIds") List<Long> userIds, @Param("status") VacationStatus status);
 
-    @Query("select v from Vacation v join fetch v.createdBy u left join fetch u.group " +
-        "where v.status in :statuses and v.dateFrom <= :dayEnd and v.dateTo >= :dayStart and u.activated = true")
-    List<Vacation> findAllCoveringDay(@Param("dayStart") ZonedDateTime dayStart, @Param("dayEnd") ZonedDateTime dayEnd, @Param("statuses") List<VacationStatus> statuses);
-
     @Query("select max(v) from Vacation v where v.createdBy.id = :userId")
     Vacation findLatest(@Param("userId") Long userId);
 

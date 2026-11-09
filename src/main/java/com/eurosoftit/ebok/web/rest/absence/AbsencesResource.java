@@ -2,7 +2,6 @@ package com.eurosoftit.ebok.web.rest.absence;
 
 import com.eurosoftit.ebok.domain.User;
 import com.eurosoftit.ebok.domain.specification.SpecificationReflectionBuilder;
-import com.eurosoftit.ebok.security.AuthoritiesConstants;
 import com.eurosoftit.ebok.service.UserService;
 import com.eurosoftit.ebok.web.rest.UserUtils;
 import io.swagger.annotations.Api;
@@ -45,10 +44,6 @@ class AbsencesResource {
     }
 
     private List<Long> prepareUserExternalIdsFilter() {
-        if (userUtils.hasRole(AuthoritiesConstants.HR)) {
-            return userUtils.getAllUsersAndExtract(User::getExternalId);
-        }
-
         List<Long> externalIds = new ArrayList<>();
         externalIds.add(userUtils.getExternalUserId());
 

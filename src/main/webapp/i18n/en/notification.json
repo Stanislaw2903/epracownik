@@ -33,11 +33,7 @@
       "all": "All",
       "users": "To selected users",
       "groups": "To selected groups",
-      "selectNotificationCanal": "Select recipients",
-      "filters": {
-        "dateRange": "Select date range",
-        "selectUsers": "Select users"
-      }
+      "selectNotificationCanal": "Select recipients"
     }
   }
 }

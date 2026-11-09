@@ -601,15 +601,10 @@ public class UserService {
         final List<User> all = findAll(notActivated);
 
         for (User user : all) {
-            if (user.getResetKey() == null || user.getResetDate() == null
-                || !user.getResetDate().isAfter(Instant.now().minusSeconds(864000))) {
-                refreshActivationKey(user);
+            if(!user.getResetDate().isAfter(Instant.now().minusSeconds(864000))) {
+                user.setResetDate(Instant.now());
+                user.setResetKey(RandomUtil.generateResetKey());
             }
         }
-    }
-
-    public void refreshActivationKey(User user) {
-        user.setResetDate(Instant.now());
-        user.setResetKey(RandomUtil.generateResetKey());
     }
 }

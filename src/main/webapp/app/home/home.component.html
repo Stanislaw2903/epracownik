@@ -300,19 +300,6 @@
     <div class="row" *ngIf="vacationApplicationModel.fullDay === false">
       <div class="col-12 p-fluid">
         <div class="form-group p-field">
-          <label for="selectHourlyType" class="required">Rodzaj urlopu</label>
-          <p-dropdown
-            class="p-control form-control"
-            [options]="hourlyVacationTypesDict"
-            name="hourlyVacationType"
-            [(ngModel)]="vacationApplicationModel.vacationType"
-            [autoDisplayFirst]="false"
-            [required]="true"
-          ></p-dropdown>
-        </div>
-      </div>
-      <div class="col-12 p-fluid">
-        <div class="form-group p-field">
           <label for="selectDay" class="required">Wniosek o urlop dnia</label>
           <p-calendar [firstDayOfWeek]="1"
             appendTo="body"
@@ -365,6 +352,12 @@
           <!-- <span *ngIf="vacationFreeDays.tooMuch">Za dużo: {{ vacationFreeDays.tooMuch }}.</span> -->
         </p>
       </div>
+    </div>
+      <div class="row" *ngIf="vacationApplicationModel.vacationType !== 'ANNUAL_LEAVE'">
+        <div class="col-12">
+          <label for="comment">Komentarz</label>
+          <textarea id="comment" name="comment" class="form-control" [rows]="5" [(ngModel)]="vacationApplicationModel.comment"></textarea>
+        </div>
     </div>
   </form>
   <ng-template pTemplate="footer">

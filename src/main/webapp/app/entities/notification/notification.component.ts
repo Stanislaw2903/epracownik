@@ -12,13 +12,9 @@ import { NotificationService } from './notification.service';
 import { NotificationDeleteDialogComponent } from './notification-delete-dialog.component';
 import { NotificationReadService } from '../notification-read/notification-read.service';
 import { LazyLoadEvent, SelectItem } from 'primeng/api';
-import { IUser } from 'app/core/user/user.model';
-import { TranslateService } from '@ngx-translate/core';
-import { AccountService } from 'app/core/auth/account.service';
-import { Authority } from 'app/shared/constants/authority.constants';
-import { UserGroupService } from 'app/admin/user-group/user-group.service';
+import { UserService } from 'app/core/user/user.service';
+import { User, IUser } from 'app/core/user/user.model';
 import { compact, includes, isNil } from 'lodash';
-import * as moment from 'moment';
 
 @Component({
   selector: 'jhi-notification',
@@ -39,15 +35,9 @@ export class NotificationComponent implements OnInit, OnDestroy {
   loading: boolean;
   users: any[] = [];
   selectedUsers: any[] = [];
-  selectedSenders: any[] = [];
   selectedStatus: any = false;
 
   notificationStatusDict: SelectItem[] = [];
-  isHr = false;
-  scopeTypeDict: SelectItem[] = [];
-  scopeType = 'ME';
-  userGroups: any[] = [];
-  selectedGroups: number[] = [];
 
   constructor(
     protected notificationService: NotificationService,
@@ -56,92 +46,19 @@ export class NotificationComponent implements OnInit, OnDestroy {
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
     protected notificationReadService: NotificationReadService,
-    private translateService: TranslateService,
-    private accountService: AccountService,
-    private userGroupService: UserGroupService
+    private userService: UserService
   ) {
     this.loading = true;
     this.notificationReadUsers = [];
     this.notificationUsers = [];
     this.notificationStatusDict = this.notificationService.getNotificationStatusDict();
-    this.isHr = this.accountService.hasAnyAuthority(Authority.HR);
-    if (this.isHr) {
-      this.scopeTypeDict = [
-        { label: this.translateService.instant('ebokApp.graphic.filters.showAll'), value: 'ALL' },
-        { label: this.translateService.instant('ebokApp.graphic.filters.showMe'), value: 'ME' },
-        { label: this.translateService.instant('ebokApp.graphic.filters.showGroup'), value: 'GROUP' },
-      ];
-    }
-  }
-
-  static buildFilters(tableFilters: any): any {
-    const filters: any = {};
-    const value = (field: string): any => tableFilters?.[field]?.[0]?.value;
-
-    if (!isNil(value('status'))) {
-      filters['status.in'] = value('status');
-    }
-
-    const subject = value('subject');
-    if (subject && String(subject).trim()) {
-      filters['subject.contains'] = String(subject).trim();
-    }
-
-    const dates = value('createDate');
-    if (Array.isArray(dates) && dates[0]) {
-      filters['createDate.greaterThanOrEqual'] = moment(dates[0]).startOf('day').toISOString();
-      filters['createDate.lessThanOrEqual'] = moment(dates[1] || dates[0])
-        .endOf('day')
-        .toISOString();
-    }
-
-    const senderIds = (value('createdBy') || []).map((user: IUser) => user.id);
-    if (senderIds.length) {
-      filters['createdById.in'] = senderIds;
-    }
-
-    const recipientIds = (value('recepient') || []).map((user: IUser) => user.id);
-    if (recipientIds.length) {
-      filters['recepientId.in'] = recipientIds;
-    }
-
-    return filters;
-  }
-
-  isGroupMode(): boolean {
-    return this.isHr && this.scopeType === 'GROUP';
-  }
-
-  scopeParams(): any {
-    if (this.scopeType === 'ALL' && this.isHr) {
-      return { all: true };
-    }
-    if (this.isGroupMode()) {
-      return { groups: this.selectedGroups };
-    }
-    return {};
-  }
-
-  onScopeChange(): void {
-    if (!this.isGroupMode()) {
-      this.selectedGroups = [];
-    }
-    this.page = 1;
-    this.getUsers();
-    this.loadPage(1);
   }
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     const pageToLoad: number = page || this.page || 1;
-    if (this.isGroupMode() && !this.selectedGroups.length) {
-      this.notifications = [];
-      this.totalItems = 0;
-      this.loading = false;
-      return;
-    }
     const sortValue = this.sort();
     const sort = dontNavigate || includes(sortValue, 'status,asc') ? compact([this.sort(), 'createDate,asc']) : this.sort();
-    const query = Object.assign({}, this.filters, this.scopeParams(), {
+    const query = Object.assign({}, this.filters, {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
       sort,
@@ -157,20 +74,30 @@ export class NotificationComponent implements OnInit, OnDestroy {
     this.handleNavigation();
     this.registerChangeInNotifications();
     this.getUsers();
-    if (this.isHr) {
-      this.userGroupService.getUserGroups({ size: 5000 }).subscribe(result => (this.userGroups = result.content || []));
-    }
   }
 
   customSort(event: LazyLoadEvent): void {
     this.predicate = event.sortField || 'status';
     this.ascending = event?.sortOrder && event.sortOrder > 0 ? true : false;
     setTimeout(() => {
-      if (this.loading && event.filters?.status?.[0]) {
-        event.filters.status[0].value = false;
+      if (this.loading) {
+        event.filters!.status[0].value = false;
       }
 
-      this.filters = NotificationComponent.buildFilters(event.filters);
+      if (event.filters && event.filters?.status && !isNil(event.filters.status[0].value)) {
+        this.filters = { 'status.in': event.filters.status[0].value };
+      } else {
+        delete this.filters['status.in'];
+      }
+
+      if (event.filters && event.filters?.recepient && event.filters.recepient[0].value) {
+        const recepientIds = event.filters.recepient[0].value.map((user: IUser) => user.id);
+        if (recepientIds.length) {
+          this.filters = { 'recepientId.in': recepientIds };
+        }
+      } else {
+        delete this.filters['recepientId.in'];
+      }
 
       if (!this.loading) {
         this.loadPage();
@@ -179,7 +106,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   }
 
   customFilter(): void {
-    this.page = 1;
+    this.page = 0;
   }
 
   protected handleNavigation(): void {
@@ -218,18 +145,11 @@ export class NotificationComponent implements OnInit, OnDestroy {
   }
 
   getUsers(): void {
-    if (this.isGroupMode() && !this.selectedGroups.length) {
-      this.users = [];
-      return;
-    }
-    this.notificationService.scopeUsers(this.scopeParams()).subscribe((res: HttpResponse<IUser[]>) => this.onSuccessUserRead(res.body));
+    this.userService.query().subscribe((res: HttpResponse<User[]>) => this.onSuccessUserRead(res.body));
   }
 
-  private onSuccessUserRead(users: IUser[] | null): void {
-    this.users = (users || []).map(user => ({
-      ...user,
-      label: `${user.lastName ?? ''} ${user.firstName ?? ''} (${user.login})`.trim(),
-    }));
+  private onSuccessUserRead(users: User[] | null): void {
+    this.users = users as any;
   }
 
   sort(): string[] {

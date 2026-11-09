@@ -27,11 +27,4 @@
         </insert>
     </changeSet>
 
-    <changeSet id="20230301171600-3" author="mwojsa">
-        <update tableName="NOTIFICATION_TEMPLATE">
-            <column name="TYPE" value="BIRTH_SMS"/>
-            <column name="CONTENT" value="Z okazji urodzin życzę zdrowia, szczęścia i pomyślności. ePracownik"/>
-        </update>
-    </changeSet>
-
 </databaseChangeLog>

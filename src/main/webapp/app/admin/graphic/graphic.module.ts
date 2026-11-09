@@ -12,7 +12,6 @@ import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [GraphicComponent],
@@ -25,7 +24,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
     CalendarModule,
     InputNumberModule,
     SelectButtonModule,
-    MultiSelectModule,
     DialogModule,
     ScrollPanelModule,
     PaginatorModule,

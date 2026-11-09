@@ -74,9 +74,8 @@
             <button class="btn btn-info" (click)="integrateUsers()">
               <fa-icon icon="sync"></fa-icon> <span jhiTranslate="userManagement.home.integrate">Integrate</span>
             </button>
-            <button class="btn btn-warning" (click)="sendActivationToSelected()" [disabled]="!selectedIds.size">
-              <fa-icon icon="envelope"></fa-icon>
-              <span>{{ 'userManagement.activation.sendSelected' | translate: { count: selectedIds.size } }}</span>
+            <button class="btn btn-warning" (click)="resendActivationEmail()">
+              <fa-icon icon="envelope"></fa-icon> <span>Wyślij e-maile ponownie</span>
             </button>
             <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
               <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userManagement.home.createLabel">Create a new User</span>
@@ -86,13 +85,12 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 40px"></th>
           <th pSortableColumn="externalId" style="width: 90px">
             {{ 'global.field.externalId' | translate }} <p-sortIcon field="externalId"></p-sortIcon>
           </th>
           <th pSortableColumn="login">{{ 'userManagement.login' | translate }} <p-sortIcon field="login"></p-sortIcon></th>
-          <th pSortableColumn="firstName">{{ 'userManagement.firstName' | translate }} <p-sortIcon field="firstName"></p-sortIcon></th>
-          <th pSortableColumn="lastName">{{ 'userManagement.lastName' | translate }} <p-sortIcon field="lastName"></p-sortIcon></th>
+          <th><span jhiTranslate="userManagement.firstName">firstName</span></th>
+          <th><span jhiTranslate="userManagement.lastName">lastName</span></th>
           <th style="min-width: 200px"><span jhiTranslate="userManagement.email">email</span></th>
           <th><span jhiTranslate="userManagement.phoneNumber">phoneNumber</span></th>
           <th><span jhiTranslate="userManagement.type">type</span></th>
@@ -101,16 +99,6 @@
           <th style="width: 100px"></th>
         </tr>
         <tr>
-          <th>
-            <input
-              type="checkbox"
-              [checked]="allInactiveSelected"
-              [disabled]="selectingAll"
-              (change)="toggleAllInactive($event.target.checked)"
-              pTooltip="{{ 'userManagement.activation.selectAllInactive' | translate }}"
-              tooltipPosition="top"
-            />
-          </th>
           <th></th>
           <th>
             <div class="p-d-flex p-jc-between p-ai-center">
@@ -211,17 +199,6 @@
       <ng-template pTemplate="body" let-user>
         <tr>
           <td>
-            <input
-              *ngIf="!user.activated"
-              type="checkbox"
-              [checked]="isSelected(user)"
-              [disabled]="!isSelectable(user)"
-              (change)="toggleUser(user, $event.target.checked)"
-              pTooltip="{{ 'userManagement.activation.selectRow' | translate }}"
-              tooltipPosition="top"
-            />
-          </td>
-          <td>
             {{ user.externalId }}
           </td>
           <td>{{ user.login }}</td>
@@ -244,18 +221,6 @@
               queryParamsHandling="merge"
               class="p-button-rounded p-button-success p-button-sm p-button-outlined"
             ></button>
-            <button
-              *ngIf="!user.activated"
-              pButton
-              pRipple
-              type="button"
-              icon="pi pi-envelope"
-              pTooltip="{{ 'userManagement.activation.resendTooltip' | translate }}"
-              tooltipPosition="top"
-              (click)="resendActivationEmailToUser(user)"
-              [disabled]="!user.email"
-              class="p-button-rounded p-button-warning p-button-sm p-button-outlined"
-            ></button>
             <ng-container *ngIf="!currentShowOnlyAssignedUser">
               <button
                 *jhiHasAnyAuthority="'ROLE_SYSTEM'"
@@ -275,7 +240,7 @@
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="11">{{ 'entity.table.noData' | translate }}</td>
+          <td colspan="8">{{ 'entity.table.noData' | translate }}</td>
         </tr>
       </ng-template>
     </p-table>
@@ -290,3 +255,17 @@
   <p>{{ 'userManagement.countOfUsers' | translate }}: {{ totalItems }}</p>
 </div>
 <p-confirmDialog header="Potwierdzenie operacji" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="btn-success"></p-confirmDialog>
+<p-dialog header="Potwierdzenie operacji" [(visible)]="displayIntegrateUser" [modal]="true">
+  <div class="d-flex align-items-center">
+    <i class="pi pi-exclamation-triangle confirm-font-size"></i
+    ><span class="ml-3">Czy jesteś pewien, że chcesz przeprowadzić integrację użytkowników?</span>
+  </div>
+  <div class="form-group mt-3 d-flex">
+    <p-checkbox name="group1" [binary]="true" [(ngModel)]="userService.integrateWithMandory" inputId="ny"></p-checkbox>
+    <label for="ny" class="mt-2 ml-3">Pobierz również zleceniobiorców</label>
+  </div>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times" (click)="displayIntegrateUser = false" label="Nie"></button>
+    <button type="button" class="btn-success" pButton icon="pi pi-check" (click)="onConfirmIntegrate()" label="Tak"></button>
+  </ng-template>
+</p-dialog>

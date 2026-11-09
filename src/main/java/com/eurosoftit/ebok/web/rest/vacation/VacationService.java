@@ -5,7 +5,6 @@ import com.eurosoftit.ebok.service.AbstractSearchService;
 import com.eurosoftit.ebok.web.rest.UserUtils;
 import com.eurosoftit.ebok.web.rest.dashboard.AbsencesView;
 import com.eurosoftit.ebok.web.rest.dashboard.RangesEntity;
-import com.eurosoftit.ebok.web.rest.dashboard.VacationBalance;
 import com.eurosoftit.ebok.web.rest.dashboard.VestedVacationView;
 import com.google.common.collect.Maps;
 import liquibase.util.BooleanUtils;
@@ -150,7 +149,7 @@ public class VacationService extends AbstractSearchService<Vacation, Long, Vacat
             VacationDetailsHistoryDTO historyDTO = new VacationDetailsHistoryDTO();
             historyDTO.setDateTo(dateTo);
             historyDTO.setDateFrom(dateFrom);
-            historyDTO.setDaysTaken(vacation.getDays() != null ? vacation.getDays() : BigDecimal.valueOf(dateList.size()));
+            historyDTO.setDaysTaken(dateList.size());
             historyDTO.getDays().addAll(dateList);
             months.add(historyDTO);
         }
@@ -229,10 +228,6 @@ public class VacationService extends AbstractSearchService<Vacation, Long, Vacat
         ZonedDateTime start = ZonedDateTime.now(ZoneId.systemDefault()).withDayOfMonth(1).withSecond(0).withMinute(0).withDayOfYear(1).withHour(0).withMonth(1).withNano(0);
         ZonedDateTime end = start.plusYears(1).minusSeconds(1);
 
-        if (VacationType.ANNUAL_LEAVE.equals(entity.getVacationType()) && Boolean.FALSE.equals(entity.getFullDay())) {
-            throw new ValidationException("HOURLY_NOT_ALLOWED");
-        }
-
         if (entity.getDateFrom() != null) {
             ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS);
             if (entity.getDateFrom().isBefore(today)) {
@@ -265,8 +260,11 @@ public class VacationService extends AbstractSearchService<Vacation, Long, Vacat
         }
         List<AbsencesView> absencesList = entityManager.createQuery("select v from AbsencesView v where v.externalId = :externalId and v.year = :year", AbsencesView.class)
             .setParameter("externalId", externalId).setParameter("year", year).getResultList();
-        AbsencesView absences = absencesList.isEmpty() ? null : absencesList.get(0);
-        return VacationBalance.remainingDays(vestedList.get(0), absences).doubleValue();
+        long usedHours = (!absencesList.isEmpty() && absencesList.get(0).getUsedHours() != null) ? absencesList.get(0).getUsedHours() : 0L;
+        VestedVacationView v = vestedList.get(0);
+        long vested = v.getVested() == null ? 0L : v.getVested();
+        long shift = v.getShiftVested() == null ? 0L : v.getShiftVested();
+        return (vested * 8 + shift * 8 - usedHours) / 8.0;
     }
 
     public Double availableVacationDaysForSubmission(Long externalId, Long userId) {

@@ -3,20 +3,17 @@ package com.eurosoftit.ebok.web.rest;
 import com.eurosoftit.ebok.domain.Notification;
 import com.eurosoftit.ebok.domain.NotificationDTO;
 import com.eurosoftit.ebok.domain.NotificationRead;
-import com.eurosoftit.ebok.config.Constants;
 import com.eurosoftit.ebok.domain.User;
 import com.eurosoftit.ebok.domain.enumeration.NotificationCanal;
 import com.eurosoftit.ebok.domain.specification.SpecificationReflectionBuilder;
 import com.eurosoftit.ebok.repository.NotificationReadRepository;
 import com.eurosoftit.ebok.repository.UserRepository;
-import com.eurosoftit.ebok.security.AuthoritiesConstants;
 import com.eurosoftit.ebok.security.SecurityUtils;
 import com.eurosoftit.ebok.service.NotificationMapper;
 import com.eurosoftit.ebok.service.NotificationQueryService;
 import com.eurosoftit.ebok.service.NotificationService;
 import com.eurosoftit.ebok.service.UserNotificationSender;
 import com.eurosoftit.ebok.service.dto.NotificationCriteria;
-import com.eurosoftit.ebok.service.dto.UserDTO;
 import com.eurosoftit.ebok.web.rest.errors.BadRequestAlertException;
 import com.eurosoftit.ebok.web.rest.errors.NotificationResourceException;
 import com.eurosoftit.ebok.web.rest.group.UserGroupEntity;
@@ -34,8 +31,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +40,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.Collator;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -210,7 +204,6 @@ public class NotificationResource {
         if (notification.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        checkAccess(notification.getId());
         Notification result = notificationService.save(notification);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, notification.getId().toString()))
@@ -224,96 +217,12 @@ public class NotificationResource {
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of notifications in body.
      */
-    @GetMapping(value = "/notifications", params = {"!all", "!groups"})
-    public ResponseEntity<List<NotificationDTO>> getMyNotifications(NotificationCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get my Notifications by criteria: {}", criteria);
-        return notificationsPage(criteria, myScope(), pageable);
-    }
-
-    @GetMapping(value = "/notifications", params = {"all", "!groups"})
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.HR + "\")")
+    @GetMapping("/notifications")
     public ResponseEntity<List<NotificationDTO>> getAllNotifications(NotificationCriteria criteria, Pageable pageable) {
         log.debug("REST request to get Notifications by criteria: {}", criteria);
-        return notificationsPage(criteria, null, pageable);
-    }
-
-    @GetMapping(value = "/notifications", params = {"groups", "!all"})
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.HR + "\")")
-    public ResponseEntity<List<NotificationDTO>> getGroupNotifications(@RequestParam("groups") List<Long> groups,
-                                                                       NotificationCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Notifications of groups {} by criteria: {}", groups, criteria);
-        return notificationsPage(criteria, groupScope(groups), pageable);
-    }
-
-    @GetMapping(value = "/notifications/users", params = {"!all", "!groups"})
-    public List<UserDTO> getMyNotificationUsers() {
-        return toSortedDTOs(userRepository.findAllById(userUtils.getLoggedUserAndRelatedUserIds()));
-    }
-
-    @GetMapping(value = "/notifications/users", params = {"all", "!groups"})
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.HR + "\")")
-    public List<UserDTO> getAllNotificationUsers() {
-        return toSortedDTOs(userRepository.findAllWithout(Constants.ANONYMOUS_USER));
-    }
-
-    @GetMapping(value = "/notifications/users", params = {"groups", "!all"})
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.HR + "\")")
-    public List<UserDTO> getGroupNotificationUsers(@RequestParam("groups") List<Long> groups) {
-        if (CollectionUtils.isEmpty(groups)) {
-            return Collections.emptyList();
-        }
-        return toSortedDTOs(userRepository.findByGroupIds(groups));
-    }
-
-    private ResponseEntity<List<NotificationDTO>> notificationsPage(NotificationCriteria criteria, Specification<Notification> scope,
-                                                                    Pageable pageable) {
-        Page<NotificationDTO> page = notificationMapper.toDTO(notificationQueryService.findByCriteria(criteria, scope, pageable));
+        Page<NotificationDTO> page = notificationMapper.toDTO(notificationQueryService.findByCriteria(criteria, pageable));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    private Specification<Notification> myScope() {
-        return NotificationQueryService.involving(userUtils.getLoggedUserAndRelatedUserIds(), null);
-    }
-
-    private Specification<Notification> groupScope(List<Long> groups) {
-        if (CollectionUtils.isEmpty(groups)) {
-            return NotificationQueryService.involving(null, null);
-        }
-        List<Long> users = userRepository.findByGroupIds(groups).stream().map(User::getId).collect(Collectors.toList());
-        return NotificationQueryService.involving(users, groups);
-    }
-
-    private static boolean isHr() {
-        return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.HR);
-    }
-
-    private Specification<Notification> accessScope() {
-        return isHr() ? null : myScope();
-    }
-
-    private void checkAccess(Long id) {
-        if (!isHr() && !notificationQueryService.isInScope(id, myScope())) {
-            throw new AccessDeniedException("Notification " + id + " is out of scope");
-        }
-    }
-
-    private static List<UserDTO> toSortedDTOs(Collection<User> users) {
-        Collator collator = Collator.getInstance(new Locale("pl", "PL"));
-        Comparator<String> names = Comparator.nullsLast(collator::compare);
-        return users.stream()
-            .sorted(Comparator.comparing(User::getLastName, names).thenComparing(User::getFirstName, names))
-            .map(NotificationResource::toUser)
-            .collect(Collectors.toList());
-    }
-
-    private static UserDTO toUser(User user) {
-        UserDTO userDto = new UserDTO();
-        userDto.setId(user.getId());
-        userDto.setLogin(user.getLogin());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        return userDto;
     }
 
     /**
@@ -387,7 +296,7 @@ public class NotificationResource {
     @GetMapping("/notifications/count")
     public ResponseEntity<Long> countNotifications(NotificationCriteria criteria) {
         log.debug("REST request to count Notifications by criteria: {}", criteria);
-        return ResponseEntity.ok().body(notificationQueryService.countByCriteria(criteria, accessScope()));
+        return ResponseEntity.ok().body(notificationQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -399,7 +308,6 @@ public class NotificationResource {
     @GetMapping("/notifications/{id}")
     public ResponseEntity<Notification> getNotification(@PathVariable Long id) {
         log.debug("REST request to get Notification : {}", id);
-        checkAccess(id);
         Optional<Notification> notification = notificationService.findOne(id);
         return ResponseUtil.wrapOrNotFound(notification);
     }
@@ -413,7 +321,6 @@ public class NotificationResource {
     @DeleteMapping("/notifications/{id}")
     public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
         log.debug("REST request to delete Notification : {}", id);
-        checkAccess(id);
         notificationService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }

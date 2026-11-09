@@ -126,20 +126,38 @@ public class DashboardResource {
     }
 
     private VacationDTO vacationForExternalId(Long externalId) {
+        Double used = 0.0;
+        Double vested = 0.0;
+
         List<VestedVacationView> vestedVacationView = entityManager.createQuery("select v from VestedVacationView v where v.externalId =:externalId and v.year =:year", VestedVacationView.class)
             .setParameter("externalId", externalId).setParameter("year", Long.valueOf(ZonedDateTime.now().getYear())).getResultList();
 
         List<AbsencesView> absencesView = entityManager.createQuery("select v from AbsencesView v where v.externalId =:externalId and v.year =:year", AbsencesView.class)
             .setParameter("externalId", externalId).setParameter("year", Long.valueOf(ZonedDateTime.now().getYear())).getResultList();
 
-        AbsencesView absences = absencesView == null || absencesView.isEmpty() ? null : absencesView.get(0);
-        Double used = VacationBalance.usedDays(absences).doubleValue();
-        Double vested = 0.0;
+        if (absencesView != null && !absencesView.isEmpty()) {
+            used = (absencesView.get(0).getUsedHours() == null ? 0 : absencesView.get(0).getUsedHours()) / 8.0;
+        }
 
         if (vestedVacationView != null && !vestedVacationView.isEmpty()) {
-            vested = VacationBalance.remainingDays(vestedVacationView.get(0), absences).doubleValue();
+
+            VestedVacationView vacationView = vestedVacationView.get(0);
+
+            Long vacationVested = vacationView.getVested();
+            Long shiftVested = vacationView.getShiftVested();
+
+            if (absencesView != null && !absencesView.isEmpty()) {
+                Long usedHours = absencesView.get(0).getUsedHours();
+                vested = (zeroIfNull(vacationVested) * 8 + zeroIfNull(shiftVested) * 8 - zeroIfNull(usedHours)) / 8.0;
+            } else {
+                vested = Double.valueOf(zeroIfNull(vacationVested) + zeroIfNull(shiftVested));
+            }
         }
 
         return new VacationDTO(used, vested);
+    }
+
+    Long zeroIfNull(Long value) {
+        return (value == null ? 0 : value);
     }
 }

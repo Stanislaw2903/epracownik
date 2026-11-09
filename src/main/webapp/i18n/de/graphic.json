@@ -9,10 +9,7 @@
         "weekNumber": "Woche",
         "monthNumber": "Monat",
         "showAll": "Alle Benutzer anzeigen",
-        "showMe": "Meine zugewiesenen Benutzer anzeigen",
-        "showGroup": "Benutzer der gewählten Gruppe anzeigen",
-        "groups": "Gruppe wählen",
-        "lastName": "Nachname"
+        "showMe": "Meine zugewiesenen Benutzer anzeigen"
       },
       "table": {
         "username": "Vor- und Nachname",

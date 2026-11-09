@@ -37,33 +37,15 @@
       </p-inputNumber>
     </div>
   </div>
-  <div class="col-md-9 filters-field--selectbtn" *ngIf="isHr">
+  <div class="col-md-9 filters-field--selectbtn">
     <div class="form-group">
       <p-selectButton [styleClass]="resultsLoaded ? 'graphic-type-toggle results-loaded' : 'graphic-type-toggle results-pending'" [options]="selectGraphicTypeDict" [(ngModel)]="filters.graphicType" (onChange)="onGraphicTypeChange()" optionLabel="label"></p-selectButton>
     </div>
   </div>
 </div>
-<div class="row" *ngIf="isGroupMode()">
-  <div class="col-md-4">
-    <div class="form-group">
-      <p-multiSelect
-        [options]="userGroups"
-        [(ngModel)]="filters.groups"
-        (onChange)="onFilterChange()"
-        optionLabel="name"
-        optionValue="id"
-        [filter]="true"
-        appendTo="body"
-        styleClass="w-100"
-        defaultLabel="{{ 'ebokApp.graphic.filters.groups' | translate }}"
-      >
-      </p-multiSelect>
-    </div>
-  </div>
-</div>
 <div class="row mb-3">
     <div class="col-12">
-        <button class="btn btn-primary" (click)="loadPage()" [disabled]="!canLoad()">
+        <button class="btn btn-primary" (click)="loadPage()">
             <span jhiTranslate="entity.action.filter">filter</span>
         </button>
     </div>
@@ -124,18 +106,6 @@
           <small>{{ col.label }}</small>
         </th>
       </tr>
-      <tr class="graphic-filter-row">
-        <th>
-          <input
-            class="form-control"
-            type="text"
-            [ngModel]="filters.lastName"
-            (ngModelChange)="onLastNameChange($event)"
-            placeholder="{{ 'ebokApp.graphic.filters.lastName' | translate }}"
-          />
-        </th>
-        <th *ngFor="let col of dayColumns"></th>
-      </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>
       <tr class="graphic-row">
@@ -159,7 +129,6 @@
 </p-scrollPanel>
 <p-paginator
   [rows]="itemsPerPage"
-  [first]="(page || 0) * itemsPerPage"
   [totalRecords]="totalItems"
   (onPageChange)="loadPage($event)"
   [rowsPerPageOptions]="[10, 20, 50, 100]"

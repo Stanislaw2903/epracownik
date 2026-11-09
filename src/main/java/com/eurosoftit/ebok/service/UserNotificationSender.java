@@ -16,9 +16,6 @@ import java.util.stream.Collectors;
 @Component
 public class UserNotificationSender {
 
-    static final String APP_NAME = "e_Pracownik";
-    private static final String SUBJECT_PREFIX = APP_NAME + " - ";
-
     @Value("${jhipster.mail.lagInMillis:500}")
     private Long lagInMillis;
 
@@ -46,7 +43,7 @@ public class UserNotificationSender {
                                 mailRecipient.setIdentifier(identifier);
 
                                 final MailMessageDTO smsMessage = new MailMessageDTO();
-                                smsMessage.setSubject(withSubjectPrefix(subject));
+                                smsMessage.setSubject("e_Pracownik - " + subject);
                                 smsMessage.setRecipients(Collections.singletonList(mailRecipient));
                                 smsMessage.setContent(content);
                                 this.messageResource.sendMail(smsMessage);
@@ -66,7 +63,7 @@ public class UserNotificationSender {
                             break;
                         case LOCAL_MAIL:
                             log.error("Try to send email " + identifier);
-                            this.mailService.sendEmail(identifier, withSubjectPrefix(subject),"e_Pracownik: " + content, false, false);
+                            this.mailService.sendEmail(identifier, "e_Pracownik - " + subject, "e_Pracownik: " + content, false, false);
                             Thread.sleep(lagInMillis);
                             break;
                     }
@@ -118,13 +115,13 @@ public class UserNotificationSender {
                                 mailRecipient.setIdentifier(identifier);
 
                                 final MailMessageDTO smsMessage = new MailMessageDTO();
-                                smsMessage.setSubject(withSubjectPrefix(subject));
+                                smsMessage.setSubject("e_Pracownik - " + subject);
                                 smsMessage.setRecipients(Collections.singletonList(mailRecipient));
                                 smsMessage.setContent(content);
                                 this.messageResource.sendMail(smsMessage);
                                 break;
                             default:
-                                this.mailService.sendEmail(identifier, withSubjectPrefix(subject), content, false, containsHtml(content));
+                                this.mailService.sendEmail(identifier, subject, content, false, containsHtml(content));
                                 break;
                         }
 
@@ -136,13 +133,6 @@ public class UserNotificationSender {
             log.error("", exception);
             log.error("Error while sending - {} - {}", notificationType, exception.getMessage());
         }
-    }
-
-    static String withSubjectPrefix(String subject) {
-        if (StringUtils.isBlank(subject)) {
-            return APP_NAME;
-        }
-        return subject.startsWith(APP_NAME) ? subject : SUBJECT_PREFIX + subject;
     }
 
     public boolean containsHtml(String text) {

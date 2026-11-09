@@ -146,6 +146,3 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
-
-# konfiguracja produkcyjna klienta (hasła)
-src/main/resources/config/application-polmotor.yml
