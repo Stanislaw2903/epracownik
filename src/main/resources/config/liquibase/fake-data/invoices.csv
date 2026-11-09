@@ -1,0 +1,11 @@
+id;issue_date;document_number;payment_deadline;gross_amount;to_pay;document_file;document_file_content_type;status
+1;2020-10-08;Home Loan Account Licensed optical;2020-10-08;39064;75410;../fake-data/blob/hipster.png;image/png;false
+2;2020-10-09;Re-engineered Danish Krone;2020-10-09;96500;98160;../fake-data/blob/hipster.png;image/png;false
+3;2020-10-09;copying;2020-10-08;56797;87534;../fake-data/blob/hipster.png;image/png;true
+4;2020-10-09;revolutionize;2020-10-09;4488;29656;../fake-data/blob/hipster.png;image/png;true
+5;2020-10-08;technologies Direct partnerships;2020-10-08;59396;20912;../fake-data/blob/hipster.png;image/png;false
+6;2020-10-09;archive deliverables;2020-10-09;96499;88880;../fake-data/blob/hipster.png;image/png;false
+7;2020-10-09;content;2020-10-08;43778;59061;../fake-data/blob/hipster.png;image/png;false
+8;2020-10-08;Practical Hat Delaware;2020-10-08;30728;10182;../fake-data/blob/hipster.png;image/png;true
+9;2020-10-08;indexing Rand Loti Sleek;2020-10-09;86251;97759;../fake-data/blob/hipster.png;image/png;false
+10;2020-10-08;compressing;2020-10-08;1866;50686;../fake-data/blob/hipster.png;image/png;true

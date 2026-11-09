@@ -1,0 +1,28 @@
+{
+  "ebokApp": {
+    "invoices": {
+      "home": {
+        "title": "Invoices",
+        "createLabel": "Invoices erstellen",
+        "createOrEditLabel": "Invoices erstellen oder bearbeiten",
+        "notFound": "No Invoices found"
+      },
+      "created": "Invoices erstellt mit ID {{ param }}",
+      "updated": "Invoices aktualisiert mit ID {{ param }}",
+      "deleted": "Invoices gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Invoices {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Invoices"
+      },
+      "issueDate": "Issue Date",
+      "documentNumber": "Document Number",
+      "paymentDeadline": "Payment Deadline",
+      "grossAmount": "Gross Amount",
+      "toPay": "To Pay",
+      "documentFile": "Document File",
+      "status": "Status"
+    }
+  }
+}

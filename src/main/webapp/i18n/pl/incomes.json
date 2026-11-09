@@ -1,0 +1,80 @@
+{
+  "incomes": {
+    "month": "Miesiąc",
+    "listName": "Lista płac",
+    "payroll": {
+      "income": {
+        "title": "Przychód",
+        "including": "w tym: ",
+        "salaryInCash": "wynagrodz. w gotówce",
+        "salaryInKind": "w naturze",
+        "taxed": "opodatkow.",
+        "taxedWithoutZUS": "opod. bez ZUS",
+        "taxedWithoutZUSandTaxes": "bez ZUS i pod.",
+        "grossPremiums": "skł. brutto",
+        "renumerationForIncForWork": "wyn. niezd. pr.",
+        "zusBenefits": "świadcz. ZUS",
+        "totalIncomeCost": "Koszty uzysk. przychodu",
+        "forMonth": "Dochód w danym miesiącu (podstawa naliczenia podatku doch.)",
+        "cumulatively": "Dochód narastająco od początku roku"
+      },
+      "contributions": {
+        "title": "Składki ub. społ. opłacone przez ubezpieczonego:",
+        "retirement": "emerytalne",
+        "disability": "rentowe",
+        "sickness": "chorobowe",
+        "total": "razem ub."
+      },
+      "socialSecurityDeductions": "u. społeczne odliczone",
+      "rate": "Stawka [%]",
+      "freeAmount": "Kwota wolna",
+      "taxAdvancePayment": "Naliczona zaliczka na pod. dochodowy",
+      "advancePaymentForIncomeTax": "Zaliczka na podatek dochodowy",
+      "healthInsurancePremium": "Składka ub. zdrowotnego",
+      "premiumCollected": "pobrana",
+      "premiumDeducted": "odliczona",
+      "paymentForIncomeTax": "Zaliczka na pod. doch.",
+      "advanceDue": "należna",
+      "advanceCollected": "pobrana",
+      "deductions": "Potrącenia",
+      "toPay": "Do wypłaty",
+      "worksDays": "Ilość dni przepr. (urlop) / obow.",
+      "datePayAdvance": "Data wpłaty zaliczki na p.d."
+    },
+    "ingredients": {
+      "hourlySalary": "Wynagrodzenie godzinowe",
+      "discretionaryBonus": "Premia uznaniowa",
+      "equForWashing": "EP Ekwiwalent za pranie",
+      "holidayPayFromFixedComp": "Wynagrodzenie urlopowe od skł. stałych",
+      "holidayPayFromVarComp": "Wynagrodzenie urlopowe od skł. zmiennych",
+      "lifeInsurance": "Ubezpieczenie na życie",
+      "cumulatively": "Narastająco"
+    },
+    "details": "Szczegóły",
+    "payrollDetails": {
+      "toPay": "Do wypłaty",
+      "cost": "Kwota",
+      "secondTable": "Podatek dochodowy",
+      "one": "przychód opod.",
+      "two": "koszt uz. przych.",
+      "three": "stawka [%]",
+      "four": "kwota wolna",
+      "five": "zaliczka należna",
+      "six": "zaliczka pobrana",
+      "firstTable": "Ubezpieczenia",
+      "firstRow": "Podstawa",
+      "secondRow": "składka (ubezpieczony)",
+      "seven": "Emerytalne",
+      "eight": "Rentowe",
+      "nine": "Chorobowe",
+      "ten": "Ogółem ub. społ.",
+      "eleven": "Zdrowot. pobrane",
+      "twelve": "zdrowot. odł. od pod.",
+      "overall": "Ogółem",
+      "deductions": "Potrącenia",
+      "ingridients": "Wynagrodzenie ogółem",
+      "payroll": "Lista płac",
+      "goBack": "Powrót do tabeli danych płacowych"
+    }
+  }
+}

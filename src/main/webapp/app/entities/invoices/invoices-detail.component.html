@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="invoices">
+            <h2><span jhiTranslate="ebokApp.invoices.detail.title">Invoices</span> {{ invoices.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="ebokApp.invoices.issueDate">Issue Date</span></dt>
+                <dd>
+                    <span>{{ invoices.issueDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.invoices.documentNumber">Document Number</span></dt>
+                <dd>
+                    <span>{{ invoices.documentNumber }}</span>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.invoices.paymentDeadline">Payment Deadline</span></dt>
+                <dd>
+                    <span>{{ invoices.paymentDeadline }}</span>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.invoices.grossAmount">Gross Amount</span></dt>
+                <dd>
+                    <span>{{ invoices.grossAmount }}</span>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.invoices.toPay">To Pay</span></dt>
+                <dd>
+                    <span>{{ invoices.toPay }}</span>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.invoices.documentFile">Document File</span></dt>
+                <dd>
+                    <div *ngIf="invoices.documentFile">
+                        <a (click)="openFile(invoices.documentFileContentType, invoices.documentFile)" jhiTranslate="entity.action.open">open</a>
+                        {{ invoices.documentFileContentType }}, {{ byteSize(invoices.documentFile) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.invoices.status">Status</span></dt>
+                <dd>
+                    <span>{{ invoices.status }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/invoices', invoices.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

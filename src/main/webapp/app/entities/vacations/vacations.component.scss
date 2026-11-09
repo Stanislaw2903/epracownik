@@ -1,0 +1,29 @@
+::ng-deep .datatable-vacation {
+  &.p-datatable .p-datatable-thead > tr > th {
+    padding: 0.25rem 0.1rem;
+    width: 150px;
+    min-width: 150px;
+
+    &:last-child {
+      width: 3em;
+    }
+
+    &:nth-last-child(2) {
+      width: 10em;
+    }
+
+    &.date-column {
+      width: 130px;
+    }
+
+    &.user-column {
+      width: 150px;
+    }
+  }
+}
+
+.manage-application {
+  label {
+    font-weight: 600;
+  }
+}

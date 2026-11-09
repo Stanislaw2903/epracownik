@@ -1,0 +1,292 @@
+<div>
+  <h2 class="mb-4">
+    <span id="user-management-page-heading" jhiTranslate="userManagement.home.title">Users</span>
+    <div class="float-right mr-4">
+      <p-dropdown
+        [options]="userDict"
+        [(ngModel)]="selectedUserRelatedUsers"
+        [filter]="true"
+        filterBy="name"
+        [showClear]="true"
+        appendTo="body"
+        optionValue="id"
+        placeholder="{{ 'userManagement.filterUsers.placeholder' | translate }}"
+        [style]="{ width: '20rem' }"
+        emptyFilterMessage="{{ 'userManagement.filterUsers.notFound' | translate }}"
+        [autoDisplayFirst]="false"
+        [showClear]="true"
+        [virtualScroll]="true"
+        [itemSize]="31"
+        (onChange)="onChangeAssignedUserDropdown()"
+      >
+        <ng-template let-user pTemplate="selectedItem"> {{ user.name }} </ng-template>
+        <ng-template let-user pTemplate="item"> {{ user.name }} </ng-template>
+      </p-dropdown>
+      <button class="btn btn-info" (click)="loadPage()">
+        <span jhiTranslate="userManagement.home.filterOwnUsers">filterOwnUsers</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+  <p-scrollPanel [style]="{ width: '100%', height: '100%', overflow: 'auto' }" styleClass="customScrollPanel">
+    <p-table
+      [value]="users"
+      dataKey="id"
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [loading]="loading"
+      styleClass="p-datatable-customers"
+      [lazy]="true"
+      stateStorage="session"
+      stateKey="userManagement"
+      (onLazyLoad)="customSort($event)"
+      #dt
+    >
+      <ng-template pTemplate="caption" styleClass="test">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex">
+            <button
+              type="button"
+              pButton
+              pRipple
+              icon="pi pi-file-pdf"
+              (click)="exportPdf()"
+              class="p-button-warning p-mr-2"
+              pTooltip="PDF"
+              tooltipPosition="bottom"
+            ></button>
+            <button
+              type="button"
+              pButton
+              pRipple
+              icon="pi pi-file-excel"
+              (click)="exportExcel()"
+              class="p-button-success p-mr-2"
+              pTooltip="Excel"
+              tooltipPosition="bottom"
+            ></button>
+          </div>
+          <div class="float-right user-management-btn-group">
+            <button class="btn btn-info" (click)="integrateUsers()">
+              <fa-icon icon="sync"></fa-icon> <span jhiTranslate="userManagement.home.integrate">Integrate</span>
+            </button>
+            <button class="btn btn-warning" (click)="sendActivationToSelected()" [disabled]="!selectedIds.size">
+              <fa-icon icon="envelope"></fa-icon>
+              <span>{{ 'userManagement.activation.sendSelected' | translate: { count: selectedIds.size } }}</span>
+            </button>
+            <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
+              <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userManagement.home.createLabel">Create a new User</span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 40px"></th>
+          <th pSortableColumn="externalId" style="width: 90px">
+            {{ 'global.field.externalId' | translate }} <p-sortIcon field="externalId"></p-sortIcon>
+          </th>
+          <th pSortableColumn="login">{{ 'userManagement.login' | translate }} <p-sortIcon field="login"></p-sortIcon></th>
+          <th pSortableColumn="firstName">{{ 'userManagement.firstName' | translate }} <p-sortIcon field="firstName"></p-sortIcon></th>
+          <th pSortableColumn="lastName">{{ 'userManagement.lastName' | translate }} <p-sortIcon field="lastName"></p-sortIcon></th>
+          <th style="min-width: 200px"><span jhiTranslate="userManagement.email">email</span></th>
+          <th><span jhiTranslate="userManagement.phoneNumber">phoneNumber</span></th>
+          <th><span jhiTranslate="userManagement.type">type</span></th>
+          <th><span jhiTranslate="userManagement.group">group</span></th>
+          <th style="width: 110px"><span jhiTranslate="userManagement.isActivated">isActivated</span></th>
+          <th style="width: 100px"></th>
+        </tr>
+        <tr>
+          <th>
+            <input
+              type="checkbox"
+              [checked]="allInactiveSelected"
+              [disabled]="selectingAll"
+              (change)="toggleAllInactive($event.target.checked)"
+              pTooltip="{{ 'userManagement.activation.selectAllInactive' | translate }}"
+              tooltipPosition="top"
+            />
+          </th>
+          <th></th>
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <input
+                class="form-control"
+                type="text"
+                (input)="dt.filter($event.target.value, 'login', 'contains')"
+                [value]="filters.login"
+              />
+            </div>
+          </th>
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <input
+                class="form-control"
+                type="text"
+                (input)="dt.filter($event.target.value, 'firstName', 'contains')"
+                [value]="filters.firstName"
+              />
+            </div>
+          </th>
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <input
+                class="form-control"
+                type="text"
+                (input)="dt.filter($event.target.value, 'lastName', 'contains')"
+                [value]="filters.lastName"
+              />
+            </div>
+          </th>
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <input
+                class="form-control"
+                type="text"
+                (input)="dt.filter($event.target.value, 'email', 'contains')"
+                [value]="filters.email"
+              />
+            </div>
+          </th>
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <input
+                class="form-control"
+                type="text"
+                (input)="dt.filter($event.target.value, 'phoneNumber', 'contains')"
+                [value]="filters.phoneNumber"
+              />
+            </div>
+          </th>
+          <th>
+            <p-columnFilter field="type" type="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-filterData="filterCallback">
+                <p-dropdown
+                  [options]="typeDict"
+                  (onChange)="filter(filterData, $event.value)"
+                  [showClear]="true"
+                  appendTo="body"
+                  [autoDisplayFirst]="false"
+                >
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="groups" type="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-filterData="filterCallback">
+                <p-multiSelect
+                  [options]="userGroups"
+                  (onChange)="filter(filterData, $event.value)"
+                  appendTo="body"
+                  optionLabel="name"
+                  optionValue="id"
+                  [filter]="true"
+                >
+                </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="active" type="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-filterData="filterCallback">
+                <p-dropdown
+                  [options]="activeUserDict"
+                  (onChange)="filter(filterData, $event.value)"
+                  [showClear]="true"
+                  appendTo="body"
+                  [autoDisplayFirst]="false"
+                >
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>
+            <input
+              *ngIf="!user.activated"
+              type="checkbox"
+              [checked]="isSelected(user)"
+              [disabled]="!isSelectable(user)"
+              (change)="toggleUser(user, $event.target.checked)"
+              pTooltip="{{ 'userManagement.activation.selectRow' | translate }}"
+              tooltipPosition="top"
+            />
+          </td>
+          <td>
+            {{ user.externalId }}
+          </td>
+          <td>{{ user.login }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phoneNumber }}</td>
+          <td>{{ user.type ? ('userManagement.' + user.type | translate) : '' }}</td>
+          <td>{{ user.groupName }}</td>
+          <td><div class="user-badge" [ngClass]="{ active: user.activated, unactive: !user.activated }"></div></td>
+          <td class="text-right">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-pencil"
+              pTooltip="{{ 'entity.action.edit' | translate }}"
+              tooltipPosition="top"
+              [routerLink]="['./', user.login, 'edit']"
+              queryParamsHandling="merge"
+              class="p-button-rounded p-button-success p-button-sm p-button-outlined"
+            ></button>
+            <button
+              *ngIf="!user.activated"
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-envelope"
+              pTooltip="{{ 'userManagement.activation.resendTooltip' | translate }}"
+              tooltipPosition="top"
+              (click)="resendActivationEmailToUser(user)"
+              [disabled]="!user.email"
+              class="p-button-rounded p-button-warning p-button-sm p-button-outlined"
+            ></button>
+            <ng-container *ngIf="!currentShowOnlyAssignedUser">
+              <button
+                *jhiHasAnyAuthority="'ROLE_SYSTEM'"
+                pButton
+                pTooltip="{{ 'entity.action.delete' | translate }}"
+                tooltipPosition="top"
+                pRipple
+                type="button"
+                icon="pi pi-times"
+                (click)="deleteUser(user)"
+                [disabled]="!currentAccount || currentAccount.login === user.login"
+                class="p-button-rounded p-button-danger p-button-sm p-button-outlined"
+              ></button>
+            </ng-container>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="11">{{ 'entity.table.noData' | translate }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-scrollPanel>
+  <p-paginator
+    [rows]="itemsPerPage"
+    [totalRecords]="totalItems"
+    (onPageChange)="loadPage($event)"
+    [first]="page * itemsPerPage + 1"
+    [rowsPerPageOptions]="[10, 20, 50, 100]"
+  ></p-paginator>
+  <p>{{ 'userManagement.countOfUsers' | translate }}: {{ totalItems }}</p>
+</div>
+<p-confirmDialog header="Potwierdzenie operacji" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="btn-success"></p-confirmDialog>

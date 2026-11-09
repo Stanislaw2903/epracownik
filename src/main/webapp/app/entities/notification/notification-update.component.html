@@ -1,0 +1,151 @@
+<div class="row">
+  <div class="col-md-12">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-notification-heading" jhiTranslate="ebokApp.notification.home.createOrEditLabel">Create or edit a Notification</h2>
+      <jhi-alert-error></jhi-alert-error>
+      <div class="row">
+        <div class="col-12">
+          <div class="form-group">
+            <label class="form-control-label my-3" jhiTranslate="ebokApp.notification.selectNotificationCanal"></label>
+            <div class="d-flex">
+              <p-radioButton
+                name="groupname"
+                class="mr-4"
+                labelStyleClass="mt-1"
+                [value]="ENotificationCanal.ALL"
+                [(ngModel)]="selectedNotificationCanal"
+                [ngModelOptions]="{ standalone: true }"
+                [label]="'ebokApp.notification.all' | translate"
+                (onClick)="getUsersDict()"
+              ></p-radioButton>
+              <p-radioButton
+                name="groupname"
+                class="mr-4"
+                labelStyleClass="mt-1"
+                [value]="ENotificationCanal.USERS"
+                [(ngModel)]="selectedNotificationCanal"
+                [ngModelOptions]="{ standalone: true }"
+                [label]="'ebokApp.notification.users' | translate"
+                (onClick)="getUsersDict()"
+              ></p-radioButton>
+              <p-radioButton
+                name="groupname"
+                labelStyleClass="mt-1"
+                [value]="ENotificationCanal.GROUPS"
+                [(ngModel)]="selectedNotificationCanal"
+                [ngModelOptions]="{ standalone: true }"
+                [label]="'ebokApp.notification.groups' | translate"
+                (onClick)="getUsersDict()"
+              ></p-radioButton>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label my-3" jhiTranslate="ebokApp.notification.selectNotificationType"></label>
+            <div class="d-flex">
+              <p-radioButton
+                name="groupname"
+                class="mr-4"
+                labelStyleClass="mt-1"
+                [value]="ENotificationType.NOTIFICATION"
+                [(ngModel)]="selectedNotificationType"
+                [ngModelOptions]="{ standalone: true }"
+                [label]="'ebokApp.notification.asNotification' | translate"
+                (onClick)="getUsersDict()"
+              ></p-radioButton>
+              <p-radioButton
+                name="groupname"
+                class="mr-4"
+                labelStyleClass="mt-1"
+                [value]="ENotificationType.SMS"
+                [(ngModel)]="selectedNotificationType"
+                [ngModelOptions]="{ standalone: true }"
+                [label]="'ebokApp.notification.asSMS' | translate"
+                (onClick)="getUsersDict()"
+              ></p-radioButton>
+              <p-radioButton
+                name="groupname"
+                labelStyleClass="mt-1"
+                [value]="ENotificationType.MAIL"
+                [(ngModel)]="selectedNotificationType"
+                [ngModelOptions]="{ standalone: true }"
+                [label]="'ebokApp.notification.asMAIL' | translate"
+                (onClick)="getUsersDict()"
+              ></p-radioButton>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4" *ngIf="selectedNotificationCanal != ENotificationCanal.ALL">
+          <div class="form-group" *ngIf="selectedNotificationCanal == ENotificationCanal.USERS">
+            <label class="form-control-label" jhiTranslate="ebokApp.notification.recepient" for="field_recepient">Recepient</label>
+            <p-multiSelect
+              [options]="users"
+              optionLabel="login"
+              dataKey="login"
+              class="p-control form-control"
+              formControlName="recepients"
+              [selectedItemsLabel]="'{0} wybranych'"
+              [placeholder]="multiselectPlaceholder"
+              #multi
+            >
+              <ng-template let-option pTemplate="item">
+                <span class="p-ml-1">{{ option.firstName }} {{ option.lastName }}</span>
+              </ng-template>
+            </p-multiSelect>
+          </div>
+          <div class="form-group" *ngIf="selectedNotificationCanal == ENotificationCanal.GROUPS">
+            <label class="form-control-label" jhiTranslate="ebokApp.notification.groups" for="field_group">Group</label>
+            <p-multiSelect
+              [options]="groups"
+              optionLabel="name"
+              dataKey="id"
+              class="p-control form-control"
+              formControlName="groups"
+              [selectedItemsLabel]="'{0} wybranych'"
+              [placeholder]="multiselectPlaceholder"
+              #multi
+            >
+              <ng-template let-option pTemplate="item">
+                <span class="p-ml-1">{{ option.name }}</span>
+              </ng-template>
+            </p-multiSelect>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-control-label" jhiTranslate="ebokApp.notification.subject" for="field_subject">Subject</label>
+            <input type="text" class="form-control" name="subject" id="field_subject" formControlName="subject" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label" jhiTranslate="ebokApp.notification.description" for="field_description">Description</label>
+            <p-editor formControlName="description" [style]="{ height: '220px' }"></p-editor>
+          </div>
+        </div>
+      </div>
+      <div class="row p-mt-4">
+        <div class="col-md-12">
+          <button type="button" id="cancel-save" class="btn btn-danger" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+          <button
+            type="submit"
+            id="save-entity"
+            [disabled]="
+              editForm.invalid ||
+              isSaving ||
+              !(editForm.controls['sendSms']?.value || editForm.controls['sendNotification']?.value || editForm.controls['sendMail']?.value)
+            "
+            class="btn btn-success"
+          >
+            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="ebokApp.notification.send">Send</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

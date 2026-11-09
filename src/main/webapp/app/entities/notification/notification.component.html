@@ -1,0 +1,359 @@
+<div>
+  <h2 id="page-heading">
+    <span jhiTranslate="ebokApp.notification.home.title">Notifications</span>
+
+    <button
+      id="jh-create-entity"
+      class="btn btn-primary float-right jh-create-entity create-notification"
+      [routerLink]="['/notification/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span jhiTranslate="ebokApp.notification.home.createLabel"> Create a new Notification </span>
+    </button>
+  </h2>
+
+  <!-- <div class="row">
+        <div class="col">
+            <p-toolbar>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="ebokApp.notification.recepient"
+                        for="field_recepient">Recepient</label>
+                    <p-multiSelect [options]="users" optionLabel="login" dataKey="login"
+                        class="p-control form-control" [(ngModel)]="selectedUsers">
+                        <ng-template let-option pTemplate="item">
+                            <span class="p-ml-1">{{option.login}}</span>
+                        </ng-template>
+                    </p-multiSelect>
+                </div>
+
+                <div class="p-toolbar-group-right">
+                    <p-button icon="pi pi-search"></p-button>
+                </div>
+            </p-toolbar>
+        </div>
+    </div> -->
+
+  <div class="row" *ngIf="isHr">
+    <div class="col-md-9">
+      <div class="form-group">
+        <p-selectButton
+          [options]="scopeTypeDict"
+          [(ngModel)]="scopeType"
+          (onChange)="onScopeChange()"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectButton>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="isGroupMode()">
+    <div class="col-md-4">
+      <div class="form-group">
+        <p-multiSelect
+          [options]="userGroups"
+          [(ngModel)]="selectedGroups"
+          (onChange)="onScopeChange()"
+          optionLabel="name"
+          optionValue="id"
+          [filter]="true"
+          appendTo="body"
+          styleClass="w-100"
+          defaultLabel="{{ 'ebokApp.graphic.filters.groups' | translate }}"
+        ></p-multiSelect>
+      </div>
+    </div>
+  </div>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="table-responsive" id="entities">
+    <p-table
+      [value]="notifications!"
+      dataKey="id"
+      [lazy]="true"
+      [loading]="loading"
+      [rowHover]="true"
+      (onLazyLoad)="customSort($event)"
+      (onFilter)="customFilter()"
+      styleClass="p-datatable-striped p-datatable-sm"
+      [globalFilterFields]="['recepient']"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="subject">
+            <span jhiTranslate="ebokApp.notification.subject">Subject</span>
+            <p-sortIcon field="subject"></p-sortIcon>
+            <p-columnFilter
+              type="text"
+              field="subject"
+              matchMode="contains"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+            ></p-columnFilter>
+          </th>
+          <th pSortableColumn="createDate">
+            <span jhiTranslate="ebokApp.notification.createDate">Create Date</span>
+            <p-sortIcon field="createDate"></p-sortIcon>
+            <p-columnFilter
+              field="createDate"
+              matchMode="between"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+            >
+              <ng-template pTemplate="header">
+                <div class="p-px-3 p-pt-3 p-pb-0">
+                  <span>{{ 'ebokApp.notification.filters.dateRange' | translate }}</span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-calendar
+                  [ngModel]="value"
+                  (onSelect)="filter(dateRange.value)"
+                  (onClearClick)="filter(null)"
+                  #dateRange
+                  selectionMode="range"
+                  [readonlyInput]="true"
+                  [showButtonBar]="true"
+                  [firstDayOfWeek]="1"
+                  dateFormat="dd-mm-yy"
+                  appendTo="body"
+                ></p-calendar>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th pSortableColumn="status" style="width: 140px">
+            <span jhiTranslate="ebokApp.notification.status">Status</span>
+            <p-sortIcon field="status"></p-sortIcon>
+            <p-columnFilter
+              field="status"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+            >
+              <ng-template pTemplate="header">
+                <div class="p-px-3 p-pt-3 p-pb-0">
+                  <span>Wybierz status</span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-dropdown
+                  [options]="notificationStatusDict"
+                  optionLabel="label"
+                  optionValue="value"
+                  [ngModel]="value"
+                  (onChange)="filter($event.value)"
+                  [showClear]="true"
+                  [autoDisplayFirst]="false"
+                ></p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th pSortableColumn="createdBy.lastName">
+            <span jhiTranslate="ebokApp.notification.createdBy">Created By</span>
+            <p-sortIcon field="createdBy.lastName"></p-sortIcon>
+            <p-columnFilter
+              field="createdBy"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+            >
+              <ng-template pTemplate="header">
+                <div class="p-px-3 p-pt-3 p-pb-0">
+                  <span>{{ 'ebokApp.notification.filters.selectUsers' | translate }}</span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-multiSelect
+                  [options]="users"
+                  optionLabel="label"
+                  dataKey="id"
+                  [filter]="true"
+                  appendTo="body"
+                  (onChange)="filter($event.value)"
+                  class="p-control form-control"
+                  [(ngModel)]="selectedSenders"
+                ></p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th>
+            <span jhiTranslate="ebokApp.notification.recepient">Recepient</span>
+            <p-columnFilter
+              field="recepient"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+            >
+              <ng-template pTemplate="header">
+                <div class="p-px-3 p-pt-3 p-pb-0">
+                  <span>{{ 'ebokApp.notification.filters.selectUsers' | translate }}</span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-multiSelect
+                  [options]="users"
+                  optionLabel="label"
+                  dataKey="id"
+                  [filter]="true"
+                  appendTo="body"
+                  (onChange)="filter($event.value)"
+                  class="p-control form-control"
+                  [(ngModel)]="selectedUsers"
+                ></p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-notification let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ notification.subject }}</td>
+          <td>{{ notification.createDate | date: 'medium' }}</td>
+          <td>
+            <button
+              pButton
+              (click)="op.show($event, readers[rowIndex]); getReadUsers(notification.id)"
+              pRipple
+              type="button"
+              icon="pi pi-id-card"
+              *ngIf="notification.status === true"
+              class="p-button-rounded p-button-outlined p-button-success"
+            ></button>
+            <button
+              pButton
+              pRipple
+              type="button"
+              *ngIf="notification.status !== true"
+              icon="pi pi-eye-slash"
+              class="p-button-rounded p-button-outlined p-button-danger"
+            ></button>
+            <div #readers></div>
+          </td>
+          <td>{{ notification.createdBy?.firstName }} {{ notification.createdBy?.lastName }}</td>
+          <td>
+            <span *ngIf="notification.recepients?.id"
+              >{{ notification.recepients?.firstName }} {{ notification.recepients?.lastName }}</span
+            >
+            <button
+              *ngIf="!notification.recepients?.id"
+              pButton
+              (click)="opUsers.show($event, recepients[rowIndex]); getNotificationUsers(notification.id)"
+              pRipple
+              type="button"
+              icon="pi pi-users"
+              class="p-button-rounded p-button-outlined"
+            ></button>
+            <div #recepients></div>
+          </td>
+          <td class="text-right">
+            <button
+              pButton
+              [routerLink]="['/notification', notification.id, 'view']"
+              pRipple
+              type="button"
+              icon="pi pi-eye"
+              pTooltip="{{ 'entity.action.view' | translate }}"
+              tooltipPosition="top"
+              class="p-button-rounded p-button-info p-button-sm p-button-outlined"
+            ></button>
+
+            <button
+              pButton
+              [routerLink]="['/notification', notification.id, 'edit']"
+              pRipple
+              type="button"
+              icon="pi pi-pencil"
+              pTooltip="{{ 'entity.action.edit' | translate }}"
+              tooltipPosition="top"
+              [disabled]="notification.status === true"
+              class="p-button-rounded p-button-success p-button-sm p-button-outlined"
+            ></button>
+
+            <button
+              pButton
+              (click)="delete(notification)"
+              pTooltip="{{ 'entity.action.delete' | translate }}"
+              tooltipPosition="top"
+              pRipple
+              type="button"
+              icon="pi pi-times"
+              class="p-button-rounded p-button-danger p-button-sm p-button-outlined"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">{{ 'entity.table.noData' | translate }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-overlayPanel #op [dismissable]="true" [showCloseIcon]="true" [style]="{ width: '450px' }">
+      <ng-template pTemplate>
+        <p-table [value]="notificationReadUsers" [paginator]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Data odczytania</th>
+              <th>Użytkownik</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-user>
+            <tr>
+              <td>{{ user.date | date: 'medium' }}</td>
+              <td>{{ user.users[0]?.login }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-overlayPanel>
+
+    <p-overlayPanel #opUsers [dismissable]="true" [showCloseIcon]="true" [style]="{ width: '300px' }">
+      <ng-template pTemplate>
+        <p-table [value]="notificationUsers" [paginator]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="firstName">Imię <p-sortIcon field="firstName"></p-sortIcon></th>
+              <th pSortableColumn="lastName">Nazwisko <p-sortIcon field="lastName"></p-sortIcon></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-user>
+            <tr>
+              <td>{{ user.firstName }}</td>
+              <td>{{ user.lastName }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-overlayPanel>
+  </div>
+  <div *ngIf="notifications && notifications.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

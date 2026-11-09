@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20210310201300-1" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+        </preConditions>
+
+        <addColumn tableName="jhi_user">
+            <column name="manual_insert" type="CHAR(1)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20210310201300-2" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+        </preConditions>
+
+        <dropColumn tableName="jhi_user" columnName="manual_insert"/>
+    </changeSet>
+
+    <changeSet id="20210310201300-3" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+        </preConditions>
+
+        <addColumn tableName="jhi_user">
+            <column name="manual_insert" type="boolean"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

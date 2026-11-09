@@ -1,0 +1,10 @@
+<jhi-navbar isLogged="logged"></jhi-navbar>
+<jhi-sidebar></jhi-sidebar>
+<div class="container-fluid">
+    <p-breadcrumb [home]="home" [model]="menuItems" styleClass="p-shadow-1"></p-breadcrumb>
+    <div [ngClass]="{'p-card p-p-3 mt-3': !cardException}">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<jhi-toast></jhi-toast>
+<jhi-footer></jhi-footer>

@@ -1,0 +1,43 @@
+{
+  "ebokApp": {
+    "vacations": {
+      "home": {
+        "title": "Wnioski urlopowe",
+        "ownVacations": "Moje wnioski urlopowe"
+      },
+      "statuses": {
+        "WAITING": "Oczekujący",
+        "ACCEPTED": "Zaakceptowany",
+        "REJECTED": "Odrzucony",
+        "ACCEPTED_INITIALLY": "Wstępnie zaakceptowany",
+        "CANCELLED": "Wycofany"
+      },
+      "setApplicationStatus": {
+        "reject": "Odrzuć wniosek",
+        "accept": "Zaakceptuj wniosek",
+        "accept_initially": "Zaakceptuj wstępnie wniosek",
+        "cancel": "Wycofaj wniosek"
+      },
+      "vacationApplicationResponse": {
+        "title": "Wniosek urlopowy",
+        "success": "Status wniosku został zaktualizowany",
+        "error": "Status wniosku został nie został zaktualizowany"
+      },
+      "table": {
+        "createdBy": "Wnioskodawca",
+        "sendDate": "Data wniosku",
+        "fullDay": "Kategoria",
+        "dateFrom": "Data od",
+        "dateTo": "Data do",
+        "timeFrom": "Godzina od",
+        "timeTo": "Godzina do",
+        "processedBy": "Zaakceptował",
+        "status": "Status",
+        "action": "Akcja",
+        "used": "Il. dni",
+        "id": "ID",
+        "comment": "Comment"
+      }
+    }
+  }
+}

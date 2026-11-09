@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <changeSet id="20201213175932-1" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+        </preConditions>
+
+        <addColumn tableName="jhi_user">
+            <column name="external_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20201213175932-2" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+        </preConditions>
+
+        <addColumn tableName="jhi_user">
+            <column name="USER_GROUP_ID" type="bigint">
+                <constraints foreignKeyName="USER_GROUP_ID" references="jhi_user(ID)" nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20201213175932-3" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+        </preConditions>
+
+        <addColumn tableName="jhi_user">
+            <column name="type" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20201213175932-4" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+            <tableExists tableName="USER_GROUP"/>
+        </preConditions>
+
+        <dropColumn tableName="jhi_user" columnName="USER_GROUP_ID"/>
+        <addColumn tableName="jhi_user">
+            <column name="USER_GROUP_ID" type="bigint">
+                <constraints foreignKeyName="USER_GROUP_ID" references="USER_GROUP(ID)" nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

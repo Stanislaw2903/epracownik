@@ -1,0 +1,32 @@
+.footer {
+  border: none;
+  background-color: white;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  text-align: center;
+  z-index: 10;
+  nav {
+    margin: auto;
+  }
+  ul li {
+    margin-left: 40px;
+    @media screen and (max-width: 768px) {
+      font-size: 12px;
+      margin-left: 10px;
+    }
+
+    @media (min-width: 768px) and (max-width: 980px) {
+      font-size: 14px;
+    }
+    a {
+      font-weight: normal;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 980px) {
+    padding: 8px;
+  }
+}

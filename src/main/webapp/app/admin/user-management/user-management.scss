@@ -1,0 +1,45 @@
+@media (max-width: 1276px) {
+  .user-management-btn-group {
+    display: flex;
+    flex-direction: column;
+
+    & > button {
+      margin-top: 0.25rem;
+    }
+  }
+}
+
+.user-badge {
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+
+  &.active {
+    background: #c8e6c9;
+  }
+
+  &.unactive {
+    background: red;
+  }
+}
+
+::ng-deep.p-datatable .p-datatable-thead > tr > th {
+  padding: 1rem 0.35rem;
+}
+
+::ng-deep.p-datatable-tbody {
+  font-size: 15px;
+
+  tr:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+
+  td {
+    word-break: break-all;
+    padding: 1rem 0.35rem !important;
+  }
+}
+
+.confirm-font-size {
+  font-size: 32px;
+}

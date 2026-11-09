@@ -1,0 +1,45 @@
+{
+  "ebokApp": {
+    "notification": {
+      "home": {
+        "title": "Powiadomienia",
+        "createLabel": "Dodaj powiadomienie",
+        "createOrEditLabel": "Dodaj lub edytuj powiadomienie",
+        "notFound": "Brak powiadomień"
+      },
+      "created": "Utworzono nowe powiadomienie z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono powiadomienie z identyfikatorem {{ param }}",
+      "deleted": "Usunięto powiadomienie z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć powiadomienie {{ id }}?"
+      },
+      "detail": {
+        "title": "Powiadomienie"
+      },
+      "selectNotificationType": "Wybierz kanał dostarczenia",
+      "subject": "Temat",
+      "description": "Treść",
+      "createDate": "Data nadania",
+      "readDate": "Data odczytania",
+      "status": "Odczyt",
+      "category": "Kategoria",
+      "createdBy": "Nadawca",
+      "recepient": "Odbiorcy",
+      "groups": "Grupy",
+      "readed": "Odczytane",
+      "nonReaded": "Nieodczytane",
+      "asNotification": "Wyślij jako powiadomienie w aplikacji",
+      "asSMS": "Wyślij jako SMS",
+      "asMAIL": "Wyślij jako e-mail",
+      "send": "Wyślij",
+      "all": "Do wszystkich",
+      "users": "Do wybranych użytkowników",
+      "groups": "Do wybranych grup",
+      "selectNotificationCanal": "Wybierz odbiorców",
+      "filters": {
+        "dateRange": "Wybierz zakres dat",
+        "selectUsers": "Wybierz użytkowników"
+      }
+    }
+  }
+}

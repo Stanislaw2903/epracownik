@@ -1,0 +1,41 @@
+{
+  "userGroups": {
+    "home": {
+      "title": "Gruppendefinitionen",
+      "addGroup": "Gruppe hinzufügen",
+      "editGroup": "Gruppe bearbeiten"
+    },
+    "table": {
+      "columns": {
+        "id": "ID",
+        "name": "Name",
+        "code": "Code",
+        "actions": "Optionen"
+      },
+      "filters": {
+        "id": "ID-Filter",
+        "name": "Namensfilter"
+      },
+      "buttons": {
+        "button1": "Taste 1",
+        "button2": "Taste 2"
+      },
+      "pagination": {
+        "rowsPerPage": "Einträge pro Seite",
+        "of": "von",
+        "noResults": "Keine Ergebnisse zum Anzeigen"
+      }
+    },
+    "addEdit": {
+      "code": "Gruppencode",
+      "name": "Gruppenname"
+    },
+    "messages": {
+      "loading": "Laden...",
+      "error": "Beim Laden der Daten ist ein Fehler aufgetreten.",
+      "deleted": "Gruppe wurde gelöscht",
+      "updated": "Gruppe wurde aktualisiert",
+      "created": "Gruppe wurde erstellt"
+    }
+  }
+}

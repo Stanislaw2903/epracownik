@@ -1,0 +1,168 @@
+<div class="p-card p-p-3 mt-3">
+  <p-scrollPanel [style]="{ width: '100%', height: '100%', overflow: 'auto' }" styleClass="customScrollPanel">
+    <p-table
+      [value]="vacationsData"
+      dataKey="id"
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [loading]="loading"
+      styleClass="datatable-vacation"
+      [lazy]="true"
+      (onLazyLoad)="customSort($event)"
+      (onFilter)="customFilter($event)"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="createdDate" class="date-column">
+            {{ 'ebokApp.vacations.table.sendDate' | translate }} <p-sortIcon field="createdDate"></p-sortIcon>
+          </th>
+          <th>{{ 'ebokApp.vacations.table.status' | translate }}</th>
+          <th>{{ 'ebokApp.vacations.table.used' | translate }}</th>
+          <th pSortableColumn="dateFrom" class="date-column">
+            {{ 'ebokApp.vacations.table.dateFrom' | translate }} <p-sortIcon field="dateFrom"></p-sortIcon>
+          </th>
+          <th pSortableColumn="dateTo" class="date-column">
+              {{ 'ebokApp.vacations.table.dateTo' | translate }} <p-sortIcon field="dateTo"></p-sortIcon>
+          </th>
+          <th pSortableColumn="processedBy">
+            {{ 'ebokApp.vacations.table.processedBy' | translate }} <p-sortIcon field="processedBy"></p-sortIcon>
+          </th>
+          <th pSortableColumn="fullDay">{{ 'ebokApp.vacations.table.fullDay' | translate }} <p-sortIcon field="fullDay"></p-sortIcon></th>
+          <th pSortableColumn="vacationType">{{ 'ebokApp.vacations.table.vacationType' | translate }} <p-sortIcon field="vacationType"></p-sortIcon></th>
+          <th></th>
+        </tr>
+        <tr>
+          <th>
+            <p-columnFilter type="date" field="createdDate" [matchMode]="'only-same-date'" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-calendar [firstDayOfWeek]="1"
+                  [ngModel]="value"
+                  (onSelect)="filter($event)"
+                  dateFormat="dd-mm-yy"
+                  appendTo="body"
+                  [showButtonBar]="true"
+                ></p-calendar>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-dropdown
+                  [ngModel]="value"
+                  [options]="statuses"
+                  (onChange)="filter($event.value)"
+                  [autoDisplayFirst]="false"
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th></th>
+          <th>
+            <p-columnFilter type="date" field="dateFrom" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-calendar [firstDayOfWeek]="1"
+                  [ngModel]="value?.withTime ? value?.withTime : value"
+                  (onSelect)="filter($event)"
+                  (onClearClick)="filter()"
+                  [showButtonBar]="true"
+                  appendTo="body"
+                  dateFormat="dd-mm-yy"
+                ></p-calendar>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th></th>
+          <th></th>
+          <th>
+            <p-columnFilter field="fullDay" matchMode="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-dropdown
+                  [ngModel]="value"
+                  [options]="fullDayDict"
+                  (onChange)="filter($event.value)"
+                  [showClear]="true"
+                  [autoDisplayFirst]="false"
+                  optionLabel="name"
+                >
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="vacationType" matchMode="equals" [showMenu]="false">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-dropdown
+                    [ngModel]="value"
+                    [options]="vacationTypesDict"
+                    (onChange)="filter($event.value)"
+                    [showClear]="true"
+                    [autoDisplayFirst]="false"
+                    appendTo="body"
+                  >
+                  </p-dropdown>
+                </ng-template>
+              </p-columnFilter>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-vacationApplication>
+        <tr>
+          <td>
+            {{ vacationApplication.createdDate | date: 'mediumDate' }}
+          </td>
+          <td>
+            {{ 'ebokApp.vacations.statuses.' + vacationApplication.status | translate }}
+          </td>
+          <td>
+            {{ vacationApplication.used }}
+          </td>
+          <td>
+            <span *ngIf="vacationApplication.fullDay">{{ vacationApplication.dateFrom | date: 'mediumDate' }}</span>
+            <span *ngIf="!vacationApplication.fullDay">{{ vacationApplication.dateFrom | date: 'medium' }}</span>
+          </td>
+          <td>
+            <span *ngIf="vacationApplication.fullDay">{{ vacationApplication.dateTo | date: 'mediumDate' }}</span>
+            <span *ngIf="!vacationApplication.fullDay">{{ vacationApplication.dateTo | date: 'medium' }}</span>
+          </td>
+          <td>{{ vacationApplication.processedBy?.firstName }} {{ vacationApplication.processedBy?.lastName }}</td>
+          <td>
+            {{ getFullDayValue(vacationApplication.fullDay) }}
+          </td>
+          <td>
+            {{ getTranslateVacationType(vacationApplication.vacationType) }}
+          </td>
+          <td class="text-right">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-times"
+              pTooltip="{{ 'entity.action.delete' | translate }}"
+              tooltipPosition="top"
+              (click)="removeApplication(vacationApplication.id)"
+              [disabled]="vacationApplication.status !== 'WAITING'"
+              class="p-button-rounded p-button-danger p-button-sm p-button-outlined"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4">{{ 'entity.table.noData' | translate }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-scrollPanel>
+  <p-paginator
+    [rows]="itemsPerPage"
+    [totalRecords]="totalItems"
+    (onPageChange)="loadPage($event)"
+    [rowsPerPageOptions]="[10, 20, 50, 100]"
+  ></p-paginator>
+</div>
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>

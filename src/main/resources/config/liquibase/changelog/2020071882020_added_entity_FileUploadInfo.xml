@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="2020071882020-1" author="wojsam">
+        <createTable tableName="file_upload_info">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint"/>
+            <column name="path" type="varchar(255)"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="type" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020071882020-2" author="wojsam">
+        <addColumn tableName="file_upload_info">
+            <column name="viewed" type="timestamp"/>
+            <column name="confirmed" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2020071882020-3" author="wojsam">
+        <addColumn tableName="file_upload_info">
+            <column name="year" type="bigint"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

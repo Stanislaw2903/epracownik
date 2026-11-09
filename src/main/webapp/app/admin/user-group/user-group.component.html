@@ -1,0 +1,78 @@
+<div>
+  <h2 class="mb-4">
+    <span id="user-management-page-heading" jhiTranslate="userGroups.home.title">Users</span>
+    <div class="float-right mr-4">
+      <button class="btn btn-info" [routerLink]="['./add']">
+        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userGroups.home.addGroup">addGroup</span>
+      </button>
+    </div>
+  </h2>
+</div>
+
+<p-table
+  [value]="userGroups"
+  [lazy]="true"
+  [paginator]="true"
+  [rows]="pageOptions.size"
+  [totalRecords]="totalRecords"
+  (onLazyLoad)="loadUserGroups($event)"
+  [rowsPerPageOptions]="[5, 10, 20, 50]"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="id" style="min-width: 70px">{{ 'userGroups.table.columns.id' | translate }} <p-sortIcon field="id"></p-sortIcon></th>
+      <th pSortableColumn="name" style="min-width: 120px">{{ 'userGroups.table.columns.name' | translate }} <p-sortIcon field="name"></p-sortIcon></th>
+      <th pSortableColumn="code">{{ 'userGroups.table.columns.code' | translate }} <p-sortIcon field="code"></p-sortIcon></th>
+      <th style="width: 120px">{{ 'userGroups.table.columns.actions' | translate }}</th>
+    </tr>
+    <tr>
+      <th>
+        <input type="text" pInputText (input)="filters.ids = $event.target.value; loadUserGroups()" />
+      </th>
+      <th>
+        <input type="text" pInputText (input)="filters.name = $event.target.value; loadUserGroups()" />
+      </th>
+      <th>
+          <input type="text" pInputText (input)="filters.code = $event.target.value; loadUserGroups()" />
+      </th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-userGroup>
+    <tr>
+      <td>{{ userGroup.id }}</td>
+      <td>{{ userGroup.name }}
+      <td>{{ userGroup.code }}</td>
+      <td class="text-right">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          pTooltip="{{ 'entity.action.edit' | translate }}"
+          tooltipPosition="top"
+          (click)="editGroup(userGroup)"
+          class="p-button-rounded p-button-success p-button-sm p-button-outlined"
+        ></button>
+
+        <button
+          pButton
+          (click)="confirmDelete(userGroup)"
+          pTooltip="{{ 'entity.action.delete' | translate }}"
+          tooltipPosition="top"
+          pRipple
+          type="button"
+          icon="pi pi-times"
+          class="p-button-rounded p-button-danger p-button-sm p-button-outlined"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="3">{{ 'entity.table.noData' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-confirmDialog></p-confirmDialog>

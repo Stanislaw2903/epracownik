@@ -1,0 +1,51 @@
+<div class="login-form-wraper">
+    <div class="login-form">
+        <div class="row">
+            <div class="col-md-6 col-xs-12 sign-in-container text-center">
+                <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">
+<!--                    <div>-->
+<!--                        <img src="../../content/images/bemix-logo.png" alt="Bemix" class="img-fluid bemix-logo">-->
+<!--                    </div>-->
+                    <div>
+                        <img src="../../content/images/Logo_Panel2.png" alt="Panel pracownika" class="img-fluid panel-pracownika">
+                    </div>
+                    <h1>Zaloguj się</h1>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="username" id="username" (focus)="focus = true" (focusout)="focus = false"
+                            placeholder="{{ 'global.form.username.placeholder' | translate }}" formControlName="username"
+                            #username>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" id="password" (focus)="focus = true" (focusout)="focus = false"
+                            placeholder="{{ 'login.form.password.placeholder' | translate }}" formControlName="password">
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label" for="rememberMe">
+                            <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe"
+                                formControlName="rememberMe">
+                            <span jhiTranslate="login.form.rememberme">Remember me</span>
+                        </label>
+                    </div>
+                    <div class="alert alert-danger" *ngIf="authenticationError" jhiTranslate="login.messages.error.authentication">
+                        <strong>Failed to sign in!</strong> Please check your credentials and try again.
+                    </div>
+                    <button type="submit" class="btn btn-primary" jhiTranslate="login.form.button">Sign in</button>
+
+                </form>
+                        <a (click)="requestResetPassword()" jhiTranslate="login.password.forgot">Did you forget
+                        your password?</a>
+            </div>
+            <div class="col-md-6 d-none d-md-block sign-up-container text-center">
+                <h1>Korzystaj z możliwości aplikacji</h1>
+                <ul class="text-left">
+                    <li>aktualny stan oraz historia urlopów</li>
+                    <li>składanie wniosków urlopowych</li>
+                    <li>dostęp do danych płacowych</li>
+                    <li>dostęp do danych kadrowych</li>
+                    <li>system powiadomień zapewnia komunikację z przełożonymi</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

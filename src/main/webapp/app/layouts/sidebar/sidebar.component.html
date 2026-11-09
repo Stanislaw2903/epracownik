@@ -1,0 +1,201 @@
+<div class="hamburger">
+  <div class="menu-btn" (click)="toggleSidebar()" [ngClass]="{ open: !isSidebarCollapsed }">
+    <div class="menu-btn__burger"></div>
+  </div>
+</div>
+<nav id="sidebar" [ngClass]="{ open: !isSidebarCollapsed }">
+  <a class="sidebar-brand" routerLink="dashboard">
+    <img src="../../../content/images/singular-logo-white.png" alt="" class="img-fluid" />
+  </a>
+
+  <div class="sidebar-header">
+    <h3>Menu</h3>
+  </div>
+  <div class="flex-fill overflow-auto mb-5 menuScrollBarStyles">
+    <ul>
+      <li>
+        <a (click)="toggle('dashboard')" class="list-item" routerLinkActive="active" routerLink="dashboard">Pulpit</a>
+      </li>
+      <li>
+        <a
+          (click)="toggle('payroll')"
+          class="list-item"
+          routerLink="payroll/salaries"
+          routerLinkActive="active"
+          jhiTranslate="global.menu.entities.payroll"
+          >payroll</a
+        >
+      </li>
+      <li [class.active]="menuOptions.personnelData" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a (click)="toggle('personnelData')">
+          <span jhiTranslate="global.menu.entities.personnelData">personnelData</span>
+          <i class="pi pi-angle-down"></i>
+        </a>
+        <ul #personnelData [style.height.px]="getSubmenuHeight(personnelData, 'personnelData')">
+          <li>
+            <a
+              class="list-item"
+              routerLink="personal-data/medical"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              jhiTranslate="global.menu.entities.medicalExamination"
+              >medicalExamination</a
+            >
+          </li>
+          <li>
+            <a
+              class="list-item"
+              routerLink="personal-data/safetyTraining"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              jhiTranslate="global.menu.entities.safetyTraining"
+              >safetyTraining</a
+            >
+          </li>
+          <li>
+            <a
+              class="list-item"
+              routerLink="personal-data/courses"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              jhiTranslate="global.menu.entities.coursesAndTraining"
+              >coursesAndTraining</a
+            >
+          </li>
+          <li>
+            <a
+              class="list-item"
+              routerLink="personal-data/qualifications"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              jhiTranslate="global.menu.entities.permissions"
+              >permissions</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li [class.active]="menuOptions.otherAbsences" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a (click)="toggle('otherAbsences')">
+          <span jhiTranslate="global.menu.entities.otherAbsences">otherAbsences</span>
+          <i class="pi pi-angle-down"></i>
+        </a>
+        <ul #otherAbsences [style.height.px]="getSubmenuHeight(otherAbsences, 'otherAbsences')">
+          <li>
+            <a
+              class="list-item"
+              routerLink="absences"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              jhiTranslate="global.menu.entities.absenceHistory"
+              >absenceHistory</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
+        [class.active]="menuOptions.administration"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle('administration')">
+          <span>
+            <span jhiTranslate="global.menu.administration">administration</span>
+            <i class="pi pi-angle-down"></i>
+          </span>
+        </a>
+        <ul #administration [style.height.px]="getSubmenuHeight(administration, 'administration')">
+          <li>
+            <a class="list-item" routerLink="admin/graphic" routerLinkActive="active">
+              <span jhiTranslate="global.menu.admin.graphic">User graphic</span>
+            </a>
+          </li>
+          <li>
+            <a class="list-item" routerLink="notification" routerLinkActive="active">
+              <span jhiTranslate="global.menu.entities.notification">notification</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="list-item"
+              routerLink="vacations"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              jhiTranslate="global.menu.entities.vacations"
+              >Vacations</a
+            >
+          </li>
+          <li>
+            <a class="list-item" routerLink="control-read-files" routerLinkActive="active">
+              <span jhiTranslate="global.menu.entities.controlReadFiles">control-read-files</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li
+        *jhiHasAnyAuthority="'ROLE_SYSTEM'"
+        [class.active]="menuOptions.system"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle('system')">
+          <span>
+            <span jhiTranslate="global.menu.admin.main">system</span>
+            <i class="pi pi-angle-down"></i>
+          </span>
+        </a>
+        <ul #system [style.height.px]="getSubmenuHeight(system, 'system')">
+          <li>
+            <a class="list-item" routerLink="admin/user-management" routerLinkActive="active">
+              <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.admin.userManagement">User management</span>
+            </a>
+          </li>
+          <li>
+            <a class="list-item" routerLink="admin/user-groups" routerLinkActive="active">
+              <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.admin.userGroups">UserGroups</span>
+            </a>
+          </li>
+          <li>
+            <a class="list-item" routerLink="admin/metrics" routerLinkActive="active">
+              <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.admin.metrics">Metrics</span>
+            </a>
+          </li>
+          <li>
+            <a class="list-item" routerLink="admin/health" routerLinkActive="active">
+              <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.admin.health">Health</span>
+            </a>
+          </li>
+          <li>
+            <a class="list-item" routerLink="admin/configuration" routerLinkActive="active">
+              <fa-icon icon="list" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.admin.configuration">Configuration</span>
+            </a>
+          </li>
+          <li>
+            <a class="list-item" routerLink="admin/audits" routerLinkActive="active">
+              <fa-icon icon="bell" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.admin.audits">Audits</span>
+            </a>
+          </li>
+          <li>
+            <a class="list-item" routerLink="admin/logs" routerLinkActive="active">
+              <fa-icon icon="tasks" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.admin.logs">Logs</span>
+            </a>
+          </li>
+          <li>
+            <a class="list-item" routerLink="admin/docs" routerLinkActive="active">
+              <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.admin.apidocs">API</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

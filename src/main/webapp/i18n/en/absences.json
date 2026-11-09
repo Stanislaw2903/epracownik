@@ -1,0 +1,15 @@
+{
+  "ebokApp": {
+    "absences": {
+      "home": {
+        "title": "Absences of history"
+      },
+      "table": {
+        "id": "ID",
+        "dateFrom": "Date from",
+        "dateTo": "Date to",
+        "code": "Code"
+      }
+    }
+  }
+}

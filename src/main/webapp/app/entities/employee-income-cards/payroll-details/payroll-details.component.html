@@ -1,0 +1,163 @@
+
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+      <button
+        (click)="goToMainTable()"
+        type="button"
+        pButton
+        pRipple
+        class="p-button-text"
+        label="{{ 'incomes.payrollDetails.goBack' | translate }}"
+        icon="pi pi-angle-double-left"
+      ></button>
+    </div>
+  </p-toolbar>
+  <div class="row">
+    <div class="col-12">
+      <h3 class="header">{{ 'incomes.payrollDetails.payroll' | translate }} ({{ payrollDate.month }}/{{ payrollDate.year }})</h3>
+    </div>
+  </div>
+<div class="row">
+  <div class="col-6">
+    <p class="text-center text-bold">{{ 'incomes.payrollDetails.ingridients' | translate }}</p>
+  </div>
+  <div class="col-6">
+    <p class="text-center text-bold">{{ 'incomes.payrollDetails.deductions' | translate }}</p>
+  </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <div class="d-flex justify-content-between" *ngFor="let ingredients of payrollDetails?.ingredients">
+            <p>{{ getIngridientsCode(ingredients) }}</p>
+            <p>{{ ingredients.price | number: '1.2-2' }}</p>
+        </div>
+        <div class="d-flex justify-content-between" *ngFor="let breaks of payrollDetails?.breaks">
+          <p>{{ getBreaksCode(breaks.code) }}</p>
+          <p>{{ breaks.price | number: '1.2-2' }}</p>
+      </div>
+    </div>
+    <div class="col-6">
+        <div class="d-flex justify-content-between" *ngFor="let deductions of payrollDetails?.deductions">
+            <p>{{ getDeductionsCode(deductions.code) }}</p>
+            <p>{{ deductions.price | number: '1.2-2' }}</p>
+        </div>
+    </div>
+</div>
+<div class="row">
+  <div class="col-6">
+    <div class="d-flex justify-content-end text-bold">
+      <p class="mr-3">{{ 'incomes.payrollDetails.overall' | translate }}:</p>
+      <p>{{ sumIngridients() | number: '1.2-2' }}</p>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="d-flex justify-content-end text-bold">
+      <p class="mr-3">{{ 'incomes.payrollDetails.overall' | translate }}:</p>
+      <p>{{ sumDeductions() | number: '1.2-2' }}</p>
+    </div>
+  </div>
+</div>
+
+<p-table [value]="tableDetails" styleClass="payroll-table" [autoLayout]="true">
+  <ng-template pTemplate="header">
+    <tr class="payroll-table-header">
+      <th>{{ 'incomes.payrollDetails.firstTable' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.seven' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.eight' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.nine' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.ten' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.eleven' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.twelve' | translate }}</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-tableData>
+    <tr class="top-bordered">
+      <td scope="row"><p class="mb-0">{{ 'incomes.payrollDetails.firstRow' | translate }}:</p></td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.nine || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.ten || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.eleven || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">&nbsp;</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.twelve || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.eighteenA || 0 | number: '1.2-2' }}</p>
+      </td>
+    </tr>
+    <tr class="top-bordered">
+      <td scope="row"><p class="mb-0">{{ 'incomes.payrollDetails.secondRow' | translate }}</p></td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.thirteen || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.fourteen || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.fifteen || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.sixteen || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.seventeen || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ tableData?.eighteen || 0 | number: '1.2-2' }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-table [value]="tableDetails" styleClass="payroll-table" [autoLayout]="true">
+  <ng-template pTemplate="header">
+    <tr class="payroll-table-header">
+      <th>{{ 'incomes.payrollDetails.secondTable' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.one' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.two' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.three' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.four' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.five' | translate }}</th>
+      <th [ngStyle]="{ width: '12%' }" class="text-center">{{ 'incomes.payrollDetails.six' | translate }}</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-tableData>
+    <tr class="top-bordered">
+      <td scope="row"><p class="mb-0">{{ 'incomes.payrollDetails.cost' | translate }}:</p></td>
+      <td>
+        <p class="mb-0 text-right">{{ payrollDetails?.content?.nineteen || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ payrollDetails?.content?.twenty || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ payrollDetails?.content?.twentyOne || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ payrollDetails?.content?.twentyTwo || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ payrollDetails?.content?.twentyThree || 0 | number: '1.2-2' }}</p>
+      </td>
+      <td>
+        <p class="mb-0 text-right">{{ payrollDetails?.content?.twentyFour || 0 | number: '1.2-2' }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-end text-bold fs-125 mt-5">
+      <p>{{ 'incomes.payrollDetails.toPay' | translate }}: {{ payrollDetails?.content?.twentyFive || 0 | number: '1.2-2' }}</p>
+    </div>
+  </div>
+</div>

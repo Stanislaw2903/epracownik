@@ -1,0 +1,70 @@
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.date-range {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+::ng-deep jhi-employee-data-grid-table {
+  .grid-container {
+    margin-bottom: 15px;
+  }
+}
+
+::ng-deep .payroll-table {
+  &.p-datatable .p-datatable-thead > tr > th {
+    padding: 0.25rem 0.5rem;
+    text-align: center;
+  }
+
+  &.p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+p-table {
+  th,
+  td {
+    font-size: 14px !important;
+    border: 1px solid #ccc;
+  }
+
+  .top-bordered {
+    border-top: 2px solid #ccc;
+  }
+}
+
+.header-salaries {
+  min-height: 2.5em;
+
+  h1 {
+    margin-bottom: 0 !important;
+  }
+
+  .title {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .pin-right {
+    position: absolute !important;
+    right: 2em;
+  }
+}
+
+.p-button-small-size {
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}

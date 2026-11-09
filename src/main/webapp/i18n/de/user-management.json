@@ -1,0 +1,61 @@
+{
+  "userManagement": {
+    "home": {
+      "title": "Benutzer",
+      "createLabel": "Neuen Benutzer erstellen",
+      "createOrEditLabel": "Benutzer erstellen oder bearbeiten"
+    },
+    "created": "Ein neuer Benutzer wurde mit ID {{ param }} erstellt",
+    "updated": "Ein Benutzer mit ID {{ param }} wurde geändert",
+    "deleted": "Ein Benutzer mit ID {{ param }} wurde gelöscht",
+    "delete": {
+      "question": "Sind Sie sicher, dass Sie den Benutzer {{ login }} löschen möchten?"
+    },
+    "detail": {
+      "title": "Benutzer"
+    },
+    "login": "Login",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "Email",
+    "activated": "Aktiv",
+    "deactivated": "Deaktiviert",
+    "profiles": "Profile",
+    "langKey": "Sprache",
+    "phoneNumber": "Rufnummer",
+    "createdBy": "Erstellt von",
+    "createdDate": "Erstellt am",
+    "lastModifiedBy": "Bearbeitet von",
+    "countOfUsers": "Count of users",
+    "lastModifiedDate": "Zuletzt bearbeitet",
+    "operationSuccessful": "Operation successful",
+    "integrationError": {
+      "errorWhileSendingEmail": "Fehler beim E-Mail-Versand",
+      "loginAlreadyUsed": "Login existiert bereits",
+      "emailAlreadyUsed": "E-Mail existiert bereits",
+      "emailWrongPattern": "Ungültige E-Mail-Adresse",
+      "emailIsEmpty": "Keine E-Mail",
+      "wrongLogin": "Kein Vorname — Login kann nicht erstellt werden",
+      "alreadyActivated": "Benutzer ist bereits aktiv"
+    },
+    "integration": {
+      "contractor": "Auch Auftragnehmer laden",
+      "selectAll": "Alle auswählen",
+      "deselectAll": "Alle abwählen",
+      "selectedCount": "{{ selected }} von {{ total }} importierbar ausgewählt",
+      "problem": "Hinweise",
+      "import": "Ausgewählte importieren ({{ count }})",
+      "nothingToImport": "Keine neuen Personen zum Importieren"
+    },
+    "activation": {
+      "resendTooltip": "Aktivierungslink erneut senden",
+      "resent": "Aktivierungs-E-Mail mit neuem Link wurde gesendet",
+      "resendFailed": "E-Mail konnte nicht gesendet werden (Benutzer bereits aktiv oder nicht vorhanden)",
+      "sendSelected": "Aktivierungslink senden ({{ count }})",
+      "sendSelectedConfirm": "Aktivierungslink an die ausgewählten Benutzer ({{ count }}) senden? Jeder erhält einen neuen, 10 Tage gültigen Link; der vorherige wird ungültig.",
+      "sentSummary": "Gesendet: {{ sent }}, übersprungen: {{ skipped }}",
+      "selectAllInactive": "Alle inaktiven Benutzer gemäß Filter auswählen (alle Seiten)",
+      "selectRow": "Für den Versand des Aktivierungslinks auswählen"
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "ebokApp": {
+    "graphic": {
+      "home": {
+        "title": "Abwesenheitsplan"
+      },
+      "filters": {
+        "yearNumber": "Jahr",
+        "weekNumber": "Woche",
+        "monthNumber": "Monat",
+        "showAll": "Alle Benutzer anzeigen",
+        "showMe": "Meine zugewiesenen Benutzer anzeigen",
+        "showGroup": "Benutzer der gewählten Gruppe anzeigen",
+        "groups": "Gruppe wählen",
+        "lastName": "Nachname"
+      },
+      "table": {
+        "username": "Vor- und Nachname",
+        "friday": "Freitag",
+        "monday": "Montag",
+        "thursday": "Donnerstag",
+        "tuesday": "Dienstag",
+        "wednesday": "Mittwoch"
+      },
+      "type": {
+        "WORKING": "Werke",
+        "HOLIDAY": "Urlaub",
+        "FREE": "Frei",
+        "WEEKEND": "Weekend"
+      },
+      "legend": {
+        "A": "Erholungsurlaub",
+        "B": "Eltern / Pflege",
+        "C": "Krankheit / Unfall",
+        "D": "Unbezahlt / Sonstiges",
+        "WEEKEND": "Wochenende",
+        "hint": "Buchstaben = Abwesenheitstyp; zum vollständigen Namen mit der Maus darüberfahren"
+      },
+      "absence": {
+        "UW": "Erholungsurlaub",
+        "UC": "Erziehungsurlaub",
+        "UM": "Mutterschaftsurlaub",
+        "MA": "Mutterschaft",
+        "UO": "Vaterschaftsurlaub",
+        "UR": "Elternurlaub",
+        "WM": "Urlaub zu Mutterschaftsurlaubsbedingungen",
+        "DM": "Tage für Mutter mit Kind bis 14 Jahre",
+        "ZO": "Pflegegeld",
+        "ZR": "Familien- / Pflege- / Erziehungsgeld",
+        "ZS": "Familien- / Pflege- / Familienleistung",
+        "CH": "Krankheit (Entgeltfortzahlung)",
+        "CZ": "Krankheit (Krankengeld)",
+        "CB": "Krankheit (Tage ohne Entgelt)",
+        "CN": "Krankheit (Person ohne Entgeltanspruch)",
+        "WY": "Arbeitsunfall oder Berufskrankheit",
+        "RH": "Rehabilitationsleistung",
+        "UB": "Unbezahlter Urlaub",
+        "UK": "Sonderurlaub",
+        "UP": "Urlaub zur Arbeitssuche",
+        "SW": "Wehr- oder Ersatzdienst",
+        "NB": "Abwesenheitszeitraum",
+        "SK": "Verkürzung der Kündigungsfrist",
+        "ZW": "Freistellung während der Kündigungsfrist",
+        "OZ": "Entsendung ins Ausland",
+        "PP": "Betriebsstillstand",
+        "OG": "Überstundenausgleich",
+        "SO": "Leistung bei Anwesenheit am Arbeitsplatz"
+      }
+    }
+  }
+}

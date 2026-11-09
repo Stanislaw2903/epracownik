@@ -1,0 +1,17 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-8">
+        <div class="p-fluid">
+            <div class="p-field form-group">
+                <div class="p-field-checkbox">
+                    <p-checkbox #term1="ngModel" [(ngModel)]="personalData.term1" inputId="term1"></p-checkbox>
+                    <label for="term1">Wyrażam zgodę na przetwarzanie moich danych osobowych przez firmę (tu nazwa firmy, identyfikator NIP lub KRS) w celu założenia i utrzymywania mojego konta użytkownika na warunkach opisanych w REGULAMINIE i przy zachowaniu przepisów rozporządzenia o ochronie danych osobowych (RODO). Zostałem poinformowany, że zgodę mogę wycofać w dowolnym momencie. Zostałem poinformowany, że mam prawo wglądu, poprawiania oraz żądania usunięcia moich danych osobowych w dowolnej chwili.</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="p-grid p-jc-end">
+    <button pButton type="button" label="Logowanie" (click)="cancel()" class="p-button-danger" icon="pi pi-user"></button>
+    <button pButton type="button" label="Wstecz" (click)="prevPage()" icon="pi pi-angle-left"></button>
+    <p-button label="Dalej" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+</div>

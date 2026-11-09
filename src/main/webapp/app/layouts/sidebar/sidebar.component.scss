@@ -1,0 +1,228 @@
+/* Stylizacja samego paska przewijania */
+.menuScrollBarStyles::-webkit-scrollbar {
+  width: 10px; /* szerokość paska przewijania (poziomy lub pionowy) */
+}
+
+/* Stylizacja tła paska przewijania */
+.menuScrollBarStyles::-webkit-scrollbar-track {
+  background: #f1f1f1; /* kolor tła paska przewijania */
+  border-radius: 10px;
+}
+
+/* Stylizacja "uchwytu" paska przewijania */
+.menuScrollBarStyles::-webkit-scrollbar-thumb {
+  background: #888; /* kolor uchwytu */
+  border-radius: 10px;
+}
+
+/* Stylizacja "uchwytu" paska przewijania, kiedy jest aktywny (użytkownik przewija) */
+.menuScrollBarStyles::-webkit-scrollbar-thumb:hover {
+  background: #555; /* ciemniejszy kolor, gdy użytkownik przejedzie myszką po uchwycie */
+}
+
+.menuScrollBarStyles {
+  margin-bottom: 90px;
+}
+
+#sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  height: 100vh;
+  position: fixed;
+  background-color: #2e3541;
+  display: flex;
+  flex-direction: column;
+  z-index: 9;
+  transition: all 0.2s ease-in-out;
+  @media screen and (max-width: 768px) {
+    left: -250px;
+    top: 45px;
+    &.open {
+      left: 0;
+    }
+  }
+
+  .logout {
+    bottom: 100px;
+    position: absolute;
+    color: #ced4dc;
+    left: 25px;
+    font-weight: normal;
+
+    &:hover {
+      color: #dc3545;
+    }
+  }
+
+  .sidebar-brand {
+    background: linear-gradient(to right, #1c232f, #161c25);
+    display: block;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    margin-bottom: 30px;
+    text-align: center;
+
+    img {
+      max-width: 100px;
+    }
+
+    @media (min-width: 768px) and (max-width: 980px) {
+      padding-bottom: 10px;
+      padding-top: 10px;
+      margin-bottom: 12px;
+    }
+
+    @media screen and (max-width: 768px) {
+      padding-bottom: 10px;
+      padding-top: 35px;
+      margin-bottom: 12px;
+    }
+  }
+
+  .sidebar-header {
+    border-radius: 0 60px 60px 0;
+    color: #fff !important;
+    // background: linear-gradient(to right, #df3158, #ff4b2b);
+    background: linear-gradient(to right, #d53343, #dc3545);
+    padding: 5px;
+    width: 90%;
+    opacity: 1;
+
+    h3 {
+      font-size: 1.2rem;
+      line-height: normal;
+      padding-left: 20px;
+    }
+
+    @media (min-width: 768px) and (max-width: 980px) {
+      h3 {
+        margin: 0;
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  ul {
+    padding: 0;
+
+    li {
+      a {
+        display: block;
+        padding: 15px 30px;
+        color: #ced4dc;
+        font-size: 13px;
+
+        &.list-item.active {
+          color: #dc3545;
+          font-weight: bold !important;
+        }
+
+        @media screen and (max-width: 980px) {
+          padding: 12px 30px;
+        }
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      i {
+        float: right;
+        transition: all 0.2s ease;
+      }
+
+      &:hover,
+      &.active {
+        background: linear-gradient(to right, #161c25, #1c232f);
+        text-decoration: none;
+      }
+
+      &.active {
+        i {
+          transform: rotate(180deg);
+        }
+      }
+
+      ul {
+        padding-left: 10px;
+        height: 0;
+        overflow: hidden;
+        transition: height 0.2s ease;
+
+        li {
+          a {
+            font-weight: 100;
+            padding: 10px 30px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.hamburger {
+  display: none;
+  position: fixed;
+  left: 5px;
+  top: 20px;
+  z-index: 1000;
+  background-color: #2e3541;
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+
+  .menu-btn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(80px * 0.4);
+    height: calc(80px * 0.4);
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .menu-btn__burger {
+    width: calc(50px * 0.4);
+    height: 2px;
+    background: #fff;
+    border-radius: 3px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .menu-btn__burger::before,
+  .menu-btn__burger::after {
+    content: '';
+    position: absolute;
+    width: calc(50px * 0.4);
+    height: 2px;
+    background: #fff;
+    border-radius: 3px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .menu-btn__burger::before {
+    transform: translateY(calc(-16px * 0.4));
+  }
+
+  .menu-btn__burger::after {
+    transform: translateY(calc(16px * 0.4));
+  }
+
+  /* Animations */
+  .menu-btn.open .menu-btn__burger {
+    transform: translateX(calc(-50px * 0.4));
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .menu-btn.open .menu-btn__burger::before {
+    /* transform: rotate(45deg) translate(35px, -35px); */
+    transform: translate(calc(50px * 0.4)) rotate(45deg);
+  }
+
+  .menu-btn.open .menu-btn__burger::after {
+    /* transform: rotate(-45deg) translate(35px, 35px); */
+    transform: translate(calc(50px * 0.4)) rotate(-45deg);
+  }
+}

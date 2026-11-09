@@ -1,0 +1,75 @@
+{
+  "ebokApp": {
+    "vacations": {
+      "home": {
+        "title": "Wnioski urlopowe",
+        "ownVacations": "Moje wnioski urlopowe"
+      },
+      "statuses": {
+        "WAITING": "Oczekujący",
+        "ACCEPTED": "Zaakceptowany",
+        "REJECTED": "Odrzucony",
+        "ACCEPTED_INITIALLY": "Wstępnie zaakceptowany",
+        "CANCELLED": "Wycofany"
+      },
+      "setApplicationStatus": {
+        "reject": "Odrzuć wniosek",
+        "accept": "Zaakceptuj wniosek",
+        "accept_initially": "Zaakceptuj wstępnie wniosek",
+        "cancel": "Wycofaj wniosek"
+      },
+      "vacationApplicationResponse": {
+        "title": "Wniosek urlopowy",
+        "success": "Status wniosku został zaktualizowany",
+        "error": "Status wniosku został nie został zaktualizowany",
+        "removed": "Wniosek został usunięty pomyślnie"
+      },
+      "table": {
+        "createdBy": "Wnioskodawca",
+        "sendDate": "Data wniosku",
+        "fullDay": "Kategoria",
+        "dateFrom": "Data od",
+        "dateTo": "Data do",
+        "timeFrom": "Godzina od",
+        "timeTo": "Godzina do",
+        "processedBy": "Zweryfikował",
+        "status": "Status",
+        "action": "Akcja",
+        "used": "Il. dni",
+        "id": "ID",
+        "comment": "Komentarz",
+        "vacationType": "Rodzaj urlopu"
+      },
+      "types": {
+        "ANNUAL_LEAVE": "Urlop wypoczynkowy",
+        "LEAVE_ON_REQUEST": "Urlop wypoczynkowy na żądanie",
+        "SPECIAL_LEAVE": "Urlop okolicznościowy",
+        "TAKING_CARE_OF_A_HEALTHY_CHILD": "Opieka nad zdrowym dzieckiem",
+        "CHILD_CARE": "Opieka nad dzieckiem",
+        "CARE_OTHER": "Opieka inne",
+        "MATERNITY_PATERNITY_LEAVE": "Urlop macierzyński/ojcowski",
+        "ADDITIONAL_MATERNITY_LEAVE": "Urlop macierzyński dodatkowy",
+        "PARENTAL_LEAVE": "Urlop rodzicielski",
+        "UNPAID_LEAVE": "Urlop bezpłatny",
+        "CHILDCARE_LEAVE": "Urlop wychowawczy",
+        "TRAINING_LEAVE": "Urlop szkoleniowy",
+        "PAID_ABSENCES": "Nieobecność płatna",
+        "UNPAID_DISEASE": "Choroba niepłatna",
+        "ILLNESS": "Choroba",
+        "AN_ACCIDENT_SICKNESS": "Choroba wypadek",
+        "HOSPITAL_SICKNESS": "Choroba szpital",
+        "DISEASE_PREGNANCY": "Choroba ciąża",
+        "REHABILITATION_BENEFIT": "Świadczenie rehabilitacyjne",
+        "ACCIDENT_REHABILITATION_BENEFIT": "Świadczenie rehabilitacyjne wypadek",
+        "MILITARY_SERVICE": "Służba wojskowa",
+        "ABSENCE_UNPAID": "Nieobecność niepłatna",
+        "UNEXCUSED_ABSENCE": "Nieobecność nieusprawiedliwiona",
+        "DOWNTIME": "Przestój",
+        "PASS": "Przepustka",
+        "OVERTIME": "Nadgodziny",
+        "COLLECTING_A_DAY_OFF": "Odbiór dnia wolnego",
+        "OTHER_LEAVES": "Inne urlopy"
+      }
+    }
+  }
+}

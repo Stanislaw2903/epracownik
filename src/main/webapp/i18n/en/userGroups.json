@@ -1,0 +1,41 @@
+{
+  "userGroups": {
+    "home": {
+      "title": "Group Definitions",
+      "addGroup": "Add Group",
+      "editGroup": "Edit Group"
+    },
+    "table": {
+      "columns": {
+        "id": "ID",
+        "name": "Name",
+        "code": "Code",
+        "actions": "Options"
+      },
+      "filters": {
+        "id": "ID Filter",
+        "name": "Name Filter"
+      },
+      "buttons": {
+        "button1": "Button 1",
+        "button2": "Button 2"
+      },
+      "pagination": {
+        "rowsPerPage": "Records per page",
+        "of": "of",
+        "noResults": "No results to display"
+      }
+    },
+    "addEdit": {
+      "code": "Group Code",
+      "name": "Group Name"
+    },
+    "messages": {
+      "loading": "Loading...",
+      "error": "An error occurred while loading data.",
+      "deleted": "Group has been deleted",
+      "updated": "Group has been updated",
+      "created": "Group has been created"
+    }
+  }
+}

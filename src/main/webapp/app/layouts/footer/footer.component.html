@@ -1,0 +1,137 @@
+<div class="footer p-shadow-4">
+    <div class="row">
+        <nav>
+            <ul class="nav nav-page-footer">
+                <li>
+                    <a (click)="showDialog('ebok')" href="javascript:void(0)" rel="noopener noreferrer">Wprowadzenie do aplikacji</a>
+                </li>
+                <!-- <li>
+                    <a href="/documents/regulamin-obrot.pdf" target="_blank" rel="noopener noreferrer">Regulamin</a>
+                </li> -->
+                <!--<li>
+                    <a (click)="showDialog('privacy')"  href="javascript:void(0)"
+                       rel="noopener noreferrer">Polityka prywatności</a>
+                </li>-->
+                <li>
+                    <a (click)="showDialog('contact')"  href="javascript:void(0)"
+                       rel="noopener noreferrer">Kontakt</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<p-dialog [(visible)]="display.ebok">
+    <p-header>
+        <h1>Wprowadzenie do aplikacji</h1>
+        <small>
+            Elektroniczny Panel Pracownika
+        </small>
+    </p-header>
+    <article>
+        <ul>
+            <li>Logowanie do systemu
+                <ul>
+                    <li>Konto użytkownika tworzone jest przez Administratora, a dane logowania przekazywane są drogą mailową</li>
+                    <li>Do utworzenia konta wymagany jest adres email Użytkownika</li>
+                    <li>Pierwsze logowanie do Systemu wymaga zmiany hasła tymczasowego</li>
+                    <li>Istnieje możliwość zresetowania hasła poprzez kliknięcie na przycisk „Zapomniałeś swojego hasła?” znajdujący się na dole Panelu logowania. Wymagane jest podanie adresu email użytkownika na który zostanie wysłany link resetujący hasło.</li>
+                </ul>
+            </li>
+            <li>Pulpit pracownika
+                <ul>
+                    <li>Blok urlopu wypoczynkowego
+                        <ul>
+                            <li>Wykres kołowy przedstawia przysługującą liczbę dni urlopowych do wykorzystania</li>
+                            <li>Złożenie wniosku urlopowego odbywa się za pomocą formularza znajdującego się pod przyciskiem „Złóż wniosek o urlop”</li>
+                            <li>Historia wniosków urlopowych ukryta jest w menu Bloku urlopu wypoczynkowego … </li>
+                            <li>Historia wniosków urlopowych reprezentowana jest w postaci tabeli z możliwością sortowania i filtrowania kolumn</li>
+                            <li>Usuwanie wniosku urlopowego jest możliwe tylko, gdy nie został on jeszcze przetworzony przez Administratora i posiada status „Oczekujący”</li>
+                        </ul>
+                    </li>
+                    <li>Blok historii urlopu wypoczynkowego
+                        <ul>
+                            <li>Wykres słupkowy przedstawia liczbę dni wykorzystanego urlopu dla każdego miesiąca w aktualnym roku kalendarzowym</li>
+                            <li>Widok historii urlopu wypoczynkowego dla poprzedniego roku dostępny jest z poziomu menu Bloku historii urlopu wypoczynkowego …</li>
+                            <li>Szczegółowy widok dni urlopowych dostępny jest z poziomu menu Bloku historii urlopu wypoczynkowego …</li>
+                        </ul>
+                    </li>
+                    <li>Powiadomienia
+                        <ul>
+                            <li>Administratorzy systemu mogą wysyłać powiadomienia, które wyświetlają się na liście powiadomień</li>
+                            <li>Użytkownik może wyświetlić treść powiadomienia lub na nie odpowiedzieć</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Dane płacowe
+                <ul>
+                    <li>Użytkownik może wyświetlić kartę przychodów pracownika wybierając z głównego menu pozycję: „Dane Płacowe”</li>
+                    <li>Widok szczegółów przychodów pracownika znajduje się w menu zakładki „Dane Płacowe”</li>
+                </ul>
+            </li>
+            <li>Dane kadrowe
+                <ul>
+                    <li>Badania lekarskie
+                        <ul>
+                            <li>Lista badań lekarskich Pracownika reprezentowana jest w postaci tabeli z możliwością sortowania kolumn: „data od”, „data do”</li>
+                            <li>Badanie lekarskie, które wygasa w ciągu 60-ciu dni od aktualnej daty podświetlone jest kolorem różowym</li>
+                        </ul>
+                    </li>
+                    <li>Szkolenia BHP
+                        <ul>
+                            <li>Lista szkoleń BHP Pracownika reprezentowana jest w postaci tabeli z możliwością sortowania kolumn: „data od”, „data do”</li>
+                            <li>Szkolenie BHP, które wygasa w ciągu 60-ciu dni od aktualnej daty podświetlone jest kolorem różowym</li>
+                        </ul>
+                    </li>
+                    <li>Kursy i szkolenia
+                        <ul>
+                            <li>Lista kursów i szkoleń Pracownika reprezentowana jest w postaci tabeli możliwością sortowania kolumny: „data”</li>
+                        </ul>
+                    </li>
+                    <li>Uprawnienia
+                        <ul>
+                            <li>Lista uprawnień Pracownika reprezentowana jest w postaci tabeli z możliwością sortowania kolumny: „ważne do”</li>
+                            <li>Uprawnienie, które wygasa w ciągu 60-ciu dni od aktualnej daty podświetlone jest kolorem różowym</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Absencje
+                <ul>
+                    <li>Lista absencji Pracownika reprezentowana jest w postaci tabeli możliwością sortowania kolumn: „data od”, „data do”, „kod”</li>
+                </ul>
+            </li>
+        </ul>
+
+
+        <ul>
+            <li></li>
+        </ul>
+    </article>
+</p-dialog>
+<p-dialog [(visible)]="display.contact">
+    <p-header>
+        <h1>Kontakt</h1>
+    </p-header>
+    <article class="text-center">
+        <h5>
+            Zakład Produkcyjno-Usługowo-Handlowy<br>
+            JK Miłosz Kiedrowski
+        </h5>
+        <address>
+            ul. Przemysłowa 8, 89-510 Bysław<br>
+            tel. 52 334 98 60<br>
+            <a href="mailto:biuro@jk.com.pl">biuro@jk.com.pl</a>
+        </address>
+    </article>
+</p-dialog>
+<p-dialog [(visible)]="display.privacy" styleClass="col-9 px-0">
+    <p-header>
+        <h1>Polityka prywatności</h1>
+    </p-header>
+    <div class="row">
+        <div class="col-12">
+            <p>Korzystanie z Systemu jest równoznaczne z wyrażeniem zgody na przetwarzanie danych osobowych zgodnie z ustawą o ochronie danych osobowych. Dane gromadzone w Aplikacji będą przetwarzane w celu poprawnego działania Systemu. Przysługuje Państwu prawo dostępu do swoich danych, możliwości poprawiania, żądania zaprzestania ich przetwarzania itp. Administratorem Państwa danych osobowych jest: ZPUH JK Miłosz Kiedrowski, ul. Przemysłowa 8, 89-510 Bysław. Więcej o polityce przetwarzania danych osobowych tutaj [link do zakładki RODO]</p>
+        </div>
+    </div>
+</p-dialog>

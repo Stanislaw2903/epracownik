@@ -1,0 +1,141 @@
+<div class="row">
+  <div class="col-3">
+    <div class="form-group">
+      <label jhiTranslate="ebokApp.absences.table.relatedUser">RelatedSuer</label>
+      <p-dropdown
+        optionValue="externalId"
+        optionLabel="name"
+        class="p-control form-control"
+        [options]="relatedUsers"
+        [(ngModel)]="filters.externalIds"
+        [filter]="true"
+        [autoDisplayFirst]="false"
+        [showClear]="true"
+      >
+      </p-dropdown>
+    </div>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-12">
+    <button class="btn btn-primary" (click)="loadPage()">
+      <span jhiTranslate="entity.action.filter">filter</span>
+    </button>
+  </div>
+</div>
+
+<p-table
+  [value]="absencesTableData"
+  dataKey="id"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [loading]="loading"
+  styleClass="p-datatable-customers"
+  [lazy]="true"
+  responsiveLayout="scroll"
+  (onLazyLoad)="customSort($event)"
+  (onFilter)="customFilter($event)"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="dateFrom" style="min-width: 33%">
+        {{ 'ebokApp.absences.table.dateFrom' | translate }} <p-sortIcon field="dateFrom"></p-sortIcon>
+      </th>
+      <th pSortableColumn="dateTo" style="min-width: 33%">
+        {{ 'ebokApp.absences.table.dateTo' | translate }} <p-sortIcon field="dateTo"></p-sortIcon>
+      </th>
+      <th pSortableColumn="code" style="min-width: 33%">
+        {{ 'ebokApp.absences.table.code' | translate }} <p-sortIcon field="code"></p-sortIcon>
+      </th>
+      <th pSortableColumn="firstName" style="min-width: 33%">
+        {{ 'ebokApp.absences.table.firstName' | translate }} <p-sortIcon field="firstName"></p-sortIcon>
+      </th>
+      <th pSortableColumn="lastName" style="min-width: 33%">
+        {{ 'ebokApp.absences.table.lastName' | translate }} <p-sortIcon field="lastName"></p-sortIcon>
+      </th>
+    </tr>
+    <tr>
+      <th>
+        <p-columnFilter type="date" field="dateFrom" [matchMode]="'only-same-date'" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-calendar [firstDayOfWeek]="1"
+              [ngModel]="value"
+              (onSelect)="filter($event)"
+              (onClearClick)="filter()"
+              dateFormat="dd-mm-yy"
+              appendTo="body"
+              [showButtonBar]="true"
+            ></p-calendar>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter type="date" field="dateTo" [matchMode]="'only-same-date'" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-calendar [firstDayOfWeek]="1"
+              [ngModel]="value"
+              (onSelect)="filter($event)"
+              (onClearClick)="filter()"
+              dateFormat="dd-mm-yy"
+              appendTo="body"
+              [showButtonBar]="true"
+            ></p-calendar>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter type="date" field="code" [matchMode]="'only-same-date'" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-dropdown
+              [ngModel]="value"
+              [options]="absencesDict"
+              (onChange)="filter($event.value)"
+              [showClear]="true"
+              [filter]="true"
+              appendTo="body"
+              optionValue="code"
+              [autoDisplayFirst]="false"
+            >
+            </p-dropdown>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter type="text" field="firstName" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <input class="form-control" pInputText type="text" (input)="filter($event.target.value, 'firstName', 'contains')" />
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter type="text" field="lastName" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <input class="form-control" pInputText type="text" (input)="filter($event.target.value, 'lastName', 'contains')" />
+          </ng-template>
+        </p-columnFilter>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-absence>
+    <tr>
+      <td>{{ absence.dateFrom | date: 'mediumDate' }}</td>
+      <td>{{ absence.dateTo | date: 'mediumDate' }}</td>
+      <td>{{ getAbsenceByCode(absence) }}</td>
+      <td>{{ absence.firstName }}</td>
+      <td>{{ absence.lastName }}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6">{{ 'entity.table.noData' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-paginator
+  [rows]="itemsPerPage"
+  [totalRecords]="totalItems"
+  [first]="page * itemsPerPage + 1"
+  (onPageChange)="loadPage($event)"
+  [rowsPerPageOptions]="[10, 20, 50, 100]"
+></p-paginator>

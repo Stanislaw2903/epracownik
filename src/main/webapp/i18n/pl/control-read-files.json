@@ -1,0 +1,30 @@
+{
+  "ebokApp": {
+    "controlReadFiles": {
+      "home": {
+        "title": "Kontrola plików"
+      },
+      "filters": {
+        "year": "Rok",
+        "fileType": "Typ pliku",
+        "onlyConfirmed": "Status"
+      },
+      "table": {
+        "userId": "User ID",
+        "firstName": "Imie",
+        "lastName": "Nazwisko",
+        "year": "Rok",
+        "fileName": "Nazwa pliku",
+        "fileType": "Typ pliku",
+        "status": "Status",
+        "relatedUser": "Użytkownik",
+        "confirmed": "Data zapoznania",
+        "viewed": "Data wyświetlenia"
+      },
+      "status": {
+        "read": "Zapoznany",
+        "notRead": "Nie zapoznany"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "ebokApp": {
+    "controlReadFiles": {
+      "home": {
+        "title": "Dateikontrolle"
+      },
+      "filters": {
+        "year": "Jahr",
+        "fileType": "Dateityp",
+        "onlyConfirmed": "Status"
+      },
+      "table": {
+        "userId": "Benutzer-ID",
+        "firstName": "Vorname",
+        "lastName": "Nachname",
+        "year": "Jahr",
+        "fileName": "Dateiname",
+        "fileType": "Dateityp",
+        "status": "Status",
+        "relatedUser": "Benutzer",
+        "confirmed": "Date confirmed",
+        "viewed": "Date viewed"
+      },
+      "status": {
+        "read": "Gelesen",
+        "notRead": "Nicht gelesen"
+      }
+    }
+  }
+}

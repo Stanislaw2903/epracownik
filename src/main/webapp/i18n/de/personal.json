@@ -1,0 +1,46 @@
+{
+  "ebokApp": {
+    "medicalExamination": {
+      "table": {
+        "id": "ID",
+        "startDate": "Data",
+        "endDate": "Następne",
+        "name": "Rodzaj",
+        "comments": "Uwagi",
+        "status": "Wymagane badania sanitarne",
+        "expired": "Wygasają"
+      }
+    },
+    "safetyTraining": {
+      "table": {
+        "id": "ID",
+        "startDate": "Data",
+        "endDate": "Następne",
+        "name": "Rodzaj",
+        "comments": "Uwagi",
+        "status": "Wymagane badania sanitarne",
+        "expired": "Wygasają"
+      }
+    },
+    "courses": {
+      "table": {
+        "id": "ID",
+        "startDate": "Data",
+        "endDate": "Następne",
+        "name": "Rodzaj",
+        "comments": "Uwagi",
+        "donated": "Dofinansowanie",
+        "expired": "Wygasają"
+      }
+    },
+    "qualifications": {
+      "table": {
+        "id": "ID",
+        "startDate": "Data uzyskania",
+        "endDate": "Ważne do",
+        "name": "Nazwa",
+        "comments": "Uwagi"
+      }
+    }
+  }
+}

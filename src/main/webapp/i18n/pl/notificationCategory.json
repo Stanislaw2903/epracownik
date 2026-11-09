@@ -1,0 +1,12 @@
+{
+  "ebokApp": {
+    "notificationCategory": {
+      "null": "",
+      "MESSAGE": "Wiadomość",
+      "SYSTEM": "System",
+      "ABSENT": "Absencja",
+      "HR": "HR",
+      "VACATION": "Urlop"
+    }
+  }
+}

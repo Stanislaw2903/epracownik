@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20210309191500-1" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+        </preConditions>
+
+        <addColumn tableName="jhi_user">
+            <column name="authorization_to_accept_vacation" type="varchar(20)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20210309191500-2" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+        </preConditions>
+
+        <createTable tableName="related_user">
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="RU_USER_ID_FK" references="jhi_user(ID)" nullable="false" />
+            </column>
+            <column name="related_user_id" type="bigint">
+                <constraints foreignKeyName="RU_RELATED_USER_ID_FK" references="jhi_user(ID)" nullable="false" />
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="user_id, related_user_id" tableName="related_user" />
+    </changeSet>
+
+    <changeSet id="20210309191500-3" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+            <tableExists tableName="USER_GROUP"/>
+        </preConditions>
+
+        <createTable tableName="related_group">
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="RG_USER_ID_FK" references="jhi_user(ID)" nullable="false" />
+            </column>
+            <column name="related_group_id" type="bigint">
+                <constraints foreignKeyName="RG_RELATED_GROUP_ID_FK" references="USER_GROUP(ID)" nullable="false" />
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="user_id, related_group_id" tableName="related_group" />
+    </changeSet>
+</databaseChangeLog>

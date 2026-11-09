@@ -1,0 +1,338 @@
+@import '../../content/scss/bootstrap-variables';
+
+.main-slogan {
+  color: #2e3541;
+  font-weight: 400;
+  margin: 20px 0 30px 15px;
+  span {
+    font-size: 80%;
+    font-weight: 100;
+  }
+}
+
+.p-grid {
+  .p-shadow-4 {
+    background-color: #fff;
+  }
+  section {
+    height: 100%;
+    .p-header {
+      padding: 10px;
+      font-weight: 600;
+    }
+  }
+}
+
+.travel-box {
+  .sing-card--footer {
+    background-color: #2e3541;
+    color: #fff;
+    text-align: center;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+
+    .vacation-number-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+
+      > div {
+        flex: 1 1 auto;
+        position: relative;
+        padding: 0.5rem 0;
+      }
+
+      div + div {
+        border-left: 1px solid #171d27;
+      }
+
+      &--main-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      p {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+}
+
+.notifications {
+  h2 {
+    padding: 15px;
+  }
+}
+
+/* CIRCLE */
+$circle-width: 0.08em;
+$circle-width-hover: 0.04em;
+// colors default
+$primary-color: #2daa48;
+$secondary-color: linear-gradient(220deg, #ff4b2b, #ff416c);
+$bg-color: #f5f5f5;
+$primary-color-green: #4db53c;
+$primary-color-orange: #dd9d22;
+// colors dark skin
+$primary-color-dark: #c6ff00;
+$secondary-color-dark: #777;
+$bg-color-dark: #666;
+$primary-color-green-dark: #5fd400;
+$primary-color-orange-dark: #e08833;
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin rotate($rotation) {
+  -webkit-transform: rotate($rotation);
+  -moz-transform: rotate($rotation);
+  -ms-transform: rotate($rotation);
+  -o-transform: rotate($rotation);
+  transform: rotate($rotation);
+}
+
+@mixin box-sizing($box-sizing) {
+  -webkit-box-sizing: $box-sizing;
+  -moz-box-sizing: $box-sizing;
+  box-sizing: $box-sizing;
+}
+@mixin transition-property($transition) {
+  -webkit-transition-property: $transition;
+  -moz-transition-property: $transition;
+  -o-transition-property: $transition;
+  transition-property: $transition;
+}
+
+@mixin transition-duration($duration) {
+  -webkit-transition-duration: $duration;
+  -moz-transition-duration: $duration;
+  -o-transition-duration: $duration;
+  transition-duration: $duration;
+}
+
+@mixin transition-timing-function($timing) {
+  -webkit-transition-timing-function: $timing;
+  -moz-transition-timing-function: $timing;
+  -o-transition-timing-function: $timing;
+  transition-timing-function: $timing;
+}
+
+.rect-auto {
+  clip: rect(auto, auto, auto, auto);
+}
+
+.pie {
+  position: absolute;
+  border: $circle-width solid transparent;
+  width: 1 - (2 * $circle-width);
+  height: 1 - (2 * $circle-width);
+  clip: rect(0em, 0.5em, 1em, 0em);
+  border-radius: 50%;
+  background: $secondary-color;
+  @include rotate(0deg);
+}
+
+.pie-fill {
+  @include rotate(180deg);
+}
+
+// main
+.c100 {
+  *,
+  *:before,
+  *:after {
+    @include box-sizing(content-box);
+  }
+  position: relative;
+  font-size: 120px;
+  min-width: 1em;
+  min-height: 1em;
+  border-radius: 50%;
+  float: left;
+  background: $primary-color;
+  // center circle to its parent
+  &.center {
+    float: none;
+    margin: 0 auto;
+  }
+  // bigger size
+  &.big {
+    font-size: 240px;
+  }
+  // smaller size
+  &.small {
+    font-size: 80px;
+  }
+  // centered value inside circle
+  > span {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 5em;
+    line-height: 5em;
+    font-size: 0.2em;
+    color: $secondary-color;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    @include transition-property(all);
+    @include transition-duration(0.2s);
+    @include transition-timing-function(ease-out);
+  }
+  // background inside the circle
+  &:after {
+    position: absolute;
+    top: $circle-width;
+    left: $circle-width;
+    display: block;
+    content: ' ';
+    border-radius: 50%;
+    background-color: $bg-color;
+    width: 1 - (2 * $circle-width);
+    height: 1 - (2 * $circle-width);
+    @include transition-property(all);
+    @include transition-duration(0.2s);
+    @include transition-timing-function(ease-in);
+  }
+  // the slice (mask)
+  .slice {
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    clip: rect(0em, 1em, 1em, 0.5em);
+  }
+  // circle to show the status
+  .bar {
+    @extend .pie;
+  }
+  // loop to create all needed elements automatically
+  @for $i from 51 through 100 {
+    &.p#{$i} {
+      & .slice {
+        @extend .rect-auto;
+      }
+      &.bar:after {
+        @extend .pie-fill;
+      }
+      & .fill {
+        @extend .pie;
+        @extend .pie-fill;
+      }
+    }
+  }
+  // loop to rotate all 100 circles
+  @for $i from 1 through 100 {
+    &.p#{$i} .bar {
+      $degs: (360/100 * $i);
+      @include rotate(#{$degs}deg);
+    }
+  }
+  // hover styles
+  &:hover {
+    cursor: default;
+    > span {
+      width: 3.33em;
+      line-height: 3.33em;
+      font-size: 0.3em;
+      color: $primary-color;
+    }
+    &:after {
+      top: $circle-width-hover;
+      left: $circle-width-hover;
+      width: 1 - (2 * $circle-width-hover);
+      height: 1 - (2 * $circle-width-hover);
+    }
+  }
+  // override colors for the dark skin
+  &.dark {
+    background: $secondary-color-dark;
+    .bar,
+    .fill {
+      border-color: $primary-color-dark !important;
+    }
+    > span {
+      background: $secondary-color-dark;
+    }
+    &:after {
+      background-color: $bg-color-dark;
+    }
+    &:hover {
+      > span {
+        color: $primary-color-dark;
+      }
+    }
+  }
+  // green skin
+  &.green {
+    .bar,
+    .fill {
+      border-color: $primary-color-green !important;
+    }
+    &:hover {
+      > span {
+        color: $primary-color-green;
+      }
+    }
+  }
+  &.green.dark {
+    .bar,
+    .fill {
+      border-color: $primary-color-green-dark !important;
+    }
+    &:hover {
+      > span {
+        color: $primary-color-green-dark;
+      }
+    }
+  }
+  // orange skin
+  &.orange {
+    .bar,
+    .fill {
+      border-color: $primary-color-orange !important;
+    }
+    &:hover {
+      > span {
+        color: $primary-color-orange;
+      }
+    }
+  }
+  &.orange.dark {
+    .bar,
+    .fill {
+      border-color: $primary-color-orange-dark !important;
+    }
+    &:hover {
+      > span {
+        color: $primary-color-orange-dark;
+      }
+    }
+  }
+}
+
+::ng-deep .datatable-vacation-details {
+  &.p-datatable .p-datatable-thead > tr > th {
+    padding: 0.25rem 0.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  ::ng-deep .datatable-vacation-details {
+    &.p-datatable .p-datatable-tbody > tr > td {
+      padding: 1rem 0.25rem;
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+}

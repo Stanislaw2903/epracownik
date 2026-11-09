@@ -1,0 +1,511 @@
+@import 'bootstrap-variables';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '../../../../../node_modules/quill/dist/quill.core.css';
+@import '../../../../../node_modules/quill/dist/quill.snow.css';
+@import './media.scss';
+
+/* ==============================================================
+Bootstrap tweaks
+===============================================================*/
+
+body,
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 300;
+}
+
+body.login {
+  background-image: url(../images/background2.jpg);
+}
+
+html body {
+  background-color: #f8f9fa !important;
+}
+
+.container-fluid,
+.container-xl,
+.container-lg,
+.container-md,
+.container-sm {
+  padding-left: 275px;
+  padding-top: 70px;
+  padding-right: 20px;
+  padding-bottom: 60px;
+
+  @media screen and (max-width: 768px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+/* Increase contrast of links to get 100% on Lighthouse Accessability Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
+a {
+  color: $primary;
+  font-weight: bold;
+}
+
+a:hover {
+  color: $primary;
+}
+
+/* override hover color for dropdown-item forced by bootstrap to all a:not([href]):not([tabindex]) elements in _reboot.scss */
+a:not([href]):not([tabindex]):hover.dropdown-item {
+  color: $dropdown-link-hover-color;
+}
+
+/* override .dropdown-item.active background-color on hover */
+.dropdown-item.active:hover {
+  background-color: mix($dropdown-link-hover-bg, $dropdown-link-active-bg, 50%);
+}
+
+a:hover {
+  /* make sure browsers use the pointer cursor for anchors, even with no href */
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  color: $dropdown-link-hover-color;
+}
+
+/* ==========================================================================
+Browser Upgrade Prompt
+========================================================================== */
+.browserupgrade {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+/* ==========================================================================
+Generic styles
+========================================================================== */
+
+/* Error highlight on input fields */
+// .ng-valid[required],
+// .ng-valid.required {
+//   border-left: 5px solid green;
+// }
+
+// .ng-invalid:not(form) {
+//   border-left: 5px solid red;
+// }
+
+label.required:after {
+  content: '*';
+  position: absolute;
+  margin-left: 2px;
+  top: 0;
+  color: green;
+}
+
+/* other generic styles */
+
+.jh-card {
+  padding: 1.5%;
+  margin-top: 20px;
+  border: none;
+}
+
+.error {
+  color: white;
+  background-color: red;
+}
+
+.pad {
+  padding: 10px;
+}
+
+.w-40 {
+  width: 40% !important;
+}
+
+.w-60 {
+  width: 60% !important;
+}
+
+.height-42 {
+  height: 42px;
+}
+
+.break {
+  white-space: normal;
+  word-break: break-all;
+}
+
+.readonly {
+  background-color: #eee;
+  opacity: 1;
+}
+
+.footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.hand,
+[jhisortby] {
+  cursor: pointer;
+}
+
+/* ==========================================================================
+Custom alerts for notification
+========================================================================== */
+.alerts {
+  .alert {
+    text-overflow: ellipsis;
+
+    pre {
+      background: none;
+      border: none;
+      font: inherit;
+      color: inherit;
+      padding: 0;
+      margin: 0;
+    }
+
+    .popover pre {
+      font-size: 10px;
+    }
+  }
+
+  .jhi-toast {
+    position: fixed;
+    width: 100%;
+
+    &.left {
+      left: 5px;
+    }
+
+    &.right {
+      right: 5px;
+    }
+
+    &.top {
+      top: 55px;
+    }
+
+    &.bottom {
+      bottom: 55px;
+    }
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .alerts .jhi-toast {
+    width: 50%;
+  }
+}
+
+/* ==========================================================================
+entity detail page css
+========================================================================== */
+.row.jh-entity-details > {
+  dd {
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .row.jh-entity-details > {
+    dt {
+      margin-bottom: 15px;
+    }
+
+    dd {
+      border-bottom: 1px solid #eee;
+      padding-left: 180px;
+      margin-left: 0;
+    }
+  }
+}
+
+/* ==========================================================================
+ui bootstrap tweaks
+========================================================================== */
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
+  cursor: pointer;
+}
+
+.thread-dump-modal-lock {
+  max-width: 450px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* jhipster-needle-scss-add-main JHipster will add new css style */
+.white-form {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 20px;
+  width: 100%;
+}
+
+.p-menuitem-link-active {
+  color: $primary !important;
+
+  .p-menuitem-text {
+    color: $primary !important;
+  }
+}
+
+.login-form-wraper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: padding 0.2s ease-in-out;
+
+  @media screen and (max-width: 576px) {
+    display: block;
+    margin: auto;
+    padding-top: 120px;
+    width: 90%;
+    &.focus-form {
+      padding-top: 0px;
+      margin-top: -100px;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .p-steps-title {
+    font-size: 0.8rem;
+  }
+}
+
+p-inputSwitch.form-control {
+  border: none;
+  padding: 4px 0;
+}
+
+.p-control.form-control {
+  border: none;
+  padding: 0;
+
+  & > .p-component {
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.15rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    .p-multiselect-label,
+    .p-dropdown-label {
+      padding: 0.375rem 0.75rem;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .p-mt-3 {
+    overflow: auto;
+  }
+
+  .p-datatable table {
+    table-layout: auto !important;
+  }
+}
+
+.p-slider {
+  .p-slider-range {
+    background: $danger;
+  }
+  .p-slider-handle {
+    border: 2px solid $danger;
+  }
+}
+
+.btn-rounded {
+  border-radius: 28px;
+}
+
+.table-badge {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  &.success,
+  &.category-MESSAGE {
+    background-color: #c8e6c9;
+    color: #256029;
+  }
+  &.info,
+  &.category-ABSENT {
+    background-color: #b3e5fc;
+    color: #23547b;
+  }
+  &.warning,
+  &.category-SYSTEM {
+    background: #ffcdd2;
+    color: #c63737;
+  }
+  &.danger {
+    background: #feedaf;
+    color: #8a5340;
+  }
+  &.help,
+  &.category-HR {
+    background-color: #eccfff;
+    color: #694382;
+  }
+}
+
+legend {
+  width: inherit;
+  padding: inherit;
+  margin-bottom: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+fieldset {
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.p-breadcrumb {
+  margin-top: 15px;
+  border: none;
+}
+.p-toolbar {
+  margin-bottom: 15px;
+  margin-top: 15px;
+  padding: 0.5rem;
+}
+.p-column-filter-buttonbar {
+  display: none !important;
+}
+
+.p-menuitem-link {
+  .p-menuitem-text {
+    font-weight: 400;
+  }
+}
+
+.p-dialog .p-dialog-footer {
+  margin-top: -1px;
+}
+
+.fixed-top {
+  z-index: 1000 !important;
+}
+
+/* ----------------------------------------------------------------
+                              MAIN STYLES
+  ---------------------------------------------------------------- */
+.sing-card {
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  &--header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    font-weight: 600;
+    align-items: flex-start;
+
+    &__position-right {
+      padding: 0;
+      margin: 0;
+
+      & .p-button.p-button-icon-only {
+        padding: 0;
+      }
+    }
+  }
+
+  &--body {
+    width: 100%;
+  }
+
+  &--footer {
+    margin-top: auto;
+  }
+}
+
+span.p-button-icon.pi.pi-ellipsis-v {
+  color: #2e3541;
+}
+
+.customScrollPanel {
+  .p-scrollpanel-wrapper {
+    border-right: 9px solid var(--layer-1);
+    border-bottom: 9px solid var(--layer-1);
+    padding-right: 20px;
+  }
+
+  .p-scrollpanel-bar {
+    background-color: var(--layer-2);
+    border-radius: 0;
+    opacity: 1;
+    transition: background-color 0.2s;
+  }
+
+  &.no-panel-padding {
+    .p-scrollpanel-content {
+      padding: 0;
+    }
+  }
+
+  .p-scrollpanel-content {
+    padding: 0 25px 25px 0;
+  }
+}
+
+.sidebarScrollPanel {
+  .p-scrollpanel-content {
+    padding: 0;
+  }
+}
+
+.p-buttonset .p-button:not(:last-child) {
+  border-right: 1px solid #ced4da !important;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@for $j from 1 to 51 {
+  .fs-#{str-replace(0.05 * $j + '', '.', '')} {
+    font-size: 0.05rem * $j;
+  }
+}
+
+.p-datepicker table td {
+  padding: 0.13rem; // use as per your requirement.
+
+  span {
+    width: 35px;
+    height: 35px;
+  }
+}

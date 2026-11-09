@@ -1,0 +1,26 @@
+{
+  "ebokApp": {
+    "qualifications": {
+      "home": {
+        "title": "Qualifications",
+        "createLabel": "Qualifications erstellen",
+        "createOrEditLabel": "Qualifications erstellen oder bearbeiten",
+        "notFound": "No Qualifications found"
+      },
+      "created": "Qualifications erstellt mit ID {{ param }}",
+      "updated": "Qualifications aktualisiert mit ID {{ param }}",
+      "deleted": "Qualifications gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Qualifications {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Qualifications"
+      },
+      "name": "Name",
+      "startDate": "Start Date",
+      "expireDate": "Expire Date",
+      "comments": "Comments",
+      "subsidized": "Subsidized"
+    }
+  }
+}

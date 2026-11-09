@@ -1,0 +1,208 @@
+<div class="row header-salaries">
+  <div class="offset-md-3 offset-2 col-md-6 col-8 text-center">
+    <h1 class="title">KARTA PRZYCHODÓW PRACOWNIKA wg daty wypłaty, dane płacowe - Rok: {{ currentYear | date: 'y' }}</h1>
+  </div>
+  <div class="col-md-3 col-2 position-relative">
+    <div class="position-absolute pin-right">
+      <button type="button" pButton pRipple class="p-button-text" icon="pi pi-ellipsis-v" (click)="menu.toggle($event)"></button>
+      <p-menu #menu [popup]="true" [model]="itemsMenuModel" appendTo="body"></p-menu>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Szczegóły" [(visible)]="dialogVisibility" styleClass="col-11 px-0">
+  <jhi-employee-ingredients-card-payroll-table
+    [currentSelectedYear]="currentYear"
+    [isOpen]="dialogVisibility"
+  ></jhi-employee-ingredients-card-payroll-table>
+</p-dialog>
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+    <button
+      (click)="handlerChangeYear()"
+      type="button"
+      pButton
+      pRipple
+      class="p-button-text"
+      label="Poprzedni rok"
+      icon="pi pi-angle-double-left"
+    ></button>
+    <button
+      (click)="handlerChangeYear(true)"
+      type="button"
+      pButton
+      pRipple
+      class="p-button-text"
+      label="Aktualny rok"
+      icon="pi pi-angle-double-down"
+    ></button>
+    <button
+      (click)="showFullscreenTable()"
+      type="button"
+      pButton
+      pRipple
+      class="p-button-text"
+      label="{{ 'fullScreenTable' | translate }}"
+      icon="pi pi-search-plus"
+    ></button>
+  </div>
+</p-toolbar>
+<div class="table-container">
+  <ng-container [ngTemplateOutlet]="payrollTable"></ng-container>
+</div>
+<p-messages [(value)]="msgs" [closable]="false"></p-messages>
+
+<p-dialog
+  header="{{ 'payrollTable' | translate }}"
+  [resizable]="false"
+  [modal]="true"
+  [maximizable]="true"
+  appendTo="body"
+  [(visible)]="fullScreenTable"
+  [style]="{ width: '90vw' }"
+  [contentStyle]="{ height: '300px' }"
+>
+  <ng-container [ngTemplateOutlet]="payrollTable"></ng-container>
+</p-dialog>
+
+<ng-template #payrollTable>
+  <p-table [value]="employeeIncome" styleClass="payroll-table" *ngIf="employeeIncome?.length" [autoLayout]="true">
+    <ng-template pTemplate="header">
+      <tr class="payroll-table-header">
+        <th rowspan="4" colspan="1" jhiTranslate="incomes.month" [ngStyle]="{ width: '70px' }">Month</th>
+        <th rowspan="1" colspan="4" jhiTranslate="incomes.payroll.income.title">Income</th>
+        <th rowspan="2" colspan="2" jhiTranslate="incomes.payroll.contributions.title">
+          Social security contributions paid by the insured person:
+        </th>
+        <th rowspan="2" colspan="1" jhiTranslate="incomes.payroll.income.totalIncomeCost">Cost of getting income</th>
+        <th rowspan="4" colspan="1" jhiTranslate="incomes.payroll.income.forMonth">
+          Income in a given month (basis for calculating income tax)
+        </th>
+        <th rowspan="3" colspan="1" jhiTranslate="incomes.payroll.income.cumulatively">
+          Income cumulatively from the beginning of the year
+        </th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.freeAmount">Free amount</th>
+        <th rowspan="2" colspan="1" jhiTranslate="incomes.payroll.healthInsurancePremium">Health insurance premium</th>
+        <th rowspan="2" colspan="1" jhiTranslate="incomes.payroll.advancePaymentForIncomeTax">Advance income tax payment</th>
+        <th rowspan="2" colspan="1" jhiTranslate="incomes.payroll.deductions">Deductions</th>
+      </tr>
+
+      <tr>
+        <th rowspan="2" colspan="1" jhiTranslate="incomes.payroll.income.salaryInCash">Salary in cash</th>
+        <th rowspan="1" colspan="3" jhiTranslate="incomes.payroll.income.including">Including:</th>
+        <th rowspan="3" colspan="1" jhiTranslate="incomes.payroll.taxAdvancePayment">Accrued advance for income tax</th>
+      </tr>
+
+      <tr>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.income.taxed">taxed</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.income.taxedWithoutZUS">taxed without ZUS</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.income.renumerationForIncForWork">rem. for incap. to work</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.contributions.retirement">retirement</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.contributions.sickness">sickness</th>
+        <th rowspan="2" colspan="1" jhiTranslate="incomes.payroll.socialSecurityDeductions">social security deducted</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.premiumCollected">taken</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.premiumDeducted">due</th>
+        <th rowspan="2" colspan="1" jhiTranslate="incomes.payroll.toPay">To pay</th>
+      </tr>
+      <tr>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.income.salaryInKind">in kind</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.income.grossPremiums">gross premium</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.income.taxedWithoutZUSandTaxes">without ZUS and tax</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.income.zusBenefits">ZUS benefits</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.contributions.disability">disability</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.contributions.total">total</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.rate">Rate [%]</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.advanceDue">deducted</th>
+        <th rowspan="1" colspan="1" jhiTranslate="incomes.payroll.advanceCollected">collected</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-employeeIncome>
+      <tr class="top-bordered">
+        <td rowspan="2">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              {{ employeeIncome.paymentDate | dateMoment: 'ROMAN' }}
+            </div>
+            <div class="pl-1">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-search"
+                class="p-button-rounded p-button-success p-button-small-size"
+                pTooltip="{{ 'previewPayrollList' | translate }}"
+                (click)="goToPayrollDetails(employeeIncome.paymentDate)"
+              ></button>
+            </div>
+          </div>
+        </td>
+        <td class="text-right">{{ employeeIncome.salaryInCash || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.taxed || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.taxedWithoutZus || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.inability2 || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.socialSecurityContributionsPaid.retirement || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.socialSecurityContributionsPaid.sickness || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.costOfGettingIncome || 0 | number: '1.2-2' }}</td>
+        <td rowspan="2" class="text-right">{{ employeeIncome.incomeInAGivenMonth || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.incomeFromBeginningOfYear || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.freeAmount || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.healthInsurancePremium.taken || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.advancePaymentForIncomeTax.due || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.advancePaymentForIncomeTax.deductions || 0 | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td class="text-right">{{ employeeIncome.salaryInKind || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.grossPremium || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.withoutZusAndTax || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.socialInsuranceBenefits || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.socialSecurityContributionsPaid.disability || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.socialSecurityContributionsPaid.contributionsSum || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.socialSecurityDeducted || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.rate || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.accruedAdvancePaymentForIncomeTax || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.healthInsurancePremium.deducted || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.advancePaymentForIncomeTax.collected || 0 | number: '1.2-2' }}</td>
+        <td class="text-right">{{ employeeIncome.advancePaymentForIncomeTax.toPay || 0 | number: '1.2-2' }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <tr class="top-bordered">
+        <td rowspan="2">Suma:</td>
+        <td *ngFor="let sum of this.total.top.sum; let i = index" [attr.rowspan]="i === 7 ? 2 : ''" class="text-right">
+          {{ sum | number: '1.2-2' }}
+        </td>
+      </tr>
+      <tr>
+        <td *ngFor="let sum of this.total.bottom.sum" class="text-right">{{ sum !== null ? (sum | number: '1.2-2') : '' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
+
+<p-dialog [(visible)]="isPDFPIT11ViewerDialogVisible" [modal]="true" styleClass="col-lg-11 col-md-11 col-11 px-0">
+  <p-header>{{ 'payroll.pit11' | translate }}</p-header>
+  <button class="btn btn-info mb-2" (click)="confirmDocumentPdf()" [disabled]="isDisableConfirmReadPdf">
+    {{ 'payroll.readPdf' | translate }}
+  </button>
+  <ngx-extended-pdf-viewer
+    [base64Src]="pdfPIT11Src"
+    *ngIf="isPDFPIT11ViewerDialogVisible"
+    [showOpenFileButton]="false"
+    [showPropertiesButton]="false"
+  ></ngx-extended-pdf-viewer>
+</p-dialog>
+
+<p-dialog [(visible)]="isPDFIMIRViewerDialogVisible" [modal]="true" styleClass="col-lg-11 col-md-11 col-11 px-0">
+  <p-header>{{ 'payroll.imir' | translate }}</p-header>
+  <button class="btn btn-info mb-2" (click)="confirmDocumentPdf()" [disabled]="isDisableConfirmReadPdf">
+    {{ 'payroll.readPdf' | translate }}
+  </button>
+  <ngx-extended-pdf-viewer
+    [base64Src]="pdfIMIRSrc"
+    *ngIf="isPDFIMIRViewerDialogVisible"
+    [showOpenFileButton]="false"
+    [showPropertiesButton]="false"
+  ></ngx-extended-pdf-viewer>
+</p-dialog>

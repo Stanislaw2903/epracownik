@@ -1,0 +1,43 @@
+{
+  "ebokApp": {
+    "medicalExamination": {
+      "table": {
+        "id": "ID",
+        "dateFrom": "Date from",
+        "dateTo": "Date to",
+        "donated": "Donated",
+        "kind": "Kind",
+        "comments": "Comments",
+        "sanitaryTests": "Sanitary examinations required",
+        "expired": "Expired"
+      }
+    },
+    "safetyTraining": {
+      "table": {
+        "id": "ID",
+        "dateFrom": "Date from",
+        "dateTo": "Date to",
+        "kind": "Kind",
+        "comments": "Comments",
+        "expired": "Expired"
+      }
+    },
+    "courses": {
+      "table": {
+        "id": "ID",
+        "startDate": "Data",
+        "name": "Name",
+        "donated": "Donated",
+        "comments": "Comments"
+      }
+    },
+    "qualifications": {
+      "table": {
+        "completionDate": "Date obtained",
+        "dateTo": "Valid until",
+        "name": "Name",
+        "comments": "Comments"
+      }
+    }
+  }
+}

@@ -1,0 +1,166 @@
+<div class="row">
+    <div class="col-12">
+        <h2>{{ 'ebokApp.graphic.home.title' | translate }}</h2>
+    </div>
+</div>
+
+<div class="row">
+  <div class="filters-field--input">
+    <div class="form-group">
+      <p-inputNumber
+        [(ngModel)]="filters.year"
+        inputId="minmax"
+        inputStyleClass="form-control w-100 height-42"
+        inputId="minmax"
+        mode="decimal"
+        [min]="2000"
+        [max]="2030"
+        (onInput)="changeFilterYear()"
+        placeholder="{{ 'ebokApp.graphic.filters.yearNumber' | translate }}"
+      >
+      </p-inputNumber>
+    </div>
+  </div>
+  <div class="filters-field--input">
+    <div class="form-group">
+      <p-inputNumber
+        [(ngModel)]="filters.month"
+        inputId="minmax"
+        inputStyleClass="form-control w-100 height-42"
+        inputId="minmax"
+        mode="decimal"
+        [min]="configFiled.minMonthNumber"
+        [max]="configFiled.maxMonthNumber"
+        (onInput)="onMonthChange()"
+        placeholder="{{ 'ebokApp.graphic.filters.monthNumber' | translate }}"
+      >
+      </p-inputNumber>
+    </div>
+  </div>
+  <div class="col-md-9 filters-field--selectbtn" *ngIf="isHr">
+    <div class="form-group">
+      <p-selectButton [styleClass]="resultsLoaded ? 'graphic-type-toggle results-loaded' : 'graphic-type-toggle results-pending'" [options]="selectGraphicTypeDict" [(ngModel)]="filters.graphicType" (onChange)="onGraphicTypeChange()" optionLabel="label"></p-selectButton>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="isGroupMode()">
+  <div class="col-md-4">
+    <div class="form-group">
+      <p-multiSelect
+        [options]="userGroups"
+        [(ngModel)]="filters.groups"
+        (onChange)="onFilterChange()"
+        optionLabel="name"
+        optionValue="id"
+        [filter]="true"
+        appendTo="body"
+        styleClass="w-100"
+        defaultLabel="{{ 'ebokApp.graphic.filters.groups' | translate }}"
+      >
+      </p-multiSelect>
+    </div>
+  </div>
+</div>
+<div class="row mb-3">
+    <div class="col-12">
+        <button class="btn btn-primary" (click)="loadPage()" [disabled]="!canLoad()">
+            <span jhiTranslate="entity.action.filter">filter</span>
+        </button>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-12 graphic-legend">
+        <span class="legend-item"><span class="legend-swatch abs-A"></span> {{ 'ebokApp.graphic.legend.A' | translate }}</span>
+        <span class="legend-item"><span class="legend-swatch abs-B"></span> {{ 'ebokApp.graphic.legend.B' | translate }}</span>
+        <span class="legend-item"><span class="legend-swatch abs-C"></span> {{ 'ebokApp.graphic.legend.C' | translate }}</span>
+        <span class="legend-item"><span class="legend-swatch abs-D"></span> {{ 'ebokApp.graphic.legend.D' | translate }}</span>
+        <span class="legend-item"><span class="legend-swatch HOLIDAY"></span> {{ 'ebokApp.graphic.type.HOLIDAY' | translate }}</span>
+        <span class="legend-item"><span class="legend-swatch WEEKEND"></span> {{ 'ebokApp.graphic.legend.WEEKEND' | translate }}</span>
+        <span class="legend-item legend-hint">{{ 'ebokApp.graphic.legend.hint' | translate }}</span>
+    </div>
+</div>
+
+<p-scrollPanel [style]="{ width: '100%', height: '100%', overflow: 'auto' }" styleClass="customScrollPanel no-panel-padding">
+  <p-table
+    [value]="tableData"
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [loading]="loading"
+    styleClass="datatable-graphic"
+    [lazy]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex">
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="pi pi-file-pdf"
+          (click)="exportPdf()"
+          class="p-button-warning p-mr-2"
+          pTooltip="PDF"
+          tooltipPosition="bottom"
+        ></button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="pi pi-file-excel"
+          (click)="exportExcel()"
+          class="p-button-success p-mr-2"
+          pTooltip="Excel"
+          tooltipPosition="bottom"
+        ></button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="user-column">
+          {{ 'ebokApp.graphic.table.username' | translate }}
+        </th>
+        <th *ngFor="let col of dayColumns">
+          <small>{{ col.label }}</small>
+        </th>
+      </tr>
+      <tr class="graphic-filter-row">
+        <th>
+          <input
+            class="form-control"
+            type="text"
+            [ngModel]="filters.lastName"
+            (ngModelChange)="onLastNameChange($event)"
+            placeholder="{{ 'ebokApp.graphic.filters.lastName' | translate }}"
+          />
+        </th>
+        <th *ngFor="let col of dayColumns"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr class="graphic-row">
+        <td>{{ item.firstName }} {{ item.lastName }}</td>
+        <td
+          *ngFor="let col of dayColumns"
+          [ngClass]="cellClass(item, col.key)"
+          [pTooltip]="cellTooltip(item, col.key)"
+          tooltipPosition="top"
+        >
+          {{ cellText(item, col.key) }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="dayColumns.length + 1">{{ 'entity.table.noData' | translate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-scrollPanel>
+<p-paginator
+  [rows]="itemsPerPage"
+  [first]="(page || 0) * itemsPerPage"
+  [totalRecords]="totalItems"
+  (onPageChange)="loadPage($event)"
+  [rowsPerPageOptions]="[10, 20, 50, 100]"
+></p-paginator>

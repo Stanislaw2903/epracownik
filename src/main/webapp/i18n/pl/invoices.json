@@ -1,0 +1,29 @@
+{
+  "ebokApp": {
+    "invoices": {
+      "home": {
+        "title": "Faktury",
+        "createLabel": "Dodaj fakturę",
+        "createOrEditLabel": "Dodaj lub edytuj: fakturę",
+        "search": "Szukaj faktur",
+        "notFound": "Brak faktur"
+      },
+      "created": "Utworzono nową fakturę z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono fakturę z identyfikatorem {{ param }}",
+      "deleted": "Usunięto fakturę z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć fakturę {{ id }}?"
+      },
+      "detail": {
+        "title": "Faktura"
+      },
+      "issueDate": "Data wystawienia",
+      "documentNumber": "Numer dokumentu",
+      "paymentDeadline": "Termin płatności",
+      "grossAmount": "Kwota brutto",
+      "toPay": "Do zapłaty",
+      "documentFile": "Dokument",
+      "status": "Status"
+    }
+  }
+}

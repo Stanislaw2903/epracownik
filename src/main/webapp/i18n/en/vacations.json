@@ -1,0 +1,43 @@
+{
+  "ebokApp": {
+    "vacations": {
+      "home": {
+        "title": "Vacation applications",
+        "ownVacations": "Own vacations applications"
+      },
+      "statuses": {
+        "WAITING": "Awaiting",
+        "ACCEPTED": "Accepted",
+        "REJECTED": "Rejected",
+        "ACCEPTED_INITIALLY": "Accepted initially",
+        "CANCELLED": "Withdrawn"
+      },
+      "setApplicationStatus": {
+        "reject": "Reject application",
+        "accept": "Accept application",
+        "accept_initially": "Accept initially application",
+        "cancel": "Withdraw application"
+      },
+      "vacationApplicationResponse": {
+        "title": "Vacation application",
+        "success": "Status of application has been updated",
+        "error": "Status of application hasn't been updated"
+      },
+      "table": {
+        "createdBy": "Created by",
+        "sendDate": "Send date",
+        "fullDay": "Is full day",
+        "dateFrom": "Date from",
+        "dateTo": "Date to",
+        "timeFrom": "Time from",
+        "timeTo": "Time to",
+        "processedBy": "Processed by",
+        "status": "Status",
+        "action": "Action",
+        "used": "Used days",
+        "id": "ID",
+        "comment": "Comment"
+      }
+    }
+  }
+}

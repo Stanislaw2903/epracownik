@@ -1,0 +1,18 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-8 p-mb-4">
+        <h4 jhiTranslate="register.summary">Summary</h4>
+    </div>
+    <div class="col-md-8">
+        <p><span class="p-text-bold">Numer kontrahenta: </span>{{personalData.clientNumber}}</p>
+        <p><span class="p-text-bold">Numer PESEL: </span>{{personalData.pesel}}</p>
+        <p><span class="p-text-bold">Numer telefonu: </span>{{personalData.phone}}</p>
+        <p><span class="p-text-bold">Adres email: </span>{{personalData.email}}</p>
+    </div>
+    <p-messages></p-messages>
+</div>
+
+<div class="p-grid p-jc-end">
+    <button pButton type="button" label="Logowanie" (click)="cancel()" class="p-button-danger" icon="pi pi-user"></button>
+    <button pButton type="button" label="Wstecz" (click)="prevPage()" icon="pi pi-angle-left"></button>
+    <button pButton type="button" (click)="register()" class="p-button-success" label="{{'register.form.button' | translate}}"></button>
+</div>

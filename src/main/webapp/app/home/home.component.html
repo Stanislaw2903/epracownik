@@ -1,0 +1,381 @@
+<div class="row mx-0">
+  <div class="col-md-12">
+    <h1 class="main-slogan">Witaj {{ account?.firstName }}</h1>
+  </div>
+</div>
+<div class="row mx-0 px-3 sing-dashboard-vacation--media">
+  <div class="col-xl-4 col-md-12 col-12 py-3">
+    <section class="sing-card p-shadow-4 travel-box">
+      <div class="sing-card--header">
+        Urlop wypoczynkowy
+        <div class="position-relative sing-card--header__position-right">
+          <button
+            type="button"
+            pButton
+            pRipple
+            class="p-button-text p-button-sm"
+            icon="pi pi-calendar"
+            label="Historia"
+            (click)="historyApplication.toggle($event)"
+          ></button>
+          <p-menu #historyApplication [popup]="true" [model]="vacationItemsMenuModel" appendTo="body"></p-menu>
+        </div>
+      </div>
+      <div class="sing-card--body py-2 h-100 d-flex justify-content-center">
+        <div class="w-100">
+          <div class="row h-100">
+            <div class="col-xl-5 col-12 d-flex justify-content-center align-items-center">
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [legend]="chartOptions.legend"
+                [plotOptions]="chartOptions.plotOptions"
+                [dataLabels]="chartOptions.dataLabels"
+                [responsive]="chartOptions.responsive"
+                [colors]="chartOptions.colors"
+                [labels]="chartOptions.labels"
+              ></apx-chart>
+            </div>
+            <div class="col-xl-7 col-12 d-flex align-items-center used-day-of-vacation--make-application">
+              <div class="pb-5">
+                <h5>
+                  <strong>{{ vacationDetailsData?.used || 0 }}</strong> dni wykorzystane
+                </h5>
+                <div pTooltip="Istnieje już jeden oczekujący wniosek" tooltipPosition="bottom" tooltipStyleClass="text-center" [tooltipDisabled]="!showTooltipActiveProposal">
+                    <button type="button" class="btn btn-danger btn-rounded" (click)="openVacationApplicationModal()" [disabled]="!activeVacationButton">
+                      Złóż wniosek o urlop
+                    </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sing-card--footer">
+        <div class="vacation-number-box">
+          <div>
+            <p class="vacation-number-box--main-value">{{ vacationDetailsData?.total || 0 }}</p>
+            <p>dni urlopowych</p>
+          </div>
+          <div>
+            <p class="vacation-number-box--main-value">{{ vacationDetailsData?.used || 0 }}</p>
+            <p>wykorzystanych</p>
+          </div>
+          <div>
+            <p class="vacation-number-box--main-value">{{ vacationDetailsData?.vested || 0 }}</p>
+            <p>do wykorzystania</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="col-xl-8 col-12 py-3">
+    <section class="sing-card p-shadow-4 travel-box">
+      <div class="sing-card--header">
+        Historia urlopu wypoczynkowego (rok {{ currentYear | date: 'yyyy' }})
+        <div class="position-relative sing-card--header__position-right">
+          <button type="button" pButton pRipple class="p-button-text" icon="pi pi-ellipsis-v" (click)="menu.toggle($event)"></button>
+          <p-menu #menu [popup]="true" [model]="itemsMenuModel" appendTo="body"></p-menu>
+        </div>
+      </div>
+      <div class="sing-card--body py-2">
+        <p-chart type="bar" [data]="vacationDaysChart.data" [options]="vacationDaysChart.options" height="25vh"></p-chart>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="row mx-0 px-3 sing-dashboard-vacation--media">
+  <div class="col-12 py-3">
+    <section class="sing-card p-shadow-4 travel-box">
+      <div class="sing-card--header">
+        Powiadomienia
+      </div>
+      <div class="sing-card--body">
+        <p-scrollPanel [style]="{ width: '100%', height: '100%', overflow: 'auto' }" styleClass="customScrollPanel">
+          <p-table [value]="notifications">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Temat</th>
+                <th>Data nadania</th>
+                <th>Nadawca</th>
+                <th style="width: 200px"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-notification>
+              <tr [ngClass]="{ 'table-warning': !notification.status }">
+                <td>{{ notification.subject }}</td>
+                <td>{{ notification.createDate | date: 'medium' }}</td>
+                <td>{{ notification.createdBy?.firstName }} {{ notification.createdBy?.lastName }}</td>
+                <td>
+                  <button
+                    (click)="getNotification(notification.id, notification)"
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-eye"
+                    class="p-button-rounded p-button-success p-button-outlined"
+                    pTooltip="{{ 'entity.action.view' | translate }}"
+                    tooltipPosition="top"
+                  ></button>
+                  <button
+                    (click)="showNotificationReply(notification)"
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-reply"
+                    class="p-button-rounded p-button-info p-button-outlined"
+                    pTooltip="{{ 'entity.action.reply' | translate }}"
+                    tooltipPosition="top"
+                  ></button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-scrollPanel>
+      </div>
+    </section>
+  </div>
+</div>
+
+<p-dialog [(visible)]="notificationDisplay" [modal]="true">
+  <p-header>
+    {{ notificationData?.subject }}
+  </p-header>
+  <div [innerHTML]="notificationData?.description"></div>
+</p-dialog>
+
+<p-dialog [(visible)]="notificationReply" [modal]="true">
+  <p-header> Odpowiedź na wiadomość: {{ notificationData?.subject }} </p-header>
+  <div>
+    <p-editor *ngIf="notificationData" [(ngModel)]="notificationData.description" [style]="{ height: '320px' }"></p-editor>
+  </div>
+  <p-footer>
+    <button type="button" id="cancel-save" class="btn btn-danger" (click)="notificationReply = false">
+      <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+    </button>
+
+    <button id="save-entity" class="btn btn-success" (click)="sendReply()">
+      <fa-icon icon="envelope"></fa-icon>&nbsp;<span jhiTranslate="entity.action.send">Send</span>
+    </button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog [(visible)]="isVacationDetailsDialogVisible" [modal]="true" styleClass="col-lg-6 col-md-8 col-12 px-0">
+  <p-header>Historia urlopów dla roku: {{ currentYear | date: 'yyyy' }} </p-header>
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <button
+        (click)="handlerChangeVacationHistoryDate(true)"
+        type="button"
+        pButton
+        pRipple
+        class="p-button-text"
+        label="Poprzedni rok"
+        icon="pi pi-angle-double-left"
+      ></button>
+      <button
+        (click)="handlerChangeVacationHistoryDate()"
+        type="button"
+        pButton
+        pRipple
+        class="p-button-text"
+        label="Aktualny rok"
+        icon="pi pi-angle-double-down"
+      ></button>
+    </div>
+  </p-toolbar>
+  <p-table [value]="vacationDetails" styleClass="datatable-vacation-details">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Data od</th>
+        <th>Data do</th>
+        <th>Liczba dni</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vacationDetails>
+      <tr>
+        <td>{{ vacationDetails.dateFrom | date: 'dd-MM-yyyy' }}</td>
+        <td>{{ vacationDetails.dateTo | date: 'dd-MM-yyyy' }}</td>
+        <td>{{ vacationDetails.daysTaken | number }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      (click)="isVacationDetailsDialogVisible = false; prepareDateForVacationHistory(true)"
+      label="Ok"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="isVacationApplicationVisible" [modal]="true" [closable]="!vacationSubmitting" [closeOnEscape]="!vacationSubmitting" styleClass="col-lg-5 col-md-8 col-11 px-0">
+  <p-header> Wniosek o urlop </p-header>
+  <form #vacationForm="ngForm">
+    <div class="row">
+      <div class="col-12 p-fluid">
+        <div class="form-group p-field">
+          <label for="selectCategory" class="required">Wybierz kategorię urlopu</label>
+          <p-selectButton
+            [options]="fullDayDict"
+            [(ngModel)]="preselectFullDay"
+            (onChange)="changeCategory($event)"
+            optionLabel="name"
+            optionValue="value"
+            name="fullDay"
+          ></p-selectButton>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="vacationApplicationModel.fullDay === true">
+      <div class="col-12 p-fluid">
+        <div class="form-group p-field">
+          <label for="selectCategory" class="required">Rodzaj urlopu</label>
+          <p-dropdown
+            class="p-control form-control"
+            [options]="vacationTypesDict"
+            name="vacationType"
+            [(ngModel)]="vacationApplicationModel.vacationType"
+            [autoDisplayFirst]="false"
+            [showClear]="true"
+            [required]="true"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="vacationApplicationModel.fullDay === true">
+        <div class="col-6 p-fluid" *ngIf="vacationApplicationModel.vacationType === 'LEAVE_ON_REQUEST'">
+            <div class="form-group p-field">
+                <label for="selectDayFrom" class="required">Urlop w dniu</label>
+                <div class="d-block">
+                  <p-calendar [firstDayOfWeek]="1"
+                    appendTo="body"
+                    name="selectDayFrom"
+                    id="selectDayFrom"
+                    [(ngModel)]="vacationApplicationModel.dateFrom"
+                    (onSelect)="setDateToAsSameLikeDateFrom()"
+                    [minDate]="minDate"
+                    dateFormat="dd-mm-yy"
+                    [required]="true"
+                  ></p-calendar>
+                </div>
+              </div>
+        </div>
+      <div class="col-6 p-fluid" *ngIf="vacationApplicationModel.vacationType !== 'LEAVE_ON_REQUEST'">
+        <div class="form-group p-field">
+          <label for="selectDayFrom" class="required">W okresie od</label>
+          <div class="d-block">
+            <p-calendar [firstDayOfWeek]="1"
+              appendTo="body"
+              name="selectDayFrom"
+              id="selectDayFrom"
+              [(ngModel)]="vacationApplicationModel.dateFrom"
+              [maxDate]="vacationApplicationModel.dateTo!"
+              [minDate]="minDate"
+              (onSelect)="getFreeDays()"
+              dateFormat="dd-mm-yy"
+              [required]="true"
+            ></p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 p-fluid" *ngIf="vacationApplicationModel.vacationType !== 'LEAVE_ON_REQUEST'">
+        <div class="form-group p-field">
+          <label for="selectDayTo" class="required">W okresie do</label>
+          <p-calendar [firstDayOfWeek]="1"
+            appendTo="body"
+            name="selectDayTo"
+            id="selectDayTo"
+            [(ngModel)]="vacationApplicationModel.dateTo"
+            (onSelect)="getFreeDays()"
+            [minDate]="vacationApplicationModel.dateFrom!"
+            dateFormat="dd-mm-yy"
+            [required]="true"
+          ></p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="vacationApplicationModel.fullDay === false">
+      <div class="col-12 p-fluid">
+        <div class="form-group p-field">
+          <label for="selectHourlyType" class="required">Rodzaj urlopu</label>
+          <p-dropdown
+            class="p-control form-control"
+            [options]="hourlyVacationTypesDict"
+            name="hourlyVacationType"
+            [(ngModel)]="vacationApplicationModel.vacationType"
+            [autoDisplayFirst]="false"
+            [required]="true"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div class="col-12 p-fluid">
+        <div class="form-group p-field">
+          <label for="selectDay" class="required">Wniosek o urlop dnia</label>
+          <p-calendar [firstDayOfWeek]="1"
+            appendTo="body"
+            name="selectDay"
+            id="selectDay"
+            [(ngModel)]="vacationApplicationModel.dateFrom"
+            (onSelect)="getFreeDays()"
+            [minDate]="minDate"
+            dateFormat="dd-mm-yy"
+            [required]="true"
+            (onSelect)="changeVacationDateWithNoFullDay()"
+          ></p-calendar>
+        </div>
+      </div>
+      <div class="col-6 p-fluid">
+        <div class="form-group p-field">
+          <label for="selectTimeFrom" class="required">W godzinach od</label>
+          <p-calendar [firstDayOfWeek]="1"
+            appendTo="body"
+            id="selectTimeFrom"
+            name="selectTimeFrom"
+            [(ngModel)]="vacationApplicationModel.dateFrom"
+            (onSelect)="getFreeDays()"
+            [timeOnly]="true"
+            inputId="timeonlyFrom"
+            [required]="true"
+          ></p-calendar>
+        </div>
+      </div>
+      <div class="col-6 p-fluid">
+        <div class="form-group p-field">
+          <label for="selectTimeTo" class="required">W godzinach do</label>
+          <p-calendar [firstDayOfWeek]="1"
+            appendTo="body"
+            name="selectTimeTo"
+            id="selectTimeTo"
+            [(ngModel)]="vacationApplicationModel.dateTo"
+            (onSelect)="getFreeDays()"
+            [timeOnly]="true"
+            inputId="timeonlyTo"
+            [required]="true"
+          ></p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="vacationFreeDays?.workingDays !== null">
+      <div class="col-12">
+        <p>
+          Ilość wnioskowanych dni: {{ vacationFreeDays.workingDays }}.
+          <!-- <span *ngIf="vacationFreeDays.tooMuch">Za dużo: {{ vacationFreeDays.tooMuch }}.</span> -->
+        </p>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-times" (click)="isVacationApplicationVisible = false" [disabled]="vacationSubmitting" label="Zamknij" styleClass="p-button-text"></p-button>
+    <p-button
+      icon="pi pi-check"
+      (click)="sendVacationApplication(vacationForm.form.valid)"
+      [disabled]="!vacationForm.form.valid || vacationSubmitting"
+      [loading]="vacationSubmitting"
+      label="Wyślij wniosek"
+      styleClass="p-button-danger"
+    ></p-button>
+  </ng-template>
+</p-dialog>

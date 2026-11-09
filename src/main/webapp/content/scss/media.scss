@@ -1,0 +1,41 @@
+@media (min-width: 1200px) and (max-width: 1480px) {
+  .sing-dashboard-vacation--media {
+    .col-xl-4 {
+      flex: 0 0 42%;
+      max-width: 42%;
+    }
+
+    .col-xl-8 {
+      flex: 0 0 58%;
+      max-width: 58%;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .used-day-of-vacation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &--make-application {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 2rem;
+    }
+  }
+}
+
+@media (max-width: 1325px) {
+  .p-dialog .p-dialog-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    button {
+      margin-top: 0.5em;
+    }
+  }
+}

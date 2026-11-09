@@ -1,0 +1,182 @@
+{
+  "global": {
+    "title": "Electronic Employee Dashboard",
+    "browsehappy": "You are using an <strong>outdated<strong> browser. Please <a href=\"http:browsehappy.com\">update your browser<a> to improve your experience with this application.",
+    "menu": {
+      "home": "Homepage",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Enions",
+        "invoices": "Invoices",
+        "agreement": "Agreement",
+        "payroll": "Salary data",
+        "salaries": "Salaries",
+        "pit": "PIT",
+        "personnelData": "HR data",
+        "medicalExamination": "Medical examinations",
+        "safetyTraining": "Occupational health and safety training",
+        "coursesAndTraining": "Courses and trainings",
+        "permissions": "Entitlements",
+        "otherAbsences": "Absences",
+        "absenceHistory": "Absence history",
+        "reportAbsence": "Reporting absences",
+        "vacations": "Leave requests",
+        "notification": "Notification",
+        "notificationRead": "Notification Read",
+        "qualifications": "Qualifications",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "controlReadFiles": "Control read files"
+      },
+      "administration": "Administration",
+      "account": {
+        "main": "Account",
+        "settings": "Settings",
+        "password": "Password",
+        "sessions": "Sessions",
+        "login": "Authorization",
+        "logout": "Logout",
+        "register": "Sign up"
+      },
+      "admin": {
+        "main": "System",
+        "userManagement": "Users",
+        "userGroups": "User groups",
+        "graphic": "Absence schedule",
+        "tracker": "User tracking",
+        "metrics": "Metrics",
+        "health": "Status",
+        "configuration": "Configuration",
+        "logs": "Logs",
+        "audits": "Audits",
+        "apidocs": "API",
+        "database": "Database",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Language"
+    },
+    "form": {
+      "username.label": "Username",
+      "username.placeholder": "Your login",
+      "currentpassword.label": "Current password",
+      "currentpassword.placeholder": "Current password",
+      "newpassword.label": "New password",
+      "newpassword.placeholder": "New password",
+      "confirmpassword.label": "Confirm new password",
+      "confirmpassword.placeholder": "Confirm new password",
+      "email.label": "Email",
+      "email.placeholder": "Your email",
+      "phoneNumber": "Pgone number"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "If you want to log in ",
+          "link": "Click here to sign in",
+          "suffix": "you can try one of the default accounts:<br>- Administrator (login=\"admin\" and password=\"admin\") <br>- User (login=\"user\" and password=\"user\")."
+        },
+        "register": {
+          "noaccount": "Don't have an account yet?",
+          "link": "Sign up"
+        }
+      },
+      "error": {
+        "dontmatch": "Password and confirmation do not match!"
+      },
+      "validate": {
+        "newpassword": {
+          "required": "Your password is required.",
+          "minlength": "Your password should have a minimum of 4 characters",
+          "maxlength": "Your password must be no longer than 50 characters",
+          "strength": "Password strength:"
+        },
+        "confirmpassword": {
+          "required": "Password confirmation is required.",
+          "minlength": "Password confirmation should be a minimum of 4 characters",
+          "maxlength": "Your password confirmation should be no longer than 50 characters"
+        },
+        "email": {
+          "required": "Your email is required.",
+          "invalid": "Your email is incorrect.",
+          "minlength": "Your email must be at least 5 characters long",
+          "maxlength": "Your Email should not exceed 50 characters."
+        }
+      }
+    },
+    "field": {
+      "id": "ID",
+      "externalId": "ID KiP"
+    },
+    "ribbon": {
+      "dev": "Development"
+    },
+    "item-count": "Displayed {{first}} - {{second}} of {{total}} items."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Add binary data",
+      "addimage": "Add image",
+      "back": "Back",
+      "cancel": "Cancel",
+      "close": "Close",
+      "delete": "Delete",
+      "edit": "Edit",
+      "open": "Open",
+      "save": "Save",
+      "send": "Send",
+      "view": "Preview",
+      "reply": "Reply to",
+      "filter": "Show results"
+    },
+    "detail": {
+      "field": "Field",
+      "value": "Value",
+      "fullDay": {
+        "true": "Full day",
+        "false": "Hourly"
+      }
+    },
+    "delete": {
+      "title": "Confirm deletion"
+    },
+    "validation": {
+      "required": "This field is required.",
+      "minlength": "The value must be at least {{min}} characters long.",
+      "maxlength": "The value cannot be longer than {{max}} characters.",
+      "min": "The value should be greater than {{min}}.",
+      "max": "The value cannot be greater than {{max}}.",
+      "minbytes": "Value shall not be less than {{min}} bytes.",
+      "maxbytes": "The value shall not be greater than {{max}} bytes.",
+      "pattern": "The value should follow the {{pattern}} pattern.",
+      "number": "The value should be numeric.",
+      "datetimelocal": "The value should contain the date and time."
+    },
+    "table": {
+      "noData": "No data"
+    }
+  },
+  "error": {
+    "internalServerError": "Internal server error",
+    "server.not.reachable": "Server is unreachable",
+    "url.not.found": "Not found",
+    "NotNull": "Value {{fieldName}} cannot be empty!",
+    "Size": "Value {{fieldName}} does not meet length requirements!",
+    "userexists": "A user with this name already exists!",
+    "emailexists": "A user with this email address already exists!",
+    "idexists": "New {{entityName}} cannot have an ID assigned yet!",
+    "idnull": "Wrong ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "footer": "This is the footer",
+  "payroll": {
+    "readPdf": "I have reviewed",
+    "toastReadPdf": {
+      "title": "Payroll Data",
+      "summary": "Acknowledgment of file review confirmed"
+    },
+    "pit11": "PIT 11 file preview",
+    "imir": "IMIR file preview"
+  }
+}

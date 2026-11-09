@@ -1,0 +1,39 @@
+<p-table
+  [value]="safetyTrainingTableData"
+  dataKey="id"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [loading]="loading"
+  styleClass="p-datatable-customers"
+  [lazy]="true"
+  (onLazyLoad)="customSort($event)"
+>
+  <ng-template pTemplate="header">
+    <tr>
+        <th pSortableColumn="dateFrom">{{ 'ebokApp.safetyTraining.table.dateFrom' | translate }} <p-sortIcon field="dateFrom"></p-sortIcon></th>
+        <th pSortableColumn="dateTo">{{ 'ebokApp.safetyTraining.table.dateTo' | translate }} <p-sortIcon field="dateTo"></p-sortIcon></th>
+      <th>{{ 'ebokApp.safetyTraining.table.kind' | translate }}</th>
+      <th>{{ 'ebokApp.safetyTraining.table.comments' | translate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-examination>
+    <tr [ngClass]="{'warning': examination.expires}">
+      <td>{{ examination.dateFrom | date: 'mediumDate' }}</td>
+      <td>{{ examination.dateTo | date: 'mediumDate' }}</td>
+      <td><span class="table-badge category-ABSENT" *ngIf="examination.kind?.trim()">{{ getFullKindName(examination.kind) }}</span></td>
+      <td>{{ examination.comments }}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="4">{{ 'entity.table.noData' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-paginator
+    [rows]="itemsPerPage"
+    [totalRecords]="totalItems"
+    (onPageChange)="loadPage($event)"
+    [rowsPerPageOptions]="[10, 20, 50, 100]"
+></p-paginator>

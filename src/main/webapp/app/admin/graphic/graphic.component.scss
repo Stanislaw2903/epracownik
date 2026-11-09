@@ -1,0 +1,146 @@
+::ng-deep .datatable-graphic.p-datatable {
+  .p-datatable-thead > tr > th {
+    padding: 0.25rem 0.25rem;
+    white-space: nowrap;
+    text-align: center;
+
+    &:first-child {
+      width: 200px;
+      min-width: 200px;
+      text-align: left;
+    }
+
+    &:not(:first-child) {
+      width: 28px;
+      min-width: 28px;
+      padding: 0.25rem 0;
+    }
+  }
+
+  .p-datatable-thead > tr.graphic-filter-row > th:first-child .form-control {
+    height: 32px;
+    font-size: 13px;
+  }
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr.graphic-row > td {
+  height: 60px;
+
+  &:first-child {
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &:not(:first-child) {
+    width: 28px;
+    min-width: 28px;
+    padding: 0;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  &.WORKING {
+    background: #fff;
+  }
+
+  &.HOLIDAY {
+    background: #66e98d;
+  }
+
+  &.WEEKEND {
+    background: #ff8d8d;
+  }
+
+  // Kategorie absencji (odcienie)
+  &.abs-A {
+    background: #eff86d;
+  } // urlop wypoczynkowy
+  &.abs-B {
+    background: #ffd27f;
+  } // rodzicielskie / opieka
+  &.abs-C {
+    background: #ffb74d;
+  } // choroba / wypadek
+  &.abs-D {
+    background: #f5e9a0;
+  } // bezpłatne / inne
+}
+
+.graphic-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  font-size: 12px;
+
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .legend-swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #bbb;
+
+    &.abs-A {
+      background: #eff86d;
+    }
+    &.abs-B {
+      background: #ffd27f;
+    }
+    &.abs-C {
+      background: #ffb74d;
+    }
+    &.abs-D {
+      background: #f5e9a0;
+    }
+    &.HOLIDAY {
+      background: #66e98d;
+    }
+    &.WEEKEND {
+      background: #ff8d8d;
+    }
+  }
+
+  .legend-hint {
+    color: #777;
+    font-style: italic;
+  }
+}
+
+::ng-deep .graphic-type-toggle.results-loaded .p-button.p-highlight {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: #fff;
+}
+
+::ng-deep .graphic-type-toggle.results-pending .p-button.p-highlight {
+  background: #2196f3;
+  border-color: #2196f3;
+  color: #fff;
+}
+
+.filters-field {
+  &--input {
+    width: 100px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+@media (max-width: 1128px) {
+  .filters-field {
+    &--selectbtn {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+}

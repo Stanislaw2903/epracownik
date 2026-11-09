@@ -1,0 +1,45 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [],
+  "fields": [
+    {
+      "fieldName": "issueDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "documentNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "paymentDeadline",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "grossAmount",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "toPay",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "documentFile",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "Boolean"
+    }
+  ],
+  "changelogDate": "20201009091931",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "no",
+  "entityTableName": "invoices",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "pagination"
+}

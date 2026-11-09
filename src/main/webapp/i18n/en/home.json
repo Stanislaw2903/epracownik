@@ -1,0 +1,30 @@
+{
+  "home": {
+    "title": "Welcome, Java Hipster!",
+    "subtitle": "This is your homepage",
+    "logged": {
+      "message": "You are logged in as user \"{{username}}\"."
+    },
+    "question": "If you have any question on JHipster:",
+    "link": {
+      "homepage": "JHipster homepage",
+      "stackoverflow": "JHipster on Stack Overflow",
+      "bugtracker": "JHipster bug tracker",
+      "chat": "JHipster public chat room",
+      "follow": "follow @jhipster on Twitter"
+    },
+    "like": "If you like JHipster, don't forget to give us a star on",
+    "github": "GitHub",
+    "vacationApplication": {
+      "title": "Holiday request",
+      "success": "The vacation request has been sent",
+      "error": "The vacation request has been not sent",
+      "vacationTypeError": "The maximum number of days of this type of vacation type has already been used up",
+      "overlapError": "The request dates overlap an existing request",
+      "pastDateError": "A request cannot be submitted for a past date",
+      "notEnoughDaysError": "Not enough vacation days available",
+      "tooManyOnRequestError": "The annual on-request leave limit has been exceeded",
+      "hourlyNotAllowedError": "Annual leave can only be requested in full days"
+    }
+  }
+}

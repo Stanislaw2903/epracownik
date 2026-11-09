@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="qualifications">
+            <h2><span jhiTranslate="ebokApp.qualifications.detail.title">Qualifications</span> {{ qualifications.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="ebokApp.qualifications.name">Name</span></dt>
+                <dd>
+                    <span>{{ qualifications.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.qualifications.startDate">Start Date</span></dt>
+                <dd>
+                    <span>{{ qualifications.startDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.qualifications.expireDate">Expire Date</span></dt>
+                <dd>
+                    <span>{{ qualifications.expireDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.qualifications.comments">Comments</span></dt>
+                <dd>
+                    <span>{{ qualifications.comments }}</span>
+                </dd>
+                <dt><span jhiTranslate="ebokApp.qualifications.subsidized">Subsidized</span></dt>
+                <dd>
+                    <span>{{ qualifications.subsidized }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/qualifications', qualifications.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

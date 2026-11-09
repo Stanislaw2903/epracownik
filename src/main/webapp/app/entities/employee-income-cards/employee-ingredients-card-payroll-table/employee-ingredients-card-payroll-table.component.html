@@ -1,0 +1,30 @@
+<h1 class="title">KARTA PRZYCHODÓW PRACOWNIKA (SKŁADNIKI, ŚWIADCZENIA I POTRĄCENIA), wg daty wypłaty</h1>
+<p class="date-range">
+  Rok: {{ employeeIncome?.employeeIncomeStartDate | date: 'yyyy' }}
+</p>
+
+<p-scrollPanel [style]="{ width: '100%', height: '100%', overflow: 'auto' }" styleClass="customScrollPanel">
+  <p-table [value]="employeeIncome?.employeeIncomeData?.data" *ngIf="employeeIncome?.employeeIncomeData?.data?.length">
+    <ng-template pTemplate="header">
+      <tr>
+        <th [ngStyle]="{ width: '100px' }" jhiTranslate="incomes.month">Month</th>
+        <th *ngFor="let column of employeeIncome?.employeeIncomeData.columns">{{ column.description }}</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-employeeIncomeData>
+      <tr class="top-bordered">
+        <td>{{ employeeIncomeData.paymentDate | dateMoment: 'MMMM' }}</td>
+        <td *ngFor="let amount of employeeIncomeData.rowAmount" class="text-right">{{ amount || 0 | number: '1.2-2' }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <tr class="top-bordered">
+        <td>Suma:</td>
+        <td *ngFor="let sum of sums" class="text-right">{{ sum || 0 | number: '1.2-2' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-scrollPanel>
+<p-messages [(value)]="msgs" [closable]="false"></p-messages>

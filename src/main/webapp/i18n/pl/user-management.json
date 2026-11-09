@@ -1,0 +1,79 @@
+{
+  "userManagement": {
+    "home": {
+      "title": "Użytkownicy",
+      "createLabel": "Stwórz nowego użytkownika",
+      "createOrEditLabel": "Stwórz lub edytuj użytkownika",
+      "integrate": "Integracja użytkowników",
+      "emailActivation": "Wysyłka e-maili aktywacyjnych",
+      "filterOwnUsers": "Pokaż przypisanych użytkowników"
+    },
+    "created": "Utworzono nowego użytkownika z identyfikatorem {{ param }}",
+    "updated": "Uaktualniono użytkownika z identyfikatorem {{ param }}",
+    "deleted": "Usunięto użytkownika z identyfikatorem {{ param }}",
+    "delete": {
+      "question": "Czy na pewno chcesz usunąć użytkownika {{ login }}?"
+    },
+    "detail": {
+      "title": "Użytkownik"
+    },
+    "filterUsers": {
+      "notFound": "Nie znaleziono pasujących użytkowników",
+      "placeholder": "Wybierz użytkownika"
+    },
+    "login": "Login",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "email": "Email",
+    "activated": "Aktywny",
+    "userGroup": "Grupa użytkownika",
+    "deactivated": "Nieaktywny",
+    "profiles": "Profile",
+    "langKey": "Język",
+    "phoneNumber": "Numer telefonu",
+    "createdBy": "Utworzony przez",
+    "createdDate": "Data utworzenia",
+    "lastModifiedBy": "Zmodyfikowany przez",
+    "lastModifiedDate": "Data modyfikacji",
+    "permissionAcceptVacation": "Zakres osób do akceptacji wniosków urlopowych",
+    "selectUserVacation": "Przyporządkuj pracowników",
+    "assignToGorupUsers": "Przyporządkuj do grup",
+    "approvalVerificationType": "Sposób akceptacji wniosku",
+    "approvalType": "Uprawnienie do akceptacji wniosku",
+    "countOfUsers": "Liczba użytkowników",
+    "operationSuccessful": "Operacja przebiegła pomyślnie",
+    "type": "Typ",
+    "group": "Grupa",
+    "isActivated": "Aktywny",
+    "P": "Pracownik",
+    "O": "Zleceniobiorca",
+    "integrationError": {
+      "errorWhileSendingEmail": "Błąd podczas wysyłki email",
+      "loginAlreadyUsed": "Login istnieje już w bazie danych",
+      "emailAlreadyUsed": "Email istnieje już w bazie danych",
+      "emailWrongPattern": "Błędny adres email",
+      "emailIsEmpty": "Brak email",
+      "wrongLogin": "Brak imienia — nie można utworzyć loginu",
+      "alreadyActivated": "Użytkownik jest już aktywny"
+    },
+    "integration": {
+      "contractor": "Pobierz również zleceniobiorców",
+      "selectAll": "Zaznacz wszystkich",
+      "deselectAll": "Odznacz wszystkich",
+      "selectedCount": "Zaznaczono {{ selected }} z {{ total }} możliwych do importu",
+      "problem": "Uwagi",
+      "import": "Importuj zaznaczonych ({{ count }})",
+      "nothingToImport": "Brak nowych osób do zaimportowania"
+    },
+    "activation": {
+      "resendTooltip": "Wyślij ponownie link aktywacyjny",
+      "resent": "Wysłano ponownie e-mail z nowym linkiem aktywacyjnym",
+      "resendFailed": "Nie udało się wysłać e-maila (użytkownik jest już aktywny lub nie istnieje)",
+      "sendSelected": "Wyślij link aktywacyjny ({{ count }})",
+      "sendSelectedConfirm": "Wysłać link aktywacyjny do zaznaczonych użytkowników ({{ count }})? Każdy dostanie nowy link ważny 10 dni, poprzedni przestanie działać.",
+      "sentSummary": "Wysłano: {{ sent }}, pominięto: {{ skipped }}",
+      "selectAllInactive": "Zaznacz wszystkich nieaktywnych pasujących do filtrów (ze wszystkich stron)",
+      "selectRow": "Zaznacz do wysyłki linku aktywacyjnego"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "configuration": {
+    "title": "Konfiguracja",
+    "filter": "Filtruj (po prefiksie)",
+    "table": {
+      "prefix": "Prefiks",
+      "properties": "Właściwości"
+    },
+    "availableVacationButton": {
+      "successSend": "Pomyślnie zmieniono status aktywności przycisku",
+      "errorSend": "Wystąpił problem przy zmianie status aktywności przycisku"
+    }
+  }
+}

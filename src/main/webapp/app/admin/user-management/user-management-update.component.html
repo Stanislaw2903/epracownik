@@ -1,0 +1,281 @@
+<div class="row">
+  <div class="col-12">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="myUserLabel" jhiTranslate="userManagement.home.createOrEditLabel">Create or edit a User</h2>
+      <p>{{ 'userManagement.createdDate' | translate }} {{ user.createdDate | date: 'dd.MM.yyyy' }}</p>
+      <div *ngIf="user">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="global.field.externalId">Login</label>
+              <input type="text" class="form-control" name="externalId" formControlName="externalId" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-control-label" for="userGroup">
+                <span jhiTranslate="userManagement.userGroup">userGroup</span>
+              </label>
+              <p-dropdown
+                class="p-control form-control"
+                optionLabel="name"
+                optionValue="id"
+                [options]="userGroups"
+                formControlName="groupId"
+                [autoDisplayFirst]="false"
+                [showClear]="true"
+                [filter]="true"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div class="col-md-4" *ngIf="isEditMode">
+            <div class="form-group">
+              <label class="form-control-label" for="activated">
+                <span jhiTranslate="userManagement.activated">Activated</span>
+              </label>
+              <p-inputSwitch
+                class="form-control"
+                formControlName="activated"
+                [disabled]="user.id === undefined ? true : false"
+              ></p-inputSwitch>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="userManagement.login">Login</label>
+              <input type="text" class="form-control" name="login" formControlName="login" />
+
+              <div *ngIf="editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('login')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('login')?.errors?.maxlength"
+                  jhiTranslate="entity.validation.maxlength"
+                  [translateValues]="{ max: 50 }"
+                >
+                  This field cannot be longer than 50 characters.
+                </small>
+
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('login')?.errors?.pattern"
+                  jhiTranslate="entity.validation.patternLogin"
+                >
+                  This field can only contain letters, digits and e-mail addresses.
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="userManagement.email">Email</label>
+              <input type="email" class="form-control" name="email" formControlName="email" />
+
+              <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('email')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('email')?.errors?.maxlength"
+                  jhiTranslate="entity.validation.maxlength"
+                  [translateValues]="{ max: 100 }"
+                >
+                  This field cannot be longer than 100 characters.
+                </small>
+
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('email')?.errors?.minlength"
+                  jhiTranslate="entity.validation.minlength"
+                  [translateValues]="{ min: 5 }"
+                >
+                  This field is required to be at least 5 characters.
+                </small>
+
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('email')?.errors?.email"
+                  jhiTranslate="global.messages.validate.email.invalid"
+                >
+                  Your email is invalid.
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="userManagement.phoneNumber">phoneNumber</label>
+              <input type="text" class="form-control" name="phoneNumber" formControlName="phoneNumber" />
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-group">
+              <label jhiTranslate="userManagement.type">Type</label>
+              <p-dropdown
+                class="p-control form-control"
+                [options]="typeDict"
+                name="type"
+                formControlName="type"
+                [filter]="false"
+                [disabled]="isEditMode"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="userManagement.firstName">First Name</label>
+              <input type="text" class="form-control" name="firstName" formControlName="firstName" />
+
+              <div *ngIf="editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('firstName')?.errors?.maxlength"
+                  jhiTranslate="entity.validation.maxlength"
+                  [translateValues]="{ max: 50 }"
+                >
+                  This field cannot be longer than 50 characters.
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-group">
+              <label jhiTranslate="userManagement.lastName">Last Name</label>
+              <input type="text" class="form-control" name="lastName" formControlName="lastName" />
+
+              <div *ngIf="editForm.get('lastName')!.invalid && (editForm.get('lastName')!.dirty || editForm.get('lastName')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('lastName')?.errors?.maxlength"
+                  jhiTranslate="entity.validation.maxlength"
+                  [translateValues]="{ max: 50 }"
+                >
+                  This field cannot be longer than 50 characters.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-group" *ngIf="languages && languages.length > 0">
+              <label jhiTranslate="userManagement.langKey">Lang Key</label>
+              <p-dropdown class="p-control form-control" [options]="languages" formControlName="langKey" [filter]="false"></p-dropdown>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-group">
+              <label jhiTranslate="userManagement.profiles">Profiles</label>
+              <p-multiSelect
+                class="p-control form-control"
+                [options]="authorities"
+                name="authority"
+                formControlName="authorities"
+                [filter]="false"
+              ></p-multiSelect>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6" *ngIf="isEditMode">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="userManagement.permissionAcceptVacation">permissionAcceptVacation</label>
+              <p-dropdown
+                class="p-control form-control"
+                [options]="permissionVacation"
+                formControlName="authorizationToAcceptVacation"
+                [autoDisplayFirst]="false"
+                (onChange)="onAuthorizationToAcceptVacationChange($event)"
+                [showClear]="true"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6" *ngIf="editForm.get('authorizationToAcceptVacation')!.value === 'SPECIFIC_GROUP' && isEditMode">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="userManagement.selectUserVacation">selectUserVacation</label>
+              <p-multiSelect
+                class="p-control form-control"
+                [options]="userList"
+                name="relatedUsers"
+                formControlName="relatedUsers"
+                [filter]="true"
+                [maxSelectedLabels]="1"
+                [selectedItemsLabel]="'{0} pracowników'"
+                [showToggleAll]="false"
+                appendTo="body"
+                [emptyFilterMessage]="'Brak wyników filtrowania'"
+              ></p-multiSelect>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6" *ngIf="editForm.get('authorizationToAcceptVacation')!.value === 'USER_GROUP' && isEditMode">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="userManagement.assignToGorupUsers">assignToGorupUsers</label>
+              <p-multiSelect
+                class="p-control form-control"
+                [options]="userGroups"
+                name="groups"
+                formControlName="groups"
+                optionLabel="name"
+                optionValue="id"
+                [filter]="true"
+                [selectedItemsLabel]="'{0} grup'"
+                [showToggleAll]="false"
+                appendTo="body"
+                [emptyFilterMessage]="'Brak wyników filtrowania'"
+              ></p-multiSelect>
+            </div>
+          </div>
+        </div>
+        <div class="row"  *ngIf=" this.vacationApproveLevel === 'TWO_LEVEL'">
+            <div class="col-xl-4 col-lg-6">
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="userManagement.approvalVerificationType">approvalVerificationType</label>
+                    <p-dropdown
+                        class="p-control form-control"
+                        [options]="approvalVerificationTypes"
+                        formControlName="approvalVerificationType"
+                        [autoDisplayFirst]="false"
+                        [showClear]="true"
+                    ></p-dropdown>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6">
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="userManagement.approvalType">approvalType</label>
+                    <p-dropdown
+                        class="p-control form-control"
+                        [options]="approvalTypes"
+                        formControlName="approvalType"
+                        [autoDisplayFirst]="false"
+                        [showClear]="true"
+                    ></p-dropdown>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div *ngIf="user">
+        <button type="button" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button type="submit" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

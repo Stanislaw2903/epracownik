@@ -1,0 +1,18 @@
+{
+  "ebokApp": {
+    "absences": {
+      "home": {
+        "title": "Historia absencji"
+      },
+      "table": {
+        "id": "ID",
+        "dateFrom": "Data od",
+        "dateTo": "Data do",
+        "code": "Kod",
+        "firstName": "Imię",
+        "lastName": "Nazwisko",
+        "relatedUser": "Użytkownik"
+      }
+    }
+  }
+}

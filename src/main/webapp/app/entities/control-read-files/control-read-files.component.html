@@ -1,0 +1,142 @@
+<div class="row">
+  <div class="col-3">
+    <div class="form-group">
+      <label jhiTranslate="ebokApp.controlReadFiles.table.relatedUser">RelatedSuer</label>
+      <p-multiSelect
+        [options]="users"
+        optionLabel="login"
+        dataKey="login"
+        class="p-control form-control"
+        [(ngModel)]="filters.userIds"
+        [selectedItemsLabel]="'{0} wybranych'"
+        [placeholder]="multiselectPlaceholder"
+        #multi
+      >
+        <ng-template let-option pTemplate="item">
+          <span class="p-ml-1">{{ option.firstName }} {{ option.lastName }}</span>
+        </ng-template>
+      </p-multiSelect>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="form-group">
+      <label jhiTranslate="ebokApp.controlReadFiles.filters.fileType">fileType</label>
+      <p-dropdown
+        [autoDisplayFirst]="false"
+        [(ngModel)]="filters.fileType"
+        class="p-control form-control"
+        [showClear]="true"
+        [options]="fileTypesDict"
+      ></p-dropdown>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="form-group">
+      <label jhiTranslate="ebokApp.controlReadFiles.filters.onlyConfirmed">onlyConfirmed</label>
+      <p-dropdown
+        [autoDisplayFirst]="false"
+        [(ngModel)]="filters.onlyConfirmed"
+        class="p-control form-control"
+        [showClear]="true"
+        [options]="fileStatusDict"
+      ></p-dropdown>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="form-group">
+      <div>
+        <label jhiTranslate="ebokApp.controlReadFiles.filters.year">year</label>
+      </div>
+      <p-inputNumber
+        [(ngModel)]="filters.year"
+        name="yearFrom"
+        inputId="minmax1year"
+        inputId="minmax1year"
+        mode="decimal"
+        [minlength]="4"
+        [maxlength]="5"
+        [inputStyleClass]="'form-control'"
+      >
+      </p-inputNumber>
+    </div>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-12">
+    <button class="btn btn-primary" (click)="loadPage()">
+      <span jhiTranslate="entity.action.filter">filter</span>
+    </button>
+  </div>
+</div>
+
+<p-table
+  [value]="controlReadFilesTableData"
+  dataKey="id"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [loading]="loading"
+  styleClass="p-datatable-customers"
+  [lazy]="true"
+  responsiveLayout="scroll"
+  (onLazyLoad)="customSort($event)"
+  (onFilter)="customFilter($event)"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="userId">{{ 'ebokApp.controlReadFiles.table.userId' | translate }} <p-sortIcon field="userId"></p-sortIcon></th>
+      <th>
+        {{ 'ebokApp.controlReadFiles.table.firstName' | translate }}
+      </th>
+      <th>
+        {{ 'ebokApp.controlReadFiles.table.lastName' | translate }}
+      </th>
+      <th>
+        {{ 'ebokApp.controlReadFiles.table.year' | translate }}
+      </th>
+      <th>
+        {{ 'ebokApp.controlReadFiles.table.fileName' | translate }}
+      </th>
+      <th>
+        {{ 'ebokApp.controlReadFiles.table.fileType' | translate }}
+      </th>
+      <th>
+        {{ 'ebokApp.controlReadFiles.table.viewed' | translate }}
+      </th>
+      <th>
+        {{ 'ebokApp.controlReadFiles.table.confirmed' | translate }}
+      </th>
+      <!-- <th>
+        {{ 'ebokApp.controlReadFiles.table.status' | translate }}
+      </th> -->
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-controlReadFiles>
+    <tr>
+      <td>{{ controlReadFiles.userId }}</td>
+      <td>{{ controlReadFiles.firstName }}</td>
+      <td>{{ controlReadFiles.lastName }}</td>
+      <td>{{ getYear(controlReadFiles) }}</td>
+      <td>
+        <span class="break-text">{{ controlReadFiles.fileName }}</span>
+      </td>
+      <td>{{ controlReadFiles.fileType }}</td>
+      <td>{{ controlReadFiles.viewed | date: 'mediumDate' }}</td>
+      <td>{{ controlReadFiles.confirmed | date: 'mediumDate' }}</td>
+      <!-- <td>{{ getStatus(controlReadFiles) | translate }}</td> -->
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6">{{ 'entity.table.noData' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-paginator
+  [rows]="itemsPerPage"
+  [totalRecords]="totalItems"
+  [first]="page * itemsPerPage + 1"
+  (onPageChange)="loadPage($event)"
+  [rowsPerPageOptions]="[10, 20, 50, 100]"
+></p-paginator>

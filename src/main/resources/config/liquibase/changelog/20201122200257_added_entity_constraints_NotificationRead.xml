@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity NotificationRead.
+    -->
+    <changeSet id="20201122200257-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="notification_read_id"
+                                 baseTableName="notification_read_user"
+                                 constraintName="fk_notification_read_user_notification_read_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="notification_read"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="notification_read_user"
+                                 constraintName="fk_notification_read_user_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+        
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,71 @@
+{
+  "ebokApp": {
+    "graphic": {
+      "home": {
+        "title": "Absence schedule"
+      },
+      "filters": {
+        "yearNumber": "Year",
+        "weekNumber": "Week",
+        "monthNumber": "Month",
+        "showAll": "Show all users",
+        "showMe": "Show my assigned users",
+        "showGroup": "Show users from the selected group",
+        "groups": "Select group",
+        "lastName": "Last name"
+      },
+      "table": {
+        "username": "First and last name",
+        "friday": "Friday",
+        "monday": "Monday",
+        "thursday": "Thursday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday"
+      },
+      "type": {
+        "WORKING": "Works",
+        "HOLIDAY": "Holiday",
+        "FREE": "Free",
+        "WEEKEND": "Weekend"
+      },
+      "legend": {
+        "A": "Annual leave",
+        "B": "Parental / care",
+        "C": "Sickness / accident",
+        "D": "Unpaid / other",
+        "WEEKEND": "Weekend",
+        "hint": "Letters = absence type; hover to see the full name"
+      },
+      "absence": {
+        "UW": "Annual leave",
+        "UC": "Parental (child-rearing) leave",
+        "UM": "Maternity leave",
+        "MA": "Maternity",
+        "UO": "Paternity leave",
+        "UR": "Parental leave",
+        "WM": "Leave on maternity-leave terms",
+        "DM": "Days for a mother with a child up to 14",
+        "ZO": "Care allowance",
+        "ZR": "Family / nursing / child-rearing allowance",
+        "ZS": "Family / nursing / family benefit",
+        "CH": "Sickness (sick pay)",
+        "CZ": "Sickness (sickness benefit)",
+        "CB": "Sickness (days without pay)",
+        "CN": "Sickness (person not entitled to pay)",
+        "WY": "Accident at work or occupational disease",
+        "RH": "Rehabilitation benefit",
+        "UB": "Unpaid leave",
+        "UK": "Compassionate / occasional leave",
+        "UP": "Job-search leave",
+        "SW": "Military or alternative service",
+        "NB": "Period of absence from work",
+        "SK": "Shortened notice period",
+        "ZW": "Release from work during notice period",
+        "OZ": "Secondment abroad",
+        "PP": "Work downtime",
+        "OG": "Overtime time-off",
+        "SO": "Benefit with presence at work"
+      }
+    }
+  }
+}

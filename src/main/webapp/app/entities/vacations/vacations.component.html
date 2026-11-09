@@ -1,0 +1,500 @@
+<p-scrollPanel [style]="{ width: '100%', height: '100%', overflow: 'auto' }" styleClass="customScrollPanel no-panel-padding">
+  <p-table
+    [value]="vacationsData"
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [loading]="loading"
+    styleClass="datatable-vacation"
+    [lazy]="true"
+    (onLazyLoad)="customSort($event)"
+    (onFilter)="customFilter($event)"
+  >
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning p-mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success p-mr-2" pTooltip="Excel" tooltipPosition="bottom"></button>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="createdBy" class="user-column">
+          {{ 'ebokApp.vacations.table.createdBy' | translate }} <p-sortIcon field="createdBy"></p-sortIcon>
+        </th>
+        <th pSortableColumn="createdDate" class="date-column">
+          {{ 'ebokApp.vacations.table.sendDate' | translate }} <p-sortIcon field="createdDate"></p-sortIcon>
+        </th>
+        <th>{{ 'ebokApp.vacations.table.status' | translate }}</th>
+        <th style="width:50px">{{ 'ebokApp.vacations.table.used' | translate }}</th>
+        <th pSortableColumn="dateFrom" class="date-column">
+          {{ 'ebokApp.vacations.table.dateFrom' | translate }} <p-sortIcon field="dateFrom"></p-sortIcon>
+        </th>
+        <th pSortableColumn="dateTo" class="date-column">
+            {{ 'ebokApp.vacations.table.dateTo' | translate }} <p-sortIcon field="dateTo"></p-sortIcon>
+        </th>
+        <th pSortableColumn="processedBy">
+          {{ 'ebokApp.vacations.table.processedBy' | translate }} <p-sortIcon field="processedBy"></p-sortIcon>
+        </th>
+        <th pSortableColumn="fullDay">{{ 'ebokApp.vacations.table.fullDay' | translate }} <p-sortIcon field="fullDay"></p-sortIcon></th>
+        <th pSortableColumn="vacationType">{{ 'ebokApp.vacations.table.vacationType' | translate }} <p-sortIcon field="vacationType"></p-sortIcon></th>
+        <th style="width:60px"></th>
+      </tr>
+      <tr>
+        <th>
+          <p-columnFilter field="createdBy" matchMode="equals" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <p-dropdown
+                [ngModel]="value"
+                [options]="usersDict"
+                (onChange)="filter($event.value)"
+                [showClear]="true"
+                [filter]="true"
+                appendTo="body"
+                [autoDisplayFirst]="false"
+              >
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter type="date" field="createdDate" [matchMode]="'only-same-date'" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <p-calendar [firstDayOfWeek]="1"
+                [ngModel]="value"
+                (onSelect)="filter($event)"
+                dateFormat="dd-mm-yy"
+                appendTo="body"
+                [showButtonBar]="true"
+              ></p-calendar>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <p-multiSelect
+                [options]="statuses"
+                (onChange)="filter($event.value)"
+                appendTo="body"
+                optionLabel="label"
+                optionValue="value"
+                [(ngModel)]="selectedStatuses"
+              >
+              </p-multiSelect>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th></th>
+        <th>
+          <p-columnFilter type="date" field="dateFrom" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <p-calendar [firstDayOfWeek]="1"
+                [ngModel]="value?.withTime ? value?.withTime : value"
+                (onSelect)="filter($event)"
+                (onClearClick)="filter()"
+                [showButtonBar]="true"
+                appendTo="body"
+                dateFormat="dd-mm-yy"
+              ></p-calendar>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+          <th>
+              <p-columnFilter type="date" field="dateTo" [showMenu]="false">
+                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <p-calendar [firstDayOfWeek]="1"
+                          [ngModel]="value?.withTime ? value?.withTime : value"
+                          (onSelect)="filter($event)"
+                          (onClearClick)="filter()"
+                          [showButtonBar]="true"
+                          appendTo="body"
+                          dateFormat="dd-mm-yy"
+                      ></p-calendar>
+                  </ng-template>
+              </p-columnFilter>
+          </th>
+        <th>
+          <p-columnFilter field="processedBy" matchMode="equals" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <p-dropdown
+                [ngModel]="value"
+                [options]="usersDict"
+                (onChange)="filter($event.value)"
+                [showClear]="true"
+                [filter]="true"
+                appendTo="body"
+                [autoDisplayFirst]="false"
+              >
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="fullDay" matchMode="equals" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <p-dropdown
+                [ngModel]="value"
+                [options]="fullDayDict"
+                (onChange)="filter($event.value)"
+                [showClear]="true"
+                appendTo="body"
+                [autoDisplayFirst]="false"
+                optionLabel="name"
+              >
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+            <p-columnFilter field="vacationType" matchMode="equals" [showMenu]="false">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-dropdown
+                    [ngModel]="value"
+                    [options]="vacationTypesDict"
+                    (onChange)="filter($event.value)"
+                    [showClear]="true"
+                    [autoDisplayFirst]="false"
+                    appendTo="body"
+                  >
+                  </p-dropdown>
+                </ng-template>
+              </p-columnFilter>
+          </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vacationApplication>
+      <tr>
+        <td>{{ vacationApplication.createdBy.firstName }} {{ vacationApplication.createdBy.lastName }}</td>
+        <td>
+          {{ vacationApplication.createdDate | date: 'mediumDate' }}
+        </td>
+        <td>
+          {{ 'ebokApp.vacations.statuses.' + vacationApplication.status | translate }}
+        </td>
+        <td>
+          {{ vacationApplication.used | translate }}
+        </td>
+        <td>
+          <span *ngIf="vacationApplication.fullDay">{{ vacationApplication.dateFrom | date: 'mediumDate' }}</span>
+          <span *ngIf="!vacationApplication.fullDay">{{ vacationApplication.dateFrom | date: 'medium' }}</span>
+        </td>
+        <td>
+          <span *ngIf="vacationApplication.fullDay">{{ vacationApplication.dateTo | date: 'mediumDate' }}</span>
+          <span *ngIf="!vacationApplication.fullDay">{{ vacationApplication.dateTo | date: 'medium' }}</span>
+        </td>
+        <td>{{ vacationApplication.processedBy?.firstName }} {{ vacationApplication.processedBy?.lastName }}</td>
+        <td>
+          {{ getFullDayValue(vacationApplication.fullDay) }}
+        </td>
+        <td>
+            {{ getTranslateVacationType(vacationApplication.vacationType) }}
+        </td>
+        <td class="text-right">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-pencil"
+            pTooltip="{{ 'entity.action.edit' | translate }}"
+            tooltipPosition="top"
+            (click)="openAcceptOrRejectModal(vacationApplication)"
+            class="p-button-rounded p-button-success p-button-sm p-button-outlined"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4">{{ 'entity.table.noData' | translate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-scrollPanel>
+<p-paginator
+  [rows]="itemsPerPage"
+  [first]="first"
+  [totalRecords]="totalItems"
+  (onPageChange)="loadPage($event)"
+  [rowsPerPageOptions]="[10, 20, 50, 100]"
+></p-paginator>
+<p-dialog [(visible)]="isAcceptOrRejectModalVisible" [modal]="true" styleClass="col-lg-5 col-md-8 col-11 px-0">
+  <p-header> Zarządzanie wnioskiem </p-header>
+  <form #vacationForm="ngForm" class="manage-application">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Typ urlopu:</label>
+          <p>{{ getTranslateStringFullDay(editApplication?.fullDay) | translate }}</p>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Wnioskodawca:</label>
+          <p>{{ editApplication?.createdBy?.firstName }} {{ editApplication?.createdBy?.lastName }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Wniosek złożony dnia:</label>
+          <p>{{ (editApplication?.createdDate | date: 'mediumDate') || ('entity.table.noData' | translate) }}</p>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Aktualny status:</label>
+          <p>{{ getTranslateStringStatus(editApplication?.status) | translate }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="editApplication?.fullDay === true">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Data od:</label>
+          <p>{{ editApplication?.dateFrom | date: 'mediumDate' }}</p>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Data do:</label>
+          <p>{{ editApplication?.dateTo | date: 'mediumDate' }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="editApplication?.fullDay === false">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Data od:</label>
+          <p>{{ editApplication?.dateFrom | date: 'medium' }}</p>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Data do:</label>
+          <p>{{ editApplication?.dateTo | date: 'medium' }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="editApplication?.statusDescription">
+      <div class="col-12" *ngIf="this.editApplication.status === 'REJECTED'">
+        <label for="comment">Powód odrzucenia</label>
+        <p>{{ editApplication?.statusDescription }}</p>
+      </div>
+      <div class="col-12" *ngIf="this.editApplication.status !== 'REJECTED'">
+          <label for="comment">Komentarz do akceptacji</label>
+          <p>{{ editApplication?.statusDescription }}</p>
+      </div>
+    </div>
+    <div class="row p-ai-center">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Ilość dni do wykorzystania</label>
+          <p>{{ applicantBalance !== undefined ? applicantBalance : ('entity.table.noData' | translate) }}</p>
+        </div>
+      </div>
+      <div class="col-6">
+        <button
+          type="button"
+          pButton
+          pRipple
+          class="p-button-outlined"
+          icon="pi pi-calendar"
+          label="Historia urlopów"
+          (click)="openApplicantHistory()"
+        ></button>
+      </div>
+    </div>
+    <div class="row" *ngIf="isNotEnoughDaysForApplicant()">
+      <div class="col-12">
+        <p style="color:red">Liczba dni przekracza dostępną ilość możliwych do wybrania dni urlopowych</p>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="isAcceptOrRejectModalVisible = false"
+      label="{{ 'entity.action.cancel' | translate }}"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button *ngIf="(this.editApplication.status !== 'REJECTED' && this.editApplication.status !== 'ACCEPTED')
+    && (
+    (this.vacationApproveLevel === null || this.vacationApproveLevel === 'ONE_LEVEL')
+    || this.vacationApproveLevel === 'TWO_LEVEL' && (
+    (this.userApprove === 'INITIAL_VERIFICATION' && this.editApplication.status === 'WAITING')
+    || (this.userApprove === 'FINAL_VERIFICATION' && this.editApplication.status === 'ACCEPTED_INITIALLY')
+    || (this.userApprove === 'FINAL_VERIFICATION' && this.editApplication.status === 'WAITING' && (this.editApplication.createdBy?.approvalVerification === null || this.editApplication.createdBy?.approvalVerification === 'ONE_LEVEL'))
+    ))"
+      icon="pi pi-ban"
+      (click)="sendVacationApplication('REJECTED')"
+      [disabled]="!vacationForm.form.valid"
+      label="{{ 'ebokApp.vacations.setApplicationStatus.reject' | translate }}"
+      styleClass="p-button-danger"
+    ></p-button>
+    <p-button *ngIf="(this.editApplication.status !== 'REJECTED' && this.editApplication.status !== 'ACCEPTED') && this.userApprove === 'INITIAL_VERIFICATION' && this.editApplication.status === 'WAITING' && (this.vacationApproveLevel === 'TWO_LEVEL' && (this.editApplication.createdBy?.approvalVerification === null || this.editApplication.createdBy?.approvalVerification === 'TWO_LEVEL'))"
+      icon="pi pi-check"
+      (click)="sendVacationApplication('ACCEPTED_INITIALLY')"
+      [disabled]="!vacationForm.form.valid"
+      label="{{ 'ebokApp.vacations.setApplicationStatus.accept_initially' | translate }}"
+      styleClass="p-button-success"
+    ></p-button>
+    <p-button *ngIf="(this.editApplication.status !== 'REJECTED' && this.editApplication.status !== 'ACCEPTED') && (this.vacationApproveLevel === 'ONE_LEVEL'
+    || (this.userApprove === 'FINAL_VERIFICATION' && (this.editApplication.status === 'ACCEPTED_INITIALLY' || (this.editApplication.status === 'WAITING' && (this.editApplication.createdBy?.approvalVerification === null || this.editApplication.createdBy?.approvalVerification === 'ONE_LEVEL')))))"
+              icon="pi pi-check"
+              (click)="sendVacationApplication('ACCEPTED')"
+              [disabled]="!vacationForm.form.valid || isNotEnoughDaysForApplicant()"
+              label="{{ 'ebokApp.vacations.setApplicationStatus.accept' | translate }}"
+              styleClass="p-button-success"
+    ></p-button>
+    <p-button *ngIf="this.editApplication.status === 'ACCEPTED' && this.editApplication.erpId && this.isHr"
+              icon="pi pi-times-circle"
+              (click)="sendVacationApplication('CANCELLED')"
+              label="{{ 'ebokApp.vacations.setApplicationStatus.cancel' | translate }}"
+              styleClass="p-button-danger"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="isRejectModalVisible" [modal]="true" styleClass="col-lg-5 col-md-8 col-11 px-0">
+  <p-header> Odrzuć wniosek </p-header>
+  <form #vacationForm="ngForm" class="manage-application">
+    <div class="row">
+      <div class="col-12">
+        <label for="comment">Powód</label>
+        <textarea id="comment" name="comment" class="form-control" [rows]="5" [(ngModel)]="editApplication.statusDescription" maxlength="255" (input)="onDescriptionChange()"></textarea>
+        <span style="color:red" *ngIf="isCommentTooLong()">
+          Możesz wpisać maksymalnie 255 znaków
+        </span>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="isRejectModalVisible = false; isAcceptModalVisible = false; editApplication.statusDescription = ''; editApplication.status = tempStatus"
+      label="{{ 'entity.action.cancel' | translate }}"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      icon="pi pi-ban"
+      (click)="sendRejectApplication()"
+      [disabled]="!vacationForm.form.valid"
+      label="{{ 'ebokApp.vacations.setApplicationStatus.reject' | translate }}"
+      styleClass="p-button-danger"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="isAcceptModalVisible" [modal]="true" styleClass="col-lg-5 col-md-8 col-11 px-0">
+    <p-header> Zaakceptuj wniosek </p-header>
+    <form #vacationForm="ngForm" class="manage-application">
+        <div class="row">
+            <div class="col-12">
+                <label for="comment">Powód</label>
+                <textarea id="comment" name="comment" class="form-control" [rows]="5" [(ngModel)]="editApplication.statusDescription" maxlength="255" (input)="onDescriptionChange()"></textarea>
+                <span style="color:red" *ngIf="isCommentTooLong()">
+                    Możesz wpisać maksymalnie 255 znaków
+                </span>
+            </div>
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button
+            icon="pi pi-times"
+            (click)="isAcceptModalVisible = false; editApplication.statusDescription = ''; editApplication.status = tempStatus"
+            label="{{ 'entity.action.cancel' | translate }}"
+            styleClass="p-button-text"
+        ></p-button>
+        <p-button
+            icon="pi pi-ban"
+            (click)="sendAcceptApplication()"
+            label="{{ 'ebokApp.vacations.setApplicationStatus.accept' | translate }}"
+            styleClass="p-button-danger"
+        ></p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="isCancelModalVisible" [modal]="true" styleClass="col-lg-5 col-md-8 col-11 px-0">
+    <p-header> Wycofaj wniosek </p-header>
+    <form #vacationForm="ngForm" class="manage-application">
+        <div class="row">
+            <div class="col-12">
+                <label for="comment">Powód (opcjonalnie)</label>
+                <textarea id="comment" name="comment" class="form-control" [rows]="5" [(ngModel)]="editApplication.statusDescription" maxlength="255" (input)="onDescriptionChange()"></textarea>
+                <span style="color:red" *ngIf="isCommentTooLong()">
+                    Możesz wpisać maksymalnie 255 znaków
+                </span>
+            </div>
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button
+            icon="pi pi-times"
+            (click)="isCancelModalVisible = false; editApplication.statusDescription = ''; editApplication.status = tempStatus"
+            label="{{ 'entity.action.cancel' | translate }}"
+            styleClass="p-button-text"
+        ></p-button>
+        <p-button
+            icon="pi pi-times-circle"
+            (click)="sendCancelApplication()"
+            label="{{ 'ebokApp.vacations.setApplicationStatus.cancel' | translate }}"
+            styleClass="p-button-danger"
+        ></p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="isApplicantHistoryVisible" [modal]="true" styleClass="col-lg-6 col-md-8 col-12 px-0">
+    <p-header>
+        Historia urlopów: {{ editApplication?.createdBy?.firstName }} {{ editApplication?.createdBy?.lastName }}
+        (rok {{ applicantHistoryYear | date: 'yyyy' }})
+    </p-header>
+    <p-toolbar>
+        <div class="p-toolbar-group-left">
+            <button
+                (click)="changeApplicantHistoryYear(true)"
+                type="button"
+                pButton
+                pRipple
+                class="p-button-text"
+                label="Poprzedni rok"
+                icon="pi pi-angle-double-left"
+            ></button>
+            <button
+                (click)="changeApplicantHistoryYear()"
+                type="button"
+                pButton
+                pRipple
+                class="p-button-text"
+                label="Aktualny rok"
+                icon="pi pi-angle-double-down"
+            ></button>
+        </div>
+    </p-toolbar>
+    <p-table [value]="applicantHistory" styleClass="datatable-vacation-details">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Data od</th>
+                <th>Data do</th>
+                <th>Liczba dni</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-detail>
+            <tr>
+                <td>{{ detail.dateFrom | date: 'dd-MM-yyyy' }}</td>
+                <td>{{ detail.dateTo | date: 'dd-MM-yyyy' }}</td>
+                <td>{{ detail.daysTaken | number }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="3">{{ 'entity.table.noData' | translate }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="isApplicantHistoryVisible = false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,43 @@
+{
+  "ebokApp": {
+    "notification": {
+      "home": {
+        "title": "Notifications",
+        "createLabel": "Create a new Notification",
+        "createOrEditLabel": "Create or edit a Notification",
+        "notFound": "No Notifications found"
+      },
+      "created": "A new Notification is created with identifier {{ param }}",
+      "updated": "A Notification is updated with identifier {{ param }}",
+      "deleted": "A Notification is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Notification {{ id }}?"
+      },
+      "detail": {
+        "title": "Notification"
+      },
+      "selectNotificationType": "Select a delivery channel",
+      "subject": "Subject",
+      "description": "Description",
+      "createDate": "Create Date",
+      "readDate": "Read Date",
+      "status": "Status",
+      "category": "Category",
+      "createdBy": "Created By",
+      "recepient": "Recepient",
+      "groups": "Groups",
+      "asNotification": "Send as notification in application",
+      "asSMS": "Send as SMS",
+      "asMAIL": "Send as e-mail",
+      "send": "Send",
+      "all": "All",
+      "users": "To selected users",
+      "groups": "To selected groups",
+      "selectNotificationCanal": "Select recipients",
+      "filters": {
+        "dateRange": "Select date range",
+        "selectUsers": "Select users"
+      }
+    }
+  }
+}

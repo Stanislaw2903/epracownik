@@ -1,0 +1,182 @@
+{
+  "global": {
+    "title": "Elektronisches Mitarbeiterpanel",
+    "browsehappy": "Sie verwenden einen <strong>veralteten<strong> Browser. Bitte <a href=\"http:browsehappy.com\">aktualisieren Sie Ihren Browser<a>, um Ihre Erfahrung mit dieser Anwendung zu verbessern.",
+    "menu": {
+      "home": "Homepage",
+      "jhipster-needle-menu-add-element": "JHipster wird hier weitere Menüeinträge hinzufügen (nicht übersetzen!)",
+      "entities": {
+        "main": "Enionen",
+        "invoices": "Rechnungen",
+        "agreement": "Vereinbarung",
+        "payroll": "Gehaltsdaten",
+        "salaries": "Gehälter",
+        "pit": "PIT",
+        "personnelData": "HR-Daten",
+        "medicalExamination": "Medizinische Untersuchungen",
+        "safetyTraining": "Schulungen zum Thema Arbeitssicherheit und Gesundheitsschutz",
+        "coursesAndTraining": "Kurse und Schulungen",
+        "permissions": "Anrechte",
+        "otherAbsences": "Abwesenheiten",
+        "absenceHistory": "Abwesenheitshistorie",
+        "reportAbsence": "Abwesenheiten melden",
+        "vacations": "Urlaubsanträge",
+        "notification": "Benachrichtigung",
+        "notificationRead": "Benachrichtigung Lesen",
+        "qualifications": "Qualifikationen",
+        "jhipster-needle-menu-add-entry": "JHipster wird hier weitere Entitäten hinzufügen (nicht übersetzen!)",
+        "controlReadFiles": "Dateien lesen steuern"
+      },
+      "administration": "Verwaltung",
+      "account": {
+        "main": "Konto",
+        "settings": "Einstellungen",
+        "password": "Passwort",
+        "sessions": "Sitzungen",
+        "login": "Autorisierung",
+        "logout": "Abmelden",
+        "register": "Registrieren"
+      },
+      "admin": {
+        "main": "System",
+        "userManagement": "Benutzer",
+        "userGroups": "User groups",
+        "graphic": "Abwesenheitsplan",
+        "tracker": "Benutzerverfolgung",
+        "metrics": "Metriken",
+        "health": "Status",
+        "configuration": "Konfiguration",
+        "logs": "Protokolle",
+        "audits": "Audits",
+        "apidocs": "API",
+        "database": "Datenbank",
+        "jhipster-needle-menu-add-admin-element": "JHipster wird hier weitere Menüeinträge hinzufügen (nicht übersetzen!)"
+      },
+      "language": "Sprache"
+    },
+    "form": {
+      "username.label": "Name des Benutzers",
+      "username.placeholder": "Ihre Anmeldung",
+      "currentpassword.label": "Aktuelles Passwort",
+      "currentpassword.placeholder": "Aktuelles Passwort",
+      "newpassword.label": "Neues Passwort",
+      "newpassword.placeholder": "Neues Passwort",
+      "confirmpassword.label": "Neues Passwort bestätigen",
+      "confirmpassword.placeholder": "Neues Passwort bestätigen",
+      "email.label": "E-Mail",
+      "email.placeholder": "Ihre E-Mail",
+      "phoneNumber": "Rufnummer"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Wenn Sie sich anmelden möchten ",
+          "link": "Einloggen",
+          "suffix": "können Sie eines der Standardkonten ausprobieren:<br>- Administrator (login=\"admin\" und password=\"admin\") <br>- Benutzer (login=\"user\" und password=\"user\")."
+        },
+        "register": {
+          "noaccount": "Sie haben noch kein Konto?",
+          "link": "Registrieren"
+        }
+      },
+      "error": {
+        "dontmatch": "Passwort und Bestätigung stimmen nicht überein!"
+      },
+      "validate": {
+        "newpassword": {
+          "required": "Ihr Passwort ist erforderlich.",
+          "minlength": "Ihr Passwort sollte aus mindestens 4 Zeichen bestehen",
+          "maxlength": "Ihr Passwort darf nicht länger als 50 Zeichen sein",
+          "strength": "Passwortstärke:"
+        },
+        "confirmpassword": {
+          "required": "Eine Passwortbestätigung ist erforderlich.",
+          "minlength": "Die Bestätigung Ihres Passworts sollte mindestens 4 Zeichen lang sein",
+          "maxlength": "Ihre Passwortbestätigung sollte nicht länger als 50 Zeichen sein"
+        },
+        "email": {
+          "required": "Ihre E-Mail ist erforderlich.",
+          "invalid": "Ihre E-Mail ist falsch.",
+          "minlength": "Ihre E-Mail muss mindestens 5 Zeichen lang sein",
+          "maxlength": "Ihre E-Mail sollte nicht länger als 50 Zeichen sein."
+        }
+      }
+    },
+    "field": {
+      "id": "ID",
+      "externalId": "ID KiP"
+    },
+    "ribbon": {
+      "dev": "Entwicklung"
+    },
+    "item-count": "Angezeigte {{Erste}} - {{Zweite}} von {{Gesamt}} Elementen."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Binäre Daten hinzufügen",
+      "addimage": "Bild hinzufügen",
+      "back": "Zurück",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "delete": "Löschen",
+      "edit": "Bearbeiten",
+      "open": "Öffnen Sie",
+      "save": "Speichern",
+      "send": "Senden",
+      "view": "Vorschau",
+      "reply": "Antwort",
+      "filter": "Ergebnisse anzeigen"
+    },
+    "detail": {
+      "field": "Feld",
+      "value": "Wert",
+      "fullDay": {
+        "true": "Ganzer Tag",
+        "false": "Stündlich"
+      }
+    },
+    "delete": {
+      "title": "Bestätigung der Löschung"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich.",
+      "minlength": "Der Wert muss mindestens {{min}} Zeichen lang sein.",
+      "maxlength": "Der Wert kann nicht länger als {{max}} Zeichen sein.",
+      "min": "Der Wert sollte größer als {{min}} sein.",
+      "max": "Der Wert kann nicht größer als {{max}} sein.",
+      "minbytes": "Der Wert darf nicht kleiner als {{min}} Bytes sein.",
+      "maxbytes": "Der Wert darf nicht größer als {{max}} Bytes sein.",
+      "pattern": "Der Wert sollte dem Muster {{pattern}} folgen.",
+      "number": "Der Wert sollte numerisch sein.",
+      "datetimelocal": "Der Wert sollte das Datum und die Uhrzeit enthalten."
+    },
+    "table": {
+      "noData": "Daten fehlen"
+    }
+  },
+  "error": {
+    "internalServerError": "Interner Serverfehler",
+    "server.not.reachable": "Server ist nicht erreichbar",
+    "url.not.found": "Nicht gefunden",
+    "NotNull": "Feld {{fieldName}} kann nicht leer sein!",
+    "Size": "Feld {{fieldName}} erfüllt nicht die minimalen/maximalen Voraussetzungen!",
+    "userexists": "Benutzername bereits vergeben!",
+    "emailexists": "Email wird bereits verwendet!",
+    "idexists": "Ein neuer {{entityName}} kann noch keine ID haben",
+    "idnull": "Ungültige ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "footer": "Dies ist Ihre Fußzeile",
+  "payroll": {
+    "readPdf": "Ich habe das durchgesehen",
+    "toastReadPdf": {
+      "title": "Gehaltsdaten",
+      "summary": "Bestätigung des Durchsehens der Datei"
+    },
+    "pit11": "PIT 11-Dateivorschau",
+    "imir": "IMIR-Dateivorschau"
+  }
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20250221-1" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="jhi_user"/>
+        </preConditions>
+
+        <addColumn tableName="jhi_user">
+            <column name="approval_type" type="varchar(40)"/>
+            <column name="approval_verification" type="varchar(40)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20250221-2" author="wojsam" >
+        <preConditions onFail="CONTINUE">
+            <columnExists columnName="approval_verification" tableName="jhi_user"/>
+        </preConditions>
+
+        <update tableName="jhi_user">
+            <column name="approval_verification" value="ONE_LEVEL"/>
+            <where>approval_verification is null</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>

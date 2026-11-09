@@ -1,0 +1,26 @@
+{
+  "ebokApp": {
+    "qualifications": {
+      "home": {
+        "title": "Qualifications",
+        "createLabel": "Dodaj Qualifications",
+        "createOrEditLabel": "Dodaj lub edytuj: Qualifications",
+        "notFound": "No Qualifications found"
+      },
+      "created": "Utworzono nowy obiekt typu Qualifications z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono obiekt typu Qualifications z identyfikatorem {{ param }}",
+      "deleted": "Usunięto obiekt typu Qualifications z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć Qualifications {{ id }}?"
+      },
+      "detail": {
+        "title": "Qualifications"
+      },
+      "name": "Name",
+      "startDate": "Start Date",
+      "expireDate": "Expire Date",
+      "comments": "Comments",
+      "subsidized": "Subsidized"
+    }
+  }
+}

@@ -1,0 +1,89 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-invoices-heading" jhiTranslate="ebokApp.invoices.home.createOrEditLabel">Create or edit a Invoices</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="ebokApp.invoices.issueDate" for="field_issueDate">Issue Date</label>
+                    <div class="input-group">
+                        <input id="field_issueDate" type="text" class="form-control" name="issueDate" ngbDatepicker #issueDateDp="ngbDatepicker" formControlName="issueDate"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="issueDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="ebokApp.invoices.documentNumber" for="field_documentNumber">Document Number</label>
+                    <input type="text" class="form-control" name="documentNumber" id="field_documentNumber"
+                           formControlName="documentNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="ebokApp.invoices.paymentDeadline" for="field_paymentDeadline">Payment Deadline</label>
+                    <div class="input-group">
+                        <input id="field_paymentDeadline" type="text" class="form-control" name="paymentDeadline" ngbDatepicker #paymentDeadlineDp="ngbDatepicker" formControlName="paymentDeadline"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="paymentDeadlineDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="ebokApp.invoices.grossAmount" for="field_grossAmount">Gross Amount</label>
+                    <input type="number" class="form-control" name="grossAmount" id="field_grossAmount"
+                           formControlName="grossAmount"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="ebokApp.invoices.toPay" for="field_toPay">To Pay</label>
+                    <input type="number" class="form-control" name="toPay" id="field_toPay"
+                           formControlName="toPay"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="ebokApp.invoices.documentFile" for="field_documentFile">Document File</label>
+                    <div>
+                        <div *ngIf="editForm.get('documentFile')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(editForm.get('documentFileContentType')!.value, editForm.get('documentFile')!.value)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{ editForm.get('documentFileContentType')!.value }}, {{ byteSize(editForm.get('documentFile')!.value) }}</span>
+                            <button type="button" (click)="editForm.patchValue({documentFile: null});editForm.patchValue({documentFileContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_documentFile" (change)="setFileData($event, 'documentFile', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="documentFile" id="field_documentFile"
+                           formControlName="documentFile"/>
+                    <input type="hidden" class="form-control" name="documentFileContentType" id="field_documentFileContentType"
+                           formControlName="documentFileContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="ebokApp.invoices.status" for="field_status">Status</label>
+                    <input type="checkbox" class="form-control" name="status" id="field_status"
+                           formControlName="status"/>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

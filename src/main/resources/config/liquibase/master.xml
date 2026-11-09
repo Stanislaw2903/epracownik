@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql, mariadb"/>
+    <property name="clobType" value="longvarchar" dbms="h2"/>
+    <property name="clobType" value="clob" dbms="mysql, oracle, mssql, mariadb, postgresql"/>
+    <property name="uuidType" value="uuid" dbms="h2, postgresql"/>
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201009091931_added_entity_Invoices.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201118082425_added_entity_Notification.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201122200257_added_entity_NotificationRead.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201213175932_added_entity_Qualifications.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20201118082425_added_entity_constraints_Notification.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201122200257_added_entity_constraints_NotificationRead.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201213175932_edited_entity_User.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20201221193200_added_entity_Vacation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210309184500_insert_authority.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210309191500_edited_entity_User.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210309201300_edited_entity_Vacation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210310201300_edited_entity_User.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201221193200_added_entity_Management.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211211124500_added_phoneNumber.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211211124501_added_sendSms.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211211124501_added_notification.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221115171600_added_notification_info.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221117171600_added_notification_template.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241130_added_user_group.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2020071882020_added_entity_FileUploadInfo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250221_edited_entity_User.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260109184500_insert_authority.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260529120000_edited_entity_Vacation.xml" relativeToChangelogFile="false"/>
+</databaseChangeLog>

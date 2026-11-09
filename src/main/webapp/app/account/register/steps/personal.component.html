@@ -1,0 +1,45 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-8 text-center">
+        <div class="form-group">
+            <p-selectButton [options]="clientTypes" [(ngModel)]="personalData.clientType" class="p-button-lg">
+            </p-selectButton>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-md-8">
+        <div class="p-fluid">
+            <div class="p-field form-group">
+                <span class="p-float-label">
+                    <input #clientNumber="ngModel" id="clientNumber" type="text" required pInputText
+                        [(ngModel)]="personalData.clientNumber"
+                        [ngClass]="{'p-invalid': (clientNumber.invalid && submitted) || (clientNumber.dirty && clientNumber.invalid)}">
+                    <label for="clientNumber">Numer kontrahenta</label>
+                </span>
+                <small *ngIf="(clientNumber.invalid && submitted) || (clientNumber.dirty && clientNumber.invalid)"
+                    class="p-error">Pole jest wymagane</small>
+            </div>
+            <div class="p-field form-group">
+                <span class="p-float-label">
+                    <input #pesel="ngModel" id="pesel" type="text" required pInputText [(ngModel)]="personalData.pesel"
+                        [ngClass]="{'p-invalid': (pesel.invalid && submitted) || (pesel.dirty && pesel.invalid)}">
+                    <label for="pesel">Numer PESEL</label>
+                </span>
+                <small *ngIf="(pesel.invalid && submitted) || (pesel.dirty && pesel.invalid)" class="p-error">Pole jest wymagane</small>
+            </div>
+            <div class="p-field form-group">
+                <span class="p-float-label">
+                    <input #phone="ngModel" id="phone" type="text" required pInputText [(ngModel)]="personalData.phone"
+                        [ngClass]="{'p-invalid': (phone.invalid && submitted) || (phone.dirty && phone.invalid)}">
+                    <label for="phone">Numer telefonu</label>
+                </span>
+                <small *ngIf="(phone.invalid && submitted) || (phone.dirty && phone.invalid)" class="p-error">Pole jest wymagane</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-d-flex p-jc-end">
+    <button pButton type="button" label="Logowanie" (click)="cancel()" class="p-button-danger" icon="pi pi-user"></button>
+    <p-button label="Dalej" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+</div>

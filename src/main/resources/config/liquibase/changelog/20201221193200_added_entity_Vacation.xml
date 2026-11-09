@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20201221193200-1" author="wojsam">
+        <createTable tableName="vacation">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="comment" type="varchar(255)"/>
+            <column name="date_from" type="date"/>
+            <column name="date_to" type="date"/>
+            <column name="full_day" type="CHAR(1)"/>
+            <column name="created_by_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="vacation_created_by_fk" referencedTableName="jhi_user" referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20201221193200-2" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="vacation"/>
+        </preConditions>
+        <modifyDataType tableName="vacation" columnName="full_day" newDataType="boolean"/>
+    </changeSet>
+
+    <changeSet id="20201221193200-3" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="vacation"/>
+        </preConditions>
+        <addColumn tableName="vacation">
+            <column name="status_description" type="varchar(255)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="processed_by_id" type="bigint">
+                <constraints foreignKeyName="vacation_processed_by_fk" referencedTableName="jhi_user" referencedColumnNames="id" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20201221193200-4" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="vacation"/>
+        </preConditions>
+        <addColumn tableName="vacation">
+            <column name="created_date" type="date"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20201221193200-5" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="vacation"/>
+        </preConditions>
+        <addColumn tableName="vacation">
+            <column name="used" type="NUMBER(15,5)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20201221193200-6" author="wojsam">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="vacation"/>
+        </preConditions>
+
+        <modifyDataType tableName="vacation" columnName="date_from" newDataType="timestamp"/>
+        <modifyDataType tableName="vacation" columnName="date_to" newDataType="timestamp"/>
+    </changeSet>
+
+</databaseChangeLog>

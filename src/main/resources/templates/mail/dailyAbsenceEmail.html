@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+    <head>
+        <title th:text="|Lista osób nieobecnych dzisiaj: ${date}|">Lista osób nieobecnych</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p>Dzień dobry</p>
+
+        <th:block th:if="${!absent.isEmpty()}">
+            <p><strong>Lista osób nieobecnych</strong> (zaakceptowane wnioski):</p>
+            <ol>
+                <li th:each="line : ${absent}" th:text="${line}">Kowalski Jan - Dział</li>
+            </ol>
+        </th:block>
+
+        <th:block th:if="${!pending.isEmpty()}">
+            <p><strong>Wnioski na dzisiaj, oczekujące na akceptację:</strong></p>
+            <ol>
+                <li th:each="line : ${pending}" th:text="${line}">Kowalski Jan - Dział</li>
+            </ol>
+        </th:block>
+
+        <p th:if="${adminContact != null}">
+            Kontakt do administratora firmy: <a th:href="|mailto:${adminContact}|" th:text="${adminContact}">admin</a>
+        </p>
+
+        <p>
+            Pozdrawiam,<br/>
+            System Urlopowy
+        </p>
+    </body>
+</html>

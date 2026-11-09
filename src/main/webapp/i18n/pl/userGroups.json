@@ -1,0 +1,41 @@
+{
+  "userGroups": {
+    "home": {
+      "title": "Definicje grup",
+      "addGroup": "Dodaj grupę",
+      "editGroup": "Edytuj grupę"
+    },
+    "table": {
+      "columns": {
+        "id": "ID",
+        "name": "Nazwa",
+        "code": "Kod",
+        "actions": "Opcje"
+      },
+      "filters": {
+        "id": "Filtr ID",
+        "name": "Filtr Nazwa"
+      },
+      "buttons": {
+        "button1": "Przycisk 1",
+        "button2": "Przycisk 2"
+      },
+      "pagination": {
+        "rowsPerPage": "Rekordy na stronę",
+        "of": "z",
+        "noResults": "Brak wyników do wyświetlenia"
+      }
+    },
+    "addEdit": {
+      "code": "Kod grupy",
+      "name": "Nazwa grupy"
+    },
+    "messages": {
+      "loading": "Ładowanie...",
+      "error": "Wystąpił błąd podczas ładowania danych.",
+      "deleted": "Grupa została usunięta",
+      "updated": "Grupa została zaktualizowana",
+      "created": "Grupa została utworzona"
+    }
+  }
+}

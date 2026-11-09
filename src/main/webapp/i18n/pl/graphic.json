@@ -1,0 +1,71 @@
+{
+  "ebokApp": {
+    "graphic": {
+      "home": {
+        "title": "Grafik absencji"
+      },
+      "filters": {
+        "yearNumber": "Rok",
+        "weekNumber": "Tydzień",
+        "monthNumber": "Miesiąc",
+        "showAll": "Pokaż wszystkich użytkowników",
+        "showMe": "Pokaż moich przypisanych użytkowników",
+        "showGroup": "Pokaż użytkowników z danej grupy",
+        "groups": "Wybierz grupę",
+        "lastName": "Nazwisko"
+      },
+      "table": {
+        "username": "Imię i nazwisko",
+        "friday": "Piątek",
+        "monday": "Poniedziałek",
+        "thursday": "Czwartek",
+        "tuesday": "Wtorek",
+        "wednesday": "Środa"
+      },
+      "type": {
+        "WORKING": "Pracuje",
+        "HOLIDAY": "Święto",
+        "FREE": "Wolne",
+        "WEEKEND": "Weekend"
+      },
+      "legend": {
+        "A": "Urlop wypoczynkowy",
+        "B": "Rodzicielskie / opieka",
+        "C": "Choroba / wypadek",
+        "D": "Bezpłatne / inne",
+        "WEEKEND": "Weekend",
+        "hint": "Litery = typ absencji; najedź, aby zobaczyć pełną nazwę"
+      },
+      "absence": {
+        "UW": "Urlop wypoczynkowy",
+        "UC": "Urlop wychowawczy",
+        "UM": "Urlop macierzyński",
+        "MA": "Macierzyństwo",
+        "UO": "Urlop ojcowski",
+        "UR": "Urlop rodzicielski",
+        "WM": "Urlop na warunkach urlopu macierzyńskiego",
+        "DM": "Dni dla matki z dzieckiem do 14 lat",
+        "ZO": "Zasiłek opiekuńczy",
+        "ZR": "Zasiłek rodzinny / pielęgnacyjny / wychowawczy",
+        "ZS": "Zasiłek rodzinny / pielęgnacyjny / świadczenie rodzinne",
+        "CH": "Choroba (wynagrodzenie za czas choroby)",
+        "CZ": "Choroba (zasiłek chorobowy)",
+        "CB": "Choroba (dni bez prawa do wynagrodzenia)",
+        "CN": "Choroba (osoba nieuprawniona do wynagrodzenia)",
+        "WY": "Wypadek przy pracy lub choroba zawodowa",
+        "RH": "Świadczenie rehabilitacyjne",
+        "UB": "Urlop bezpłatny",
+        "UK": "Urlop okolicznościowy",
+        "UP": "Urlop na poszukiwanie pracy",
+        "SW": "Służba wojskowa lub zastępcza",
+        "NB": "Okres nieobecności w pracy",
+        "SK": "Skrócenie okresu wypowiedzenia",
+        "ZW": "Zwolnienie z pracy w okresie wypowiedzenia",
+        "OZ": "Oddelegowanie za granicę",
+        "PP": "Przestój w pracy",
+        "OG": "Odbiór godzin nadliczbowych",
+        "SO": "Świadczenie z obecnością w pracy"
+      }
+    }
+  }
+}

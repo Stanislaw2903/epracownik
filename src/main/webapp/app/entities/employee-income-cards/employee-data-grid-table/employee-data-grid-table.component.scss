@@ -1,0 +1,83 @@
+$blue-grey: #e9ecef;
+$blue-grey-transparent: #e9ecefbd;
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 150px repeat(5, 1fr);
+  grid-template-rows: repeat(2, 50px);
+  gap: 0px 0px;
+  grid-template-areas:
+    'title-area surname-area first-name-area second-name-area fathers-name-area mothers-name-area'
+    'title-area pesel-area employ-date-area dismissal-date-area birth-date-area birthplace-area';
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 1px -1px $blue-grey-transparent, 0 1px 1px 0 $blue-grey-transparent, 0 1px 3px 0 $blue-grey-transparent;
+
+  .inside-container {
+    border-right: 1px solid $blue-grey;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 20px;
+
+    .data {
+      margin-left: 10px;
+      font-weight: bold;
+    }
+  }
+
+  .title-area {
+    grid-area: title-area;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .surname-area {
+    grid-area: surname-area;
+  }
+
+  .first-name-area {
+    grid-area: first-name-area;
+  }
+
+  .second-name-area {
+    grid-area: second-name-area;
+  }
+
+  .fathers-name-area {
+    grid-area: fathers-name-area;
+  }
+
+  .mothers-name-area {
+    grid-area: mothers-name-area;
+  }
+
+  .pesel-area {
+    grid-area: pesel-area;
+  }
+
+  .employ-date-area {
+    grid-area: employ-date-area;
+  }
+
+  .dismissal-date-area {
+    grid-area: dismissal-date-area;
+  }
+
+  .birth-date-area {
+    grid-area: birth-date-area;
+  }
+
+  .birthplace-area {
+    grid-area: birthplace-area;
+  }
+
+  .surname-area,
+  .first-name-area,
+  .second-name-area,
+  .fathers-name-area,
+  .mothers-name-area {
+    border-right: 1px solid $blue-grey;
+    border-bottom: 1px solid $blue-grey;
+  }
+}

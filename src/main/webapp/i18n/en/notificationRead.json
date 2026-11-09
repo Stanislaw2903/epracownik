@@ -1,0 +1,24 @@
+{
+  "ebokApp": {
+    "notificationRead": {
+      "home": {
+        "title": "Notification Reads",
+        "createLabel": "Create a new Notification Read",
+        "createOrEditLabel": "Create or edit a Notification Read",
+        "notFound": "No Notification Reads found"
+      },
+      "created": "A new Notification Read is created with identifier {{ param }}",
+      "updated": "A Notification Read is updated with identifier {{ param }}",
+      "deleted": "A Notification Read is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Notification Read {{ id }}?"
+      },
+      "detail": {
+        "title": "Notification Read"
+      },
+      "date": "Date",
+      "notify": "Notify",
+      "user": "User"
+    }
+  }
+}

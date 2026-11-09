@@ -1,0 +1,39 @@
+<p-table
+  [value]="qualificationsTableData"
+  dataKey="id"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [loading]="loading"
+  styleClass="p-datatable-customers"
+  [lazy]="true"
+  (onLazyLoad)="customSort($event)"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>{{ 'ebokApp.qualifications.table.name' | translate }}</th>
+      <th>{{ 'ebokApp.qualifications.table.completionDate' | translate }}</th>
+      <th pSortableColumn="dateTo">{{ 'ebokApp.qualifications.table.dateTo' | translate }} <p-sortIcon field="dateTo"></p-sortIcon></th>
+      <th>{{ 'ebokApp.qualifications.table.comments' | translate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-qualification>
+    <tr [ngClass]="{'warning': qualification.expires}">
+      <td><span class="table-badge category-ABSENT">{{ qualification.name }}</span></td>
+      <td>{{ qualification.completionDate | date: 'mediumDate' }}</td>
+      <td>{{ qualification.dateTo | date: 'mediumDate' }}</td>
+      <td>{{ qualification.comments }}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="4">{{ 'entity.table.noData' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-paginator
+    [rows]="itemsPerPage"
+    [totalRecords]="totalItems"
+    (onPageChange)="loadPage($event)"
+    [rowsPerPageOptions]="[10, 20, 50, 100]"
+></p-paginator>

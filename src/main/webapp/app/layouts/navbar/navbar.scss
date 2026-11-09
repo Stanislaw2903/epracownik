@@ -1,0 +1,80 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+/* ==========================================================================
+Navbar
+========================================================================== */
+
+.navbar-version {
+  font-size: 0.65em;
+  color: $navbar-dark-color;
+}
+
+.profile-image {
+  height: 1.75em;
+  width: 1.75em;
+}
+.logged.navbar {
+  left: 250px;
+  @media screen and (max-width: 768px) {
+    left: 0px;
+    padding-left: 45px;
+  }
+}
+.navbar {
+  background-color: #2e3541 !important;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  padding: 0 1rem 0 0;
+  left: 0px;
+  .main-logo {
+    padding: 5px;
+    margin-right: 10px;
+    img {
+      max-height: 60px;
+    }
+  }
+  .navbar-title {
+    color: #fff;
+    font-weight: 100;
+    @media screen and (max-width: 768px) {
+      font-size: 12px;
+      display: block;
+      max-width: 100px;
+      white-space: normal;
+    }
+  }
+  .navbar-version {
+    color: #fff;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  ul.navbar-nav {
+    .nav-item {
+      margin-left: 0.5em;
+      span > span {
+        @media screen and (max-width: 768px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  a.nav-link {
+    color: #fff;
+    font-weight: 400;
+  }
+}
+
+/* ==========================================================================
+Logo styles
+========================================================================== */
+.logo-img {
+  height: 45px;
+  width: 45px;
+  display: inline-block;
+  vertical-align: middle;
+  background: url('../../../content/images/logo-eurosoft.png') no-repeat center center;
+  background-size: contain;
+}

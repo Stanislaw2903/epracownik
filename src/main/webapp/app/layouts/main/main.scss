@@ -1,0 +1,19 @@
+:host ::ng-deep {
+  .p-panelmenu .p-panelmenu-content {
+    border: none;
+  }
+  .p-panelmenu .p-panelmenu-header > a {
+    border: none;
+    background-color: #fff;
+    font-weight: 400;
+  }
+  .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-menuitem-text {
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #sidebar {
+    display: none;
+  }
+}
